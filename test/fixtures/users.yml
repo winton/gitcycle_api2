@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  gitcycle: MyString
+  github: MyString
+  gravatar: MyString
+  login: MyString
+  name: MyString
+
+two:
+  gitcycle: MyString
+  github: MyString
+  gravatar: MyString
+  login: MyString
+  name: MyString
