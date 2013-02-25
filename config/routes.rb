@@ -1,6 +1,8 @@
 require 'sidekiq/web'
 
 GitcycleApi2::Application.routes.draw do
+  get "front/index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -59,6 +61,6 @@ GitcycleApi2::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
 
   mount Sidekiq::Web => '/sidekiq/'
-
   match '/auth/:provider/callback', :to => 'sessions#create'
+  root :to => 'front#index'
 end
