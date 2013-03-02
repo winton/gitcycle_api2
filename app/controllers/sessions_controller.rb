@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  
+
   def create
     auth = request.env['omniauth.auth']
 
@@ -15,5 +15,9 @@ class SessionsController < ApplicationController
     
     session[:user] = user
     redirect_to '/'
+  end
+
+  def show
+    render :json => session[:user]
   end
 end

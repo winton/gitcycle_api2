@@ -61,6 +61,11 @@ GitcycleApi2::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
 
   mount Sidekiq::Web => '/sidekiq/'
-  match '/auth/:provider/callback', :to => 'sessions#create'
-  root :to => 'front#index'
+
+  resource :session
+  match '/auth/:provider/callback', to: 'sessions#create'
+
+  match "/login" => redirect("/auth/github")
+
+  root to: 'front#index'
 end

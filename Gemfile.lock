@@ -68,6 +68,13 @@ GEM
     facter (1.6.17)
     faraday (0.8.5)
       multipart-post (~> 1.1)
+    haml (4.0.0)
+      tilt
+    haml-rails (0.4)
+      actionpack (>= 3.1, < 4.1)
+      activesupport (>= 3.1, < 4.1)
+      haml (>= 3.1, < 4.1)
+      railties (>= 3.1, < 4.1)
     hashie (1.2.0)
     hike (1.2.1)
     httpauth (0.2.0)
@@ -191,7 +198,7 @@ PLATFORMS
 DEPENDENCIES
   addressable
   coffee-rails (~> 3.2.1)
-  commonjs
+  haml-rails
   jquery-rails
   less
   less-rails
