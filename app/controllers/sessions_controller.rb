@@ -17,6 +17,11 @@ class SessionsController < ApplicationController
     redirect_to '/'
   end
 
+  def destroy
+    session.delete(:user)
+    redirect_to '/'
+  end
+
   def show
     render :json => session[:user]
   end
