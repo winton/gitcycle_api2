@@ -12,8 +12,8 @@ $ ->
     if data
       $('.logout').show()
       $('.nav-collapse .nav').show()
-      gitcycle.session = data
-      gitcycle.events.trigger("session", data)
+      gitcycle.user = data
+      gitcycle.events.trigger("user", data)
     else
       $('.login').show()
     $('.nav-collapse .pull-right').show()

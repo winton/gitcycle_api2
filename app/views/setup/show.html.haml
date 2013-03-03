@@ -1,0 +1,64 @@
+= stylesheet_link_tag "setup"
+= javascript_include_tag "setup"
+
+%h3
+  Install
+  %span gitcycle
+
+.console<
+  %table
+    %tr
+      %td{ :width => '50%' } &nbsp;
+      %td#setup<
+        gem install gitcycle
+        %br
+        git setup
+      %td{ :width => '50%' } &nbsp;
+
+%h3 Create a development branch
+
+.row
+  .span4
+    Checkout a branch to work from
+    %i.icon-arrow-right
+  .span4
+    %pre
+      git checkout master
+
+.row
+  .span4
+    New branch from a Lighthouse ticket URL
+    %i.icon-arrow-right
+  .span4
+    %pre
+      git branch [LIGHTHOUSE TICKET URL]
+
+%h3 Mark branch "ready"
+
+.row
+  .span4
+    Once you are ready for code review
+    %i.icon-arrow-right
+  .span4
+    %pre
+      git ready
+
+%h3 Pull, commit, push
+
+.row
+  .span4
+    Git commands are simple now
+    %i.icon-arrow-right
+  .span4
+    %pre
+      = preserve do
+        git pull
+        git commit
+        git push
+
+%h3 Watch for alerts
+
+%p
+  Gitcycle
+  %a{ :href => "/alerts" } alerts
+  will let you know if your branch failed review or QA.

@@ -1,0 +1,12 @@
+$ ->
+  setup = (user) ->
+    text = $('#setup')
+      .append(" #{user.login} #{user.gitcycle}")
+      .html()
+      .replace('<br>', "\n")
+    #$('h3 span').append(clippy(text + "\n"))
+
+  if gitcycle.user
+    setup(gitcycle.user)
+  else
+    gitcycle.events.on("user", setup)
