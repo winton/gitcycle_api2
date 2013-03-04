@@ -30,4 +30,16 @@ describe Lighthouse::Ticket do
       end
     end
   end
+
+  it "should not go past the first page if last API result is not new" do
+    VCR.use_cassette('lighthouse_03') do
+      Lighthouse::Ticket.should_receive(:update!).with(1, 10).and_call_original
+      Lighthouse::Ticket.should_receive(:update!).with(2, 10).and_call_original
+      Lighthouse::Ticket.should_receive(:update!).with(3, 10)
+      Lighthouse::Ticket.update!(1, 10)
+      
+      Lighthouse::Ticket.should_receive(:update!).once.and_call_original
+      Lighthouse::Ticket.update!(1, 10)
+    end
+  end
 end

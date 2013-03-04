@@ -31,7 +31,7 @@ class Lighthouse::Ticket < Lighthouse::Base
       next_page =
         if last
           if tickets[last.number]
-            last.updated_at != tickets[last.number].ticket_updated_at
+            Time.parse(last.updated_at) != tickets[last.number].ticket_updated_at
           else
             true
           end
