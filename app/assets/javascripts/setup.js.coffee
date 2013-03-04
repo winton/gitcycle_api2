@@ -10,3 +10,7 @@ $ ->
     setup(gitcycle.user)
   else
     gitcycle.events.on("user", setup)
+
+  $('.tabbable .nav a').click (e) ->
+    e.preventDefault()
+    $(@).tab('show')

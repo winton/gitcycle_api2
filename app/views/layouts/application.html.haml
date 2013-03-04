@@ -25,9 +25,9 @@
               = image_tag 'gitcycle.png'
           .nav-collapse.collapse
             %ul.nav
-              %li.active
+              %li{ :class => active?('/alerts') }
                 %a{:href => "/alerts"} Alerts
-              %li
+              %li{ :class => active?('/setup') }
                 %a{:href => "/setup"} Setup
             .pull-right
               %a.login.btn.btn-primary{ :href => "/login" }

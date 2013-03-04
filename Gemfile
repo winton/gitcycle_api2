@@ -13,7 +13,7 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'less'
-  gem 'therubyracer', :platforms => :ruby
+  gem 'therubyracer', platforms: :ruby
   gem 'twitter-bootstrap-rails'
   gem 'uglifier', '>= 1.0.3'
 end
@@ -44,3 +44,10 @@ gem 'omniauth-github'
 gem 'sidekiq', github: "mperham/sidekiq"
 gem 'sinatra'
 gem 'slim'
+gem 'whenever', require: false
+
+group :test, :development do
+  gem "rspec-rails", "~> 2.0"
+  gem "vcr"
+  gem "webmock"
+end

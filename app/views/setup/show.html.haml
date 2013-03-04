@@ -15,50 +15,18 @@
         git setup
       %td{ :width => '50%' } &nbsp;
 
-%h3 Create a development branch
-
-.row
-  .span4
-    Checkout a branch to work from
-    %i.icon-arrow-right
-  .span4
-    %pre
-      git checkout master
-
-.row
-  .span4
-    New branch from a Lighthouse ticket URL
-    %i.icon-arrow-right
-  .span4
-    %pre
-      git branch [LIGHTHOUSE TICKET URL]
-
-%h3 Mark branch "ready"
-
-.row
-  .span4
-    Once you are ready for code review
-    %i.icon-arrow-right
-  .span4
-    %pre
-      git ready
-
-%h3 Pull, commit, push
-
-.row
-  .span4
-    Git commands are simple now
-    %i.icon-arrow-right
-  .span4
-    %pre
-      = preserve do
-        git pull
-        git commit
-        git push
-
-%h3 Watch for alerts
-
-%p
-  Gitcycle
-  %a{ :href => "/alerts" } alerts
-  will let you know if your branch failed review or QA.
+.tabbable
+  %ul.nav.nav-tabs
+    %li.active
+      %a{"data-toggle" => "tab", :href => "#tab1"} Developers
+    %li
+      %a{"data-toggle" => "tab", :href => "#tab2"} Code Reviewers
+    %li
+      %a{"data-toggle" => "tab", :href => "#tab3"} Quality Assurance
+  .tab-content
+    #tab1.tab-pane.active
+      = render partial: 'developers'
+    #tab2.tab-pane
+      = render partial: 'code_reviewers'
+    #tab3.tab-pane
+      = render partial: 'qa'
