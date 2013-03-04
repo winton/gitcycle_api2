@@ -14,17 +14,17 @@ class Lighthouse::Ticket < Lighthouse::Base
 
   class <<self
 
-    def updated_tickets(page=1)
+    def updated_tickets(page=1, limit=100)
       Lighthouse::Ticket.find(:all, params: {
-        limit:      100,
+        limit:      limit,
         page:       page,
         project_id: 6296,
         q:          'sort:updated'
       })
     end
 
-    def update!(page=1)
-      updated = updated_tickets(page)
+    def update!(page=1, limit=100)
+      updated = updated_tickets(page, limit)
       last    = updated.last
       tickets = Ticket.hash_by_numbers(updated.collect(&:number))
 
@@ -47,7 +47,7 @@ class Lighthouse::Ticket < Lighthouse::Base
         end
       end
 
-      update!(page + 1) if next_page
+      update!(page + 1, limit) if next_page
     end
   end
 end
