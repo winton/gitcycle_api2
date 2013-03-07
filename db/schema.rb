@@ -11,14 +11,43 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130303073550) do
+ActiveRecord::Schema.define(:version => 20130305221645) do
+
+  create_table "github_projects", :force => true do |t|
+    t.string   "owner"
+    t.string   "repo"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "lighthouse_projects", :force => true do |t|
+    t.string   "namespace"
+    t.integer  "number"
+    t.string   "token"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "pull_requests", :force => true do |t|
+    t.integer  "number"
+    t.string   "status"
+    t.string   "url"
+    t.integer  "ticket_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "tickets", :force => true do |t|
     t.string   "service"
     t.integer  "number"
+    t.string   "status"
     t.string   "title"
     t.string   "url",               :limit => 256
     t.string   "body",              :limit => 10240
+    t.integer  "user_id"
     t.datetime "ticket_created_at"
     t.datetime "ticket_updated_at"
     t.datetime "created_at",                         :null => false

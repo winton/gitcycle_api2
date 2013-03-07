@@ -1,0 +1,26 @@
+class Lighthouse
+
+  def initialize(project)
+    @api_url = "https://#{project.namespace}.lighthouseapp.com"
+    @project = project
+
+    @http = Faraday.new @api_url, ssl: { verify: false } do |conn|
+      conn.adapter  :excon
+    end
+    
+    @http.headers['X-LighthouseToken'] = project.token
+  end
+
+  def recently_updated_tickets(page=1, limit=100)
+    data = JSON.parse @http.get(
+      "/projects/#{@project.number}/tickets.json",
+      limit: limit,
+      page:  page,
+      q:     'sort:updated'
+    ).body
+
+    data['tickets'].collect do |t|
+      Lighthouse::Ticket.new(t['ticket'])
+    end
+  end
+end

@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'rails', '3.2.12'
 
@@ -38,7 +38,9 @@ gem 'unicorn-rails'
 # gem 'debugger'
 
 gem 'addressable'
-gem 'lighthouse-api', github: 'tongueroo/lighthouse-api', require: 'lighthouse'
+gem 'excon'
+gem 'faraday'
+gem 'faraday_middleware'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'sidekiq', github: "mperham/sidekiq"
@@ -46,8 +48,12 @@ gem 'sinatra'
 gem 'slim'
 gem 'whenever', require: false
 
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
+end
+
 group :test, :development do
   gem "rspec-rails", "~> 2.0"
   gem "vcr"
-  gem "webmock"
 end
