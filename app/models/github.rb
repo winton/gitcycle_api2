@@ -6,8 +6,6 @@ class Github
 
     @http = Faraday.new @api_url, ssl: { verify: false } do |conn|
       conn.adapter  :excon
-      conn.request  :json
-      conn.response :json, :content_type => /\bjson$/
     end
     
     @http.headers['Authorization'] = "token #{project.user.github}"

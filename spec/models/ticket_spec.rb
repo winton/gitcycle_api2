@@ -7,6 +7,7 @@ describe Ticket do
       hash[number] = Ticket.create!(number: number)
       hash
     end
+    
     Ticket.hash_by_numbers(0..9).should eq(hash)
   end
 end

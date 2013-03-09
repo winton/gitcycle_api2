@@ -5,21 +5,28 @@ class Lighthouse
     @project = project
 
     @http = Faraday.new @api_url, ssl: { verify: false } do |conn|
-      conn.adapter  :excon
+      conn.adapter :excon
     end
     
     @http.headers['X-LighthouseToken'] = project.token
   end
 
+  def profile
+    response = @http.get("/profile.json").body
+    response = JSON.parse(response)
+    Lighthouse::User.new(response['user'])
+  end
+
   def recently_updated_tickets(page=1, limit=100)
-    data = JSON.parse @http.get(
+    response = @http.get(
       "/projects/#{@project.number}/tickets.json",
       limit: limit,
       page:  page,
       q:     'sort:updated'
     ).body
 
-    data['tickets'].collect do |t|
+    response = JSON.parse(response)
+    response['tickets'].collect do |t|
       Lighthouse::Ticket.new(t['ticket'])
     end
   end

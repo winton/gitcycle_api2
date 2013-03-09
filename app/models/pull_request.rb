@@ -1,6 +1,6 @@
 class PullRequest < ActiveRecord::Base
 
-  attr_accessible :number, :status, :ticket_id, :url, :user_id
+  attr_accessible :number, :status, :ticket_id, :url
 
   class <<self
 

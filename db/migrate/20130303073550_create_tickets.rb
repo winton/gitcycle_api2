@@ -9,7 +9,10 @@ class CreateTickets < ActiveRecord::Migration
       t.string  :url,  limit: 256
       t.string  :body, limit: 10240
 
-      t.integer :user_id
+      t.integer :lighthouse_project_id
+
+      t.integer :assigned_lighthouse_user_id
+      t.integer :lighthouse_user_id
 
       t.datetime :ticket_created_at
       t.datetime :ticket_updated_at
