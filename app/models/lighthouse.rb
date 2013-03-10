@@ -8,7 +8,7 @@ class Lighthouse
       conn.adapter :excon
     end
     
-    @http.headers['X-LighthouseToken'] = project.token
+    @http.headers['X-LighthouseToken'] = project.lighthouse_users.first.token
   end
 
   def profile

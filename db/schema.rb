@@ -37,10 +37,10 @@ ActiveRecord::Schema.define(:version => 20130308003805) do
 
   create_table "lighthouse_users", :force => true do |t|
     t.string   "token"
-    t.integer  "lighthouse_user_id"
+    t.integer  "lighthouse_id"
     t.integer  "user_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "pull_requests", :force => true do |t|
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(:version => 20130308003805) do
     t.string   "status"
     t.string   "title"
     t.string   "url",                         :limit => 256
-    t.string   "body",                        :limit => 10240
+    t.string   "body",                        :limit => 20480
     t.integer  "lighthouse_project_id"
     t.integer  "assigned_lighthouse_user_id"
     t.integer  "lighthouse_user_id"

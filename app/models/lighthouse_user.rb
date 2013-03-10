@@ -1,6 +1,6 @@
 class LighthouseUser < ActiveRecord::Base
 
-  attr_accessible :lighthouse_user_id, :token, :user_id
+  attr_accessible :lighthouse_id, :token, :user_id
 
   belongs_to :user
 

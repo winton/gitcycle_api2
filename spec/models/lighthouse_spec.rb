@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Lighthouse do
 
-  fixtures :lighthouse_projects
+  fixtures :lighthouse_projects, :lighthouse_users, :lighthouse_project_users
 
   before :each do
-    @project = lighthouse_projects(:live)
+    @project = lighthouse_projects(:default)
   end
 
   it "should retrieve a list of recently updated tickets" do

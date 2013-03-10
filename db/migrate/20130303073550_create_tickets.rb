@@ -7,7 +7,7 @@ class CreateTickets < ActiveRecord::Migration
       t.string  :status
       t.string  :title
       t.string  :url,  limit: 256
-      t.string  :body, limit: 10240
+      t.string  :body, limit: 20480
 
       t.integer :lighthouse_project_id
 
