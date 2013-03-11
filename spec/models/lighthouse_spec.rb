@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Lighthouse do
 
-  fixtures :lighthouse_projects, :lighthouse_users, :lighthouse_project_users
+  fixtures :lighthouse_projects, :lighthouse_users, :lighthouse_project_users, :users
 
   before :each do
     @project = lighthouse_projects(:default)

@@ -2,10 +2,16 @@ require 'spec_helper'
 
 describe LighthouseProject do
 
-  fixtures :lighthouse_projects, :lighthouse_users, :lighthouse_project_users
+  fixtures :lighthouse_projects, :lighthouse_users, :lighthouse_project_users, :users
 
   before :each do
     @project = lighthouse_projects(:default)
+  end
+
+  it "should have relationships" do
+    @project.lighthouse_project_users.count.should eq(1)
+    @project.lighthouse_users.count.should eq(1)
+    @project.users.count.should eq(1)
   end
 
   it "should update database from recently updated tickets" do
