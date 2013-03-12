@@ -29,7 +29,7 @@ class Ticket < ActiveRecord::Base
 
   class <<self
 
-    def hash_by_numbers(numbers)
+    def hash_tickets_by_numbers(numbers)
       Hash[ Ticket.where(number: numbers).map { |t| [ t.number, t ] } ]
     end
   end

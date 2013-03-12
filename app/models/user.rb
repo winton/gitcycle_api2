@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :gitcycle, :github, :gravatar, :login, :name
+  attr_accessible :github, :gravatar, :login, :name
   
   has_many :github_projects
   has_many :lighthouse_users
@@ -13,6 +13,10 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :gitcycle, :github, :login
 
   before_validation do |user|
-    user.gitcycle ||= Digest::SHA1.hexdigest("#{id}#{github}")[0..7]
+    begin
+      token = SecureRandom.hex(4)
+    end while User.where(gitcycle: token).first
+
+    user.gitcycle ||= token
   end
 end

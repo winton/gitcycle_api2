@@ -8,6 +8,14 @@ describe Lighthouse do
     @project = lighthouse_projects(:default)
   end
 
+  it "should retrieve information for the current user" do
+    VCR.use_cassette('lighthouse') do
+      profile = @project.lighthouse.user
+      profile.should be_a(Lighthouse::User)
+      profile.id.should be_a(Fixnum)
+    end
+  end
+
   it "should retrieve a list of recently updated tickets" do
     VCR.use_cassette('lighthouse') do
       tickets = @project.lighthouse.recently_updated_tickets(1, 10)

@@ -14,6 +14,15 @@ describe LighthouseProject do
     @project.users.count.should eq(1)
   end
 
+  it "should create a hash of lighthouse users by lighthouse id" do
+    hash = @project.hash_lighthouse_users_by_lighthouse_id
+    user = @project.lighthouse_users.first
+
+    hash.should be_a(Hash)
+    hash.keys.should   eq([ user.lighthouse_id ])
+    hash.values.should eq([ user ])
+  end
+
   it "should update database from recently updated tickets" do
     VCR.use_cassette('lighthouse') do
       @project.should_receive(:update_from_api!).with(1, 10).and_call_original
@@ -30,6 +39,10 @@ describe LighthouseProject do
         ticket.ticket_updated_at.should be_a(Time)
         ticket.title.should be_a(String)
         ticket.url.should   be_a(String)
+
+        ticket.assigned_lighthouse_user.should be_a(LighthouseUser)
+        ticket.lighthouse_project.should be_a(LighthouseProject)
+        ticket.lighthouse_user.should be_a(LighthouseUser)
       end
     end
   end

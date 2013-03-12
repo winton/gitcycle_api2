@@ -11,12 +11,6 @@ class Lighthouse
     @http.headers['X-LighthouseToken'] = project.lighthouse_users.first.token
   end
 
-  def profile
-    response = @http.get("/profile.json").body
-    response = JSON.parse(response)
-    Lighthouse::User.new(response['user'])
-  end
-
   def recently_updated_tickets(page=1, limit=100)
     response = @http.get(
       "/projects/#{@project.number}/tickets.json",
@@ -29,5 +23,11 @@ class Lighthouse
     response['tickets'].collect do |t|
       Lighthouse::Ticket.new(t['ticket'])
     end
+  end
+
+  def user
+    response = @http.get("/profile.json").body
+    response = JSON.parse(response)
+    Lighthouse::User.new(response['user'])
   end
 end
