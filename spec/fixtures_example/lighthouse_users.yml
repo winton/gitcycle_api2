@@ -1,5 +1,5 @@
 default:
-  token: 		 # Lighthouse API token
+  token:         # Lighthouse API token
   lighthouse_id: # Lighthouse user ID
 
   id: 1

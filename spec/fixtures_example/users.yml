@@ -1,8 +1,8 @@
 default:
-  github: 	# Github oauth token
-  login: 	# Github login
+  github:   # Github oauth token
+  login:    # Github login
 
   id: 1
   gitcycle: a1995b1c
   gravatar: 148f2a2495682cf23fad4d82803790bf
-  name: 	Winton Welsh
+  name:     Winton Welsh
