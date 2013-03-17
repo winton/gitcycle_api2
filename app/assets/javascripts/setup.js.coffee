@@ -1,7 +1,7 @@
 $ ->
   setup = (user) ->
     text = $('#setup')
-      .append(" #{user.login} #{user.gitcycle}")
+      .append(" #{user.gitcycle}")
       .html()
       .replace('<br>', "\n")
     #$('h3 span').append(clippy(text + "\n"))

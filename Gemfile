@@ -40,7 +40,6 @@ gem 'unicorn-rails'
 gem 'addressable'
 gem 'excon'
 gem 'faraday'
-gem 'faraday_middleware'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'sidekiq', github: "mperham/sidekiq"
