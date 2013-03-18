@@ -4,6 +4,5 @@ class UserController < ApplicationController
 
   # curl http://localhost:3000/user.json -H 'Authorization: Token token="82410be9c75d6985"'
   def show
-    render :json => @user
   end
 end

@@ -1,0 +1,1 @@
+json.(@user, :gravatar, :login, :name, :created_at, :updated_at)
