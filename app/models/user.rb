@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
   before_validation do |user|
     begin
-      token = SecureRandom.hex(8)
+      token = SecureRandom.hex(4)
     end while User.where(gitcycle: token).first
 
     user.gitcycle ||= token

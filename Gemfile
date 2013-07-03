@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '4.0.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -9,14 +9,12 @@ gem 'pg'
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'less'
-  gem 'therubyracer', platforms: :ruby
-  gem 'twitter-bootstrap-rails'
-  gem 'uglifier', '>= 1.0.3'
-end
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'less'
+gem 'therubyracer', platforms: :ruby
+gem 'twitter-bootstrap-rails'
+gem 'uglifier', '>= 1.0.3'
 
 gem 'haml-rails'
 gem 'jquery-rails'
@@ -42,6 +40,7 @@ gem 'excon'
 gem 'faraday'
 gem 'omniauth'
 gem 'omniauth-github'
+gem 'protected_attributes'
 gem 'sidekiq', github: "mperham/sidekiq"
 gem 'sinatra'
 gem 'slim'
@@ -54,6 +53,6 @@ group :development do
 end
 
 group :test, :development do
-  gem "rspec-rails", "~> 2.0"
+  gem "rspec-rails"
   gem "vcr"
 end

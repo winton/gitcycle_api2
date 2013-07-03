@@ -64,9 +64,9 @@ GitcycleApi2::Application.routes.draw do
   resource :session, controller: :session
   resource :user,    controller: :user
 
-  match '/auth/:provider/callback', to: 'session#create'
-  match '/login' => redirect('/auth/github')
-  match '/logout', to: 'session#destroy'
+  get '/auth/:provider/callback', to: 'session#create'
+  get '/login' => redirect('/auth/github')
+  get '/logout', to: 'session#destroy'
 
   root to: 'front#show'
 end
