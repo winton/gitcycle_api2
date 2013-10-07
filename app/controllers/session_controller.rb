@@ -14,7 +14,7 @@ class SessionController < ApplicationController
     )
     
     session[:user] = user
-    redirect_to '/'
+    redirect_to '/setup'
   end
 
   def destroy

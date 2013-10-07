@@ -1,7 +1,11 @@
 /*
- *= require bootstrap
  *= require_self
  */
+
+$gridColumns: 8 !default;
+
+@import "bootstrap";
+@import "bootstrap/responsive";
 
 @media (min-width: 980px) {
   body {

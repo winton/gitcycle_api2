@@ -7,4 +7,8 @@ class ApplicationController < ActionController::Base
       @user = User.where(gitcycle: token).first
     end
   end
+
+  def authenticate_by_session
+    redirect_to '/' unless session[:user]
+  end
 end

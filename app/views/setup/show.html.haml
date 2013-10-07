@@ -12,7 +12,10 @@
       %td#setup<
         gem install gitcycle
         %br
-        git setup
+        git cycle setup url
+        = root_url[0..-2]
+        %br
+        git cycle setup token
       %td{ :width => '50%' } &nbsp;
 
 .tabbable

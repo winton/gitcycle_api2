@@ -3,15 +3,15 @@
   %head
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
-
     = csrf_meta_tags
+
     %meta{ :charset => "utf-8" }
     %meta{ :author => "" }
     %meta{ :description => "" }
     %meta{ :name => "viewport", :content => "width=device-width, initial-scale=1.0" }
     %link{ :rel => "shortcut icon", :href => image_path('favicon.png') }
 
-    %title gitcycle - tame your development cycle
+    %title gitcycle - automated development cycle
   %body
     .navbar.navbar-fixed-top
       .navbar-inner
@@ -25,8 +25,6 @@
               = image_tag 'gitcycle.png'
           .nav-collapse.collapse
             %ul.nav
-              %li{ :class => active?('/alerts') }
-                %a{:href => "/alerts"} Alerts
               %li{ :class => active?('/setup') }
                 %a{:href => "/setup"} Setup
             .pull-right

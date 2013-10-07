@@ -1,7 +1,7 @@
 #= require jquery
 #= require lib/underscore
 #= require lib/backbone
-#= require twitter/bootstrap/bootstrap-tab
+#= require bootstrap
 
 window.gitcycle = events: _.extend({}, Backbone.Events)
 

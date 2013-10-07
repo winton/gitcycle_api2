@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '4.0.0'
+gem 'rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -11,11 +11,9 @@ gem 'pg'
 # in production environments by default.
 gem 'sass-rails'
 gem 'coffee-rails'
-gem 'less'
+gem 'bootstrap-sass'
+gem 'uglifier'
 gem 'therubyracer', platforms: :ruby
-gem 'twitter-bootstrap-rails'
-gem 'uglifier', '>= 1.0.3'
-
 gem 'haml-rails'
 gem 'jquery-rails'
 gem 'less-rails'
