@@ -60,6 +60,7 @@ GitcycleApi2::Application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq/'
 
+  resource :repo,    controller: :repo
   resource :setup,   controller: :setup
   resource :session, controller: :session
   resource :user,    controller: :user

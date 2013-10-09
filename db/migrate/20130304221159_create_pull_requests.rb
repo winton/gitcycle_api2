@@ -4,10 +4,14 @@ class CreatePullRequests < ActiveRecord::Migration
       t.integer :number
       t.string  :status
       t.string  :url
+      
       t.integer :ticket_id
       t.integer :user_id
 
       t.timestamps
+
+      t.index :ticket_id
+      t.index :user_id
     end
   end
 end

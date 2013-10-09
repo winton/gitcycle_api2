@@ -5,6 +5,9 @@ class CreateLighthouseProjects < ActiveRecord::Migration
       t.integer :number
 
       t.timestamps
+
+      t.index :namespace
+      t.index :number
     end
   end
 end

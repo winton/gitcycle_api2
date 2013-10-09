@@ -2,8 +2,11 @@ class User < ActiveRecord::Base
 
   attr_accessible :github, :gravatar, :login, :name
   
+  has_many :branches
   has_many :github_projects
   has_many :lighthouse_users
+  has_many :owned_repos, :class_name => 'Repo', :foreign_key => 'owner_id'
+  has_many :repos
 
   has_many :assigned_tickets,    :through => :lighthouse_users
   has_many :lighthouse_projects, :through => :lighthouse_users

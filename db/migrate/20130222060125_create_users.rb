@@ -8,6 +8,9 @@ class CreateUsers < ActiveRecord::Migration
       t.string :name
 
       t.timestamps
+
+      t.index :gitcycle
+      t.index :login
     end
   end
 end

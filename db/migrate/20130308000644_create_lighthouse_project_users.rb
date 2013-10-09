@@ -5,6 +5,9 @@ class CreateLighthouseProjectUsers < ActiveRecord::Migration
       t.integer :lighthouse_user_id
 
       t.timestamps
+
+      t.index :lighthouse_project_id
+      t.index :lighthouse_user_id
     end
   end
 end
