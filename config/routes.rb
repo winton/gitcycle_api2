@@ -60,10 +60,12 @@ GitcycleApi2::Application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq/'
 
-  resource :repo,    controller: :repo
-  resource :setup,   controller: :setup
-  resource :session, controller: :session
-  resource :user,    controller: :user
+  resource :branch,  controller: :branch,  except: [ :edit ]
+  resource :repo,    controller: :repo,    except: [ :create, :edit, :update, :destroy ]
+  
+  resource :setup,   controller: :setup,   only: [ :show ]
+  resource :session, controller: :session, only: [ :create, :destroy, :show ]
+  resource :user,    controller: :user,    only: [ :show ]
 
   get '/auth/:provider/callback', to: 'session#create'
   get '/login' => redirect('/auth/github')

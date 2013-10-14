@@ -32,7 +32,9 @@ ActiveRecord::Schema.define(version: 20130710162959) do
     t.datetime "updated_at"
   end
 
+  add_index "branches", ["name"], name: "index_branches_on_name", unique: true, using: :btree
   add_index "branches", ["repo_id"], name: "index_branches_on_repo_id", using: :btree
+  add_index "branches", ["source"], name: "index_branches_on_source", unique: true, using: :btree
   add_index "branches", ["user_id"], name: "index_branches_on_user_id", using: :btree
 
   create_table "github_projects", force: true do |t|

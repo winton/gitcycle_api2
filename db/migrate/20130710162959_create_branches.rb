@@ -16,6 +16,8 @@ class CreateBranches < ActiveRecord::Migration
       
       t.timestamps
 
+      t.index :name,   :unique => true
+      t.index :source, :unique => true
       t.index :repo_id
       t.index :user_id
     end
