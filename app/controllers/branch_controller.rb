@@ -7,7 +7,6 @@ class BranchController < ApplicationController
   end
 
   def new
-    render partial: "schema/branch"
   end
 
   def show
