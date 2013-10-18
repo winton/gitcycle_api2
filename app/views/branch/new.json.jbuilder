@@ -2,9 +2,10 @@ json.get do
   json.request do
     json.title "GET request /branch.json"
     json.type "object"
+    json.additionalProperties false
     json.properties do
-      json.name   { json.type "string" }
-      json.source { json.type "string" }
+      json.name   { json.type "string"; json.optional true }
+      json.source { json.type "string"; json.optional true }
     end
   end
   json.response do
@@ -16,9 +17,12 @@ json.post do
   json.request do
     json.title "POST request /branch.json"
     json.type "object"
+    json.additionalProperties false
     json.properties do
-      json.lighthouse_url { json.type "string" }
+      json.github_url     { json.type "string"; json.optional true }
+      json.lighthouse_url { json.type "string"; json.optional true }
       json.source         { json.type "string" }
+      json.title          { json.type "string" }
     end
   end
   json.response do
@@ -30,6 +34,7 @@ json.put do
   json.request do
     json.title "PUT request /branch.json"
     json.type "object"
+    json.additionalProperties false
     json.properties do
       json.home   { json.type "string" }
       json.name   { json.type "string" }

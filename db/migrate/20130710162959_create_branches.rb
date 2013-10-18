@@ -2,7 +2,7 @@ class CreateBranches < ActiveRecord::Migration
   def change
     create_table :branches do |t|
       t.text    :body
-      t.string  :issue_url
+      t.string  :github_url
       t.string  :labels
       t.string  :lighthouse_url
       t.string  :milestone

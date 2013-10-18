@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20130710162959) do
 
   create_table "branches", force: true do |t|
     t.text     "body"
-    t.string   "issue_url"
+    t.string   "github_url"
     t.string   "labels"
     t.string   "lighthouse_url"
     t.string   "milestone"
@@ -93,7 +93,6 @@ ActiveRecord::Schema.define(version: 20130710162959) do
 
   create_table "repos", force: true do |t|
     t.string   "name"
-    t.string   "login"
     t.integer  "owner_id"
     t.integer  "user_id"
     t.datetime "created_at"

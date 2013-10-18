@@ -1,4 +1,4 @@
-json.(@branch, :issue_url, :lighthouse_url, :name, :source, :title)
+json.(@branch, :github_url, :lighthouse_url, :name, :source, :title)
 json.repo do
   json.(@branch.repo, :name, :login)
   json.owner do
