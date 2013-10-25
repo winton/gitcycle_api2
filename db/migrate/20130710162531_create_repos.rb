@@ -8,6 +8,8 @@ class CreateRepos < ActiveRecord::Migration
       
       t.timestamps
 
+      t.index [ :name, :user_id ], :unique => true
+      t.index :name
       t.index :owner_id
       t.index :user_id
     end

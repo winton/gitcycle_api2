@@ -4,4 +4,10 @@ class Repo < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User'
 
   has_many :branches
+
+  validates :name, :user_id, uniqueness: true
+
+  def owner_repo
+    owner.repos.where(name: name)
+  end
 end

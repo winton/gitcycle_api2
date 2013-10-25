@@ -3,13 +3,14 @@ class BranchController < ApplicationController
   before_action :find_branch, only: [ :create, :show ]
 
   def create
-    render :show
+    render text: "hello"
   end
 
   def new
   end
 
   def show
+    render text: "hello"
   end
 
   private
@@ -21,6 +22,6 @@ class BranchController < ApplicationController
       @branch = Branch.where(source: params[:source]).first
     end
 
-    render(status: :forbidden)  unless @branch
+    render(nothing: true, status: :forbidden)  unless @branch
   end
 end

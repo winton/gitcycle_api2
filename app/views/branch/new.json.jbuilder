@@ -22,7 +22,7 @@ json.post do
       json.github_url     { json.type "string"; json.optional true }
       json.lighthouse_url { json.type "string"; json.optional true }
       json.source         { json.type "string" }
-      json.title          { json.type "string" }
+      json.title          { json.type "string"; json.optional true }
     end
   end
   json.response do

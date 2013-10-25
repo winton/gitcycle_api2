@@ -51,6 +51,9 @@ group :development do
 end
 
 group :test, :development do
+  gem "factory_girl"
+  gem "factory_girl_rails"
+  gem "json_schema_spec"
   gem "rspec-rails"
   gem 'simplecov'
   gem "vcr"

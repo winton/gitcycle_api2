@@ -32,9 +32,10 @@ ActiveRecord::Schema.define(version: 20130710162959) do
     t.datetime "updated_at"
   end
 
-  add_index "branches", ["name"], name: "index_branches_on_name", unique: true, using: :btree
+  add_index "branches", ["name", "source", "user_id"], name: "index_branches_on_name_and_source_and_user_id", unique: true, using: :btree
+  add_index "branches", ["name"], name: "index_branches_on_name", using: :btree
   add_index "branches", ["repo_id"], name: "index_branches_on_repo_id", using: :btree
-  add_index "branches", ["source"], name: "index_branches_on_source", unique: true, using: :btree
+  add_index "branches", ["source"], name: "index_branches_on_source", using: :btree
   add_index "branches", ["user_id"], name: "index_branches_on_user_id", using: :btree
 
   create_table "github_projects", force: true do |t|
@@ -99,6 +100,8 @@ ActiveRecord::Schema.define(version: 20130710162959) do
     t.datetime "updated_at"
   end
 
+  add_index "repos", ["name", "user_id"], name: "index_repos_on_name_and_user_id", unique: true, using: :btree
+  add_index "repos", ["name"], name: "index_repos_on_name", using: :btree
   add_index "repos", ["owner_id"], name: "index_repos_on_owner_id", using: :btree
   add_index "repos", ["user_id"], name: "index_repos_on_user_id", using: :btree
 

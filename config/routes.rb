@@ -71,5 +71,6 @@ GitcycleApi2::Application.routes.draw do
   get '/login' => redirect('/auth/github')
   get '/logout', to: 'session#destroy'
 
+  get '/schema.:format', to: 'front#schema'
   root to: 'front#show'
 end
