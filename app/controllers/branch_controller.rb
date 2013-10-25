@@ -3,14 +3,14 @@ class BranchController < ApplicationController
   before_action :find_branch, only: [ :create, :show ]
 
   def create
-    render text: "hello"
+    show
+    render action: :show
   end
 
   def new
   end
 
   def show
-    render text: "hello"
   end
 
   private

@@ -7,7 +7,7 @@ describe BranchController do
       "https://test.lighthouseapp.com/projects/0000/tickets/0000-ticket"
     end
 
-    let(:create_branch) do
+    let(:branch) do
       FactoryGirl.create(:branch)
     end
 
@@ -20,10 +20,12 @@ describe BranchController do
         )
       end
 
+      before(:each) { branch }
+
       it "works" do
         request_params, response_params = params
-        create_branch
-        post(:create, request_params)
+        post(:create, request_params.merge(:format => :json))
+        expect(assigns(:branch)).to eq(branch)
         puts response.body.inspect
       end
     end
