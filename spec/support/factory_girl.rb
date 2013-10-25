@@ -2,25 +2,32 @@ require "factory_girl"
 
 FactoryGirl.define do
   factory :branch do
-    github_url     "https://github.com/login/repo/pull/0000"
-    lighthouse_url "https://test.lighthouseapp.com/projects/0000/tickets/0000-ticket"
-    name           "name"
-    source         "source"
-    title          "title"
+    name   { "#{prefix}name" }
+    source { "#{prefix}source" }
+    title  { "#{prefix}title" }
 
-    repo
+    association(:repo, prefix: "repo:")
+
+    ignore { prefix "" }
   end
 
   factory :repo do
-    name  "name"
+    name   { "#{prefix}name" }
 
-    association :owner, factory: :user, login: "owner_login"
-    user
+    association(:owner, factory: :user, prefix: "repo:owner:")
+    association(:user, prefix: "repo:user:")
+
+    ignore { prefix "" }
   end
 
   factory :user do
     sequence(:github) { |n| n.to_s * 40 }
-    login  "login"
-    name   "name"
+    login  { "#{prefix}login" }
+    name   { "#{prefix}name" }
+
+    ignore do
+      login_prefix ""
+      prefix       ""
+    end
   end
 end

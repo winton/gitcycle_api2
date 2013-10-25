@@ -1,6 +1,6 @@
 json.(@branch, :github_url, :lighthouse_url, :name, :source, :title)
 json.repo do
-  json.(@branch.repo, :name, :login)
+  json.(@branch.repo, :name)
   json.owner do
     json.(@branch.repo.owner, :name, :login)
   end
