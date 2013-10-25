@@ -25,6 +25,7 @@ describe BranchController do
 
       before(:each) { branch }
 
+
       it "works" do
         request_params, response_params = params
         post(:create, request_params.merge(:format => :json))
