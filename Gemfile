@@ -33,6 +33,7 @@ gem 'unicorn-rails'
 # To use debugger
 # gem 'debugger'
 
+gem 'activerecord-session_store'
 gem 'addressable'
 gem 'excon'
 gem 'faraday'
