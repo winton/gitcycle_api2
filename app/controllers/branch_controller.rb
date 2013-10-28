@@ -1,13 +1,11 @@
 class BranchController < ApplicationController
 
-  before_action :find_branch, only: [ :create, :show ]
+  before_action :authenticate_by_token
+  before_action :find_branch
 
   def create
-    show
+    @branch.create_from_params(params)
     render action: :show
-  end
-
-  def new
   end
 
   def show
@@ -17,9 +15,15 @@ class BranchController < ApplicationController
 
   def find_branch
     if params[:name]
-      @branch = Branch.where(name: params[:name]).first
+      @branch = Branch.where(
+        name:    params[:name],
+        user_id: @user.id
+      ).first_or_initialize
     elsif params[:source]
-      @branch = Branch.where(source: params[:source]).first
+      @branch = Branch.where(
+        source:  params[:source],
+        user_id: @user.id
+      ).first_or_initialize
     end
 
     render(nothing: true, status: :forbidden)  unless @branch

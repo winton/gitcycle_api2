@@ -146,7 +146,9 @@ ActiveRecord::Schema.define(version: 20131025222429) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["gitcycle"], name: "index_users_on_gitcycle", using: :btree
-  add_index "users", ["login"], name: "index_users_on_login", using: :btree
+  add_index "users", ["gitcycle"], name: "index_users_on_gitcycle", unique: true, using: :btree
+  add_index "users", ["github", "login"], name: "index_users_on_github_and_login", unique: true, using: :btree
+  add_index "users", ["github"], name: "index_users_on_github", unique: true, using: :btree
+  add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
 
 end

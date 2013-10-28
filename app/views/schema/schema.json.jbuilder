@@ -24,6 +24,14 @@ json.set! "branch.json" do
         json.lighthouse_url { json.type "string"; json.optional true }
         json.source         { json.type "string" }
         json.title          { json.type "string"; json.optional true }
+        json.repo do
+          json.type "object"
+          json.additionalProperties false
+          json.properties do
+            json.name { json.type "string" }
+            json.user { json.type "string" }
+          end
+        end
       end
     end
     json.response do

@@ -9,8 +9,10 @@ class CreateUsers < ActiveRecord::Migration
 
       t.timestamps
 
-      t.index :gitcycle
-      t.index :login
+      t.index [ :github, :login ], :unique => true
+      t.index :github,             :unique => true
+      t.index :gitcycle,           :unique => true
+      t.index :login,              :unique => true
     end
   end
 end

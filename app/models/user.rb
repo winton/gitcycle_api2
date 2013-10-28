@@ -12,8 +12,8 @@ class User < ActiveRecord::Base
   has_many :lighthouse_projects, :through => :lighthouse_users
   has_many :tickets,             :through => :lighthouse_users
 
-  validates_presence_of   :gitcycle, :github, :login, :name
-  validates_uniqueness_of :gitcycle, :github, :login
+  validates_presence_of   :gitcycle, :login
+  validates_uniqueness_of :gitcycle, :login
 
   before_validation do |user|
     begin

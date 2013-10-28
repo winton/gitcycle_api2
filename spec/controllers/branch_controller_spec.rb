@@ -8,7 +8,19 @@ describe BranchController do
     end
 
     let(:branch) do
-      FactoryGirl.create(:branch, lighthouse_url: lighthouse_url)
+      FactoryGirl.create(:branch,
+        lighthouse_url: lighthouse_url,
+        user_id:        user.id
+      )
+    end
+
+    let(:user) do
+      FactoryGirl.create(:user)
+    end
+
+    before(:each) do
+      request.env['HTTP_AUTHORIZATION'] =
+        ActionController::HttpAuthentication::Token.encode_credentials(user.gitcycle)
     end
 
     context "when the user accepts the default branch" do
@@ -23,16 +35,36 @@ describe BranchController do
         )
       end
 
-      before(:each) { branch }
+      let(:req_params) { params[0] }
+      let(:res_params) { params[1] }
 
+      context "when branch already exists" do
+        before(:each) do
+          branch
+          post(:create, req_params.merge(:format => :json))
+        end
 
-      it "works" do
-        request_params, response_params = params
-        post(:create, request_params.merge(:format => :json))
-        expect(assigns(:branch)).to eq(branch)
-        body = JSON.parse(response.body, symbolize_names: true)
-        expect(body).to eql(response_params)
+        it "should assign branch class instance variable" do
+          expect(assigns(:branch)).to eq(branch)
+        end
+
+        it "should return correct response" do
+          body = JSON.parse(response.body, symbolize_names: true)
+          expect(body).to eql(res_params)
+        end
       end
+
+      # TODO: figure out a way to assign owner_id
+      # context "when branch does not exist" do
+      #   before(:each) do
+      #     post(:create, req_params.merge(:format => :json))
+      #   end
+
+      #   it "should return correct response" do
+      #     body = JSON.parse(response.body, symbolize_names: true)
+      #     expect(body).to eql(res_params)
+      #   end
+      # end
     end
   end
 end
