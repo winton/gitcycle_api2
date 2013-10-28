@@ -7,6 +7,22 @@ class Branch < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: [ :source, :user_id ]
 
+  class <<self
+    def find_from_params(params, user)
+      if params[:name]
+        Branch.where(
+          name:    params[:name],
+          user_id: user.id
+        ).first_or_initialize
+      elsif params[:source]
+        Branch.where(
+          source:  params[:source],
+          user_id: user.id
+        ).first_or_initialize
+      end
+    end
+  end
+
   def create_from_params(params)
     return unless new_record?
 
@@ -17,8 +33,6 @@ class Branch < ActiveRecord::Base
     self.repo.user = User.where(
       login: params[:repo][:user]
     ).first_or_create
-
-    # TODO: owner
 
     update_attributes(
       github_url:     params[:github_url],

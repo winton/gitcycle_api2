@@ -14,18 +14,7 @@ class BranchController < ApplicationController
   private
 
   def find_branch
-    if params[:name]
-      @branch = Branch.where(
-        name:    params[:name],
-        user_id: @user.id
-      ).first_or_initialize
-    elsif params[:source]
-      @branch = Branch.where(
-        source:  params[:source],
-        user_id: @user.id
-      ).first_or_initialize
-    end
-
+    @branch = Branch.find_from_params(params, @user)
     render(nothing: true, status: :forbidden)  unless @branch
   end
 end
