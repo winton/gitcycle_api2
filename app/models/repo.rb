@@ -1,5 +1,8 @@
 class Repo < ActiveRecord::Base
 
+  after_commit :update_owner
+  after_save   :update_owner  if Rails.env == 'test'
+
   attr_accessible :name
 
   belongs_to :user
@@ -11,5 +14,19 @@ class Repo < ActiveRecord::Base
 
   def owner_repo
     owner.repos.where(name: name)
+  end
+
+  def update_owner
+    return  if owner_id
+
+    github = Github.new(self)
+    repo   = github.repo
+
+    self.owner = User.where(
+      login: repo[:parent][:owner][:login],
+      name:  repo[:parent][:owner][:name]
+    ).first_or_create
+    
+    save
   end
 end

@@ -1,5 +1,8 @@
 class Branch < ActiveRecord::Base
 
+  after_commit :update_from_ticket
+  after_save   :update_from_ticket  if Rails.env == 'test'
+
   attr_accessible :github_url, :lighthouse_url, :source, :title
 
   belongs_to :repo
@@ -31,7 +34,7 @@ class Branch < ActiveRecord::Base
     ).first_or_initialize
 
     self.repo.user = User.where(
-      login: params[:repo][:user]
+      login: params[:repo][:user][:login]
     ).first_or_create
 
     update_attributes(
@@ -40,5 +43,23 @@ class Branch < ActiveRecord::Base
       source:         params[:source],
       title:          params[:title]
     )
+  end
+
+  def update_from_ticket
+    return  if name && title
+
+    # TODO: projects should be built on setup
+    project = LighthouseProject.from_url(lighthouse_url)
+    return  unless project
+
+    user.lighthouse_user.lighthouse_projects << project
+
+    lh     = Lighthouse.new(lighthouse_url, project)
+    ticket = lh.ticket
+
+    self.name  = ticket[:name]
+    self.title = ticket[:title]
+
+    save
   end
 end

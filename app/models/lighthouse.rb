@@ -1,8 +1,12 @@
 class Lighthouse
 
-  def initialize(project)
+  def initialize(*args)
     @api_url = "https://#{project.namespace}.lighthouseapp.com"
-    @project = project
+
+
+    @project   = args.detect { |a| a.is_a?(LighthouseProject) }
+    @ticket_id = args.detect { |a| a.is_a?(String) }
+    @ticket_id = @ticket_id.match(/\/tickets\/(\d+)/).to_a[1]  if @ticket_id
 
     @http = Faraday.new @api_url, ssl: { verify: false } do |conn|
       conn.adapter :excon
@@ -23,6 +27,11 @@ class Lighthouse
     response['tickets'].collect do |t|
       Lighthouse::Ticket.new(t['ticket'])
     end
+  end
+
+  def ticket
+    response = @http.get("/projects/#{@project.number}/tickets/#{@ticket_id}.json").body
+    JSON.parse(response, symbolize_names: true)[:ticket]
   end
 
   def user

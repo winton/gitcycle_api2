@@ -1,5 +1,8 @@
 class User < ActiveRecord::Base
 
+  after_commit :update_name
+  after_save   :update_name  if Rails.env == 'test'
+
   attr_accessible :github, :gravatar, :login, :name
   
   has_many :branches
@@ -21,5 +24,15 @@ class User < ActiveRecord::Base
     end while User.where(gitcycle: token).first
 
     user.gitcycle ||= token
+  end
+
+  def update_name
+    return  if name
+
+    github = Github.new(self)
+    user   = github.user
+
+    self.name = user[:name]
+    save
   end
 end

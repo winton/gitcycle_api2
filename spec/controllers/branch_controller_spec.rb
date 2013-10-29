@@ -21,13 +21,31 @@ describe BranchController do
     before(:each) do
       request.env['HTTP_AUTHORIZATION'] =
         ActionController::HttpAuthentication::Token.encode_credentials(user.gitcycle)
+
+      Github.any_instance.stub(:repo).and_return(:parent => {
+        :owner => {
+          :login => "repo:owner:login",
+          :name  => "repo:owner:name"
+        }
+      })
+
+      Github.any_instance.stub(:user).and_return(
+        :name => "repo:user:name"
+      )
+
+      Lighthouse.any_instance.stub(:ticket).and_return(
+        :name  => "name",
+        :title => "title"
+      )
     end
 
     context "when the user accepts the default branch" do
 
       let(:params) do
         json_schema_params(:branch, :post,
-          request:  { lighthouse_url: lighthouse_url },
+          request:  {
+            lighthouse_url: lighthouse_url
+          },
           response: {
             github_url:     nil,
             lighthouse_url: lighthouse_url
@@ -54,17 +72,17 @@ describe BranchController do
         end
       end
 
-      # TODO: figure out a way to assign owner_id
-      # context "when branch does not exist" do
-      #   before(:each) do
-      #     post(:create, req_params.merge(:format => :json))
-      #   end
+      context "when branch does not exist" do
 
-      #   it "should return correct response" do
-      #     body = JSON.parse(response.body, symbolize_names: true)
-      #     expect(body).to eql(res_params)
-      #   end
-      # end
+        before(:each) do
+          post(:create, req_params.deep_merge(:format => :json))
+        end
+
+        it "should return correct response" do
+          body = JSON.parse(response.body, symbolize_names: true)
+          expect(body).to eql(res_params)
+        end
+      end
     end
   end
 end

@@ -7,6 +7,17 @@ class LighthouseProject < ActiveRecord::Base
   has_many :users,            :through => :lighthouse_users
   has_many :tickets
 
+  class <<self
+    def from_url(url)
+      regex = /:\/\/([^\.]+)[\D]+(\d+)/
+      
+      namespace, number = url.match(regex).to_a[1..-1]
+      return  unless namespace && number
+      
+      where(namespace: namespace, number: number).first_or_create
+    end
+  end
+
   def hash_lighthouse_users_by_lighthouse_id
     Hash[ lighthouse_users.map { |user| [ user.lighthouse_id, user ] } ]
   end
