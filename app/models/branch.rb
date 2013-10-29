@@ -47,8 +47,10 @@ class Branch < ActiveRecord::Base
 
   def update_from_ticket
     return  if name && title
+    update_from_lighthouse  if user.lighthouse_user
+  end
 
-    # TODO: projects should be built on setup
+  def update_from_lighthouse
     project = LighthouseProject.from_url(lighthouse_url)
     return  unless project
 
