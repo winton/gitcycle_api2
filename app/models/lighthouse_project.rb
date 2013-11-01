@@ -8,13 +8,22 @@ class LighthouseProject < ActiveRecord::Base
   has_many :tickets
 
   class <<self
-    def from_url(url)
+    def from_url(url, user)
       regex = /:\/\/([^\.]+)[\D]+(\d+)/
       
       namespace, number = url.match(regex).to_a[1..-1]
       return  unless namespace && number
-      
-      where(namespace: namespace, number: number).first_or_create
+
+      lh_project = where(namespace: namespace, number: number).first_or_initialize
+      lh_user    = LighthouseUser.from_project(lh_project, user)
+      return  unless lh_user
+
+      if lh_project.new_record?
+        lh_project.lighthouse_users << lh_user
+        lh_project.save
+      end
+
+      [ lh_project, lh_user ]
     end
   end
 
@@ -23,7 +32,7 @@ class LighthouseProject < ActiveRecord::Base
   end
 
   def lighthouse
-    @lighthouse ||= Lighthouse.new(self)
+    @lighthouse ||= Lighthouse.new(self, self.lighthouse_users.first)
   end
 
   def update_from_api!(page=1, limit=100)

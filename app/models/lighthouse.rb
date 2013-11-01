@@ -1,18 +1,28 @@
 class Lighthouse
 
   def initialize(*args)
-    @api_url = "https://#{project.namespace}.lighthouseapp.com"
-
-
     @project   = args.detect { |a| a.is_a?(LighthouseProject) }
     @ticket_id = args.detect { |a| a.is_a?(String) }
     @ticket_id = @ticket_id.match(/\/tickets\/(\d+)/).to_a[1]  if @ticket_id
+    @user      = args.detect { |a| a.is_a?(LighthouseUser) }
+
+    @api_url = "https://#{@project.namespace}.lighthouseapp.com"
 
     @http = Faraday.new @api_url, ssl: { verify: false } do |conn|
       conn.adapter :excon
     end
     
-    @http.headers['X-LighthouseToken'] = project.lighthouse_users.first.token
+    @http.headers['X-LighthouseToken'] = @user.token
+  end
+
+  def memberships
+    response = @http.get("/users/#{@user.lighthouse_id}/memberships.json").body
+    JSON.parse(response, symbolize_names: true)[:memberships]
+  end
+
+  def projects
+    response = @http.get("/projects.json").body
+    JSON.parse(response, symbolize_names: true)[:projects]
   end
 
   def recently_updated_tickets(page=1, limit=100)
