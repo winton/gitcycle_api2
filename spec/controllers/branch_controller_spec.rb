@@ -4,7 +4,7 @@ describe BranchController do
   context "with a lighthouse ticket" do
     
     let(:lighthouse_url) do
-      "https://test.lighthouseapp.com/projects/0000/tickets/0000-ticket"
+      "https://namespace.lighthouseapp.com/projects/0000/tickets/0000-ticket"
     end
 
     let(:branch) do

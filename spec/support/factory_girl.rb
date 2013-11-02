@@ -28,6 +28,23 @@ FactoryGirl.define do
     ignore do
       login_prefix ""
       prefix       ""
+      lighthouse_users_count 1
     end
+
+    after(:create) do |user, evaluator|
+      FactoryGirl.create_list(:lighthouse_user,
+        evaluator.lighthouse_users_count,
+        user: user
+      )
+    end
+  end
+
+  factory :lighthouse_user do
+    namespace { "#{prefix}namespace" }
+    token     { "#{prefix}token" }
+
+    user
+
+    ignore { prefix "" }
   end
 end
