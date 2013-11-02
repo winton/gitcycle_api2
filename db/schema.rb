@@ -48,27 +48,8 @@ ActiveRecord::Schema.define(version: 20131025222429) do
 
   add_index "github_projects", ["user_id"], name: "index_github_projects_on_user_id", using: :btree
 
-  create_table "lighthouse_project_users", force: true do |t|
-    t.integer  "lighthouse_project_id"
-    t.integer  "lighthouse_user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "lighthouse_project_users", ["lighthouse_project_id"], name: "index_lighthouse_project_users_on_lighthouse_project_id", using: :btree
-  add_index "lighthouse_project_users", ["lighthouse_user_id"], name: "index_lighthouse_project_users_on_lighthouse_user_id", using: :btree
-
-  create_table "lighthouse_projects", force: true do |t|
-    t.string   "namespace"
-    t.integer  "number"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "lighthouse_projects", ["namespace"], name: "index_lighthouse_projects_on_namespace", using: :btree
-  add_index "lighthouse_projects", ["number"], name: "index_lighthouse_projects_on_number", using: :btree
-
   create_table "lighthouse_users", force: true do |t|
+    t.string   "namespace"
     t.string   "token"
     t.integer  "lighthouse_id"
     t.integer  "user_id"
@@ -77,6 +58,8 @@ ActiveRecord::Schema.define(version: 20131025222429) do
   end
 
   add_index "lighthouse_users", ["lighthouse_id"], name: "index_lighthouse_users_on_lighthouse_id", using: :btree
+  add_index "lighthouse_users", ["namespace"], name: "index_lighthouse_users_on_namespace", using: :btree
+  add_index "lighthouse_users", ["token"], name: "index_lighthouse_users_on_token", using: :btree
   add_index "lighthouse_users", ["user_id"], name: "index_lighthouse_users_on_user_id", using: :btree
 
   create_table "pull_requests", force: true do |t|
@@ -123,7 +106,6 @@ ActiveRecord::Schema.define(version: 20131025222429) do
     t.string   "url",                         limit: 256
     t.string   "body",                        limit: 20480
     t.integer  "assigned_lighthouse_user_id"
-    t.integer  "lighthouse_project_id"
     t.integer  "lighthouse_user_id"
     t.datetime "ticket_created_at"
     t.datetime "ticket_updated_at"
@@ -132,7 +114,6 @@ ActiveRecord::Schema.define(version: 20131025222429) do
   end
 
   add_index "tickets", ["assigned_lighthouse_user_id"], name: "index_tickets_on_assigned_lighthouse_user_id", using: :btree
-  add_index "tickets", ["lighthouse_project_id"], name: "index_tickets_on_lighthouse_project_id", using: :btree
   add_index "tickets", ["lighthouse_user_id"], name: "index_tickets_on_lighthouse_user_id", using: :btree
   add_index "tickets", ["number"], name: "index_tickets_on_number", using: :btree
 

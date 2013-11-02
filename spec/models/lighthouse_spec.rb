@@ -2,15 +2,13 @@ require 'spec_helper'
 
 describe Lighthouse do
 
-  fixtures :lighthouse_projects, :lighthouse_users, :lighthouse_project_users, :users
+  fixtures :lighthouse_users, :users
 
-  before :each do
-    @project = lighthouse_projects(:default)
-  end
+  let(:lh_user) { lighthouse_users(:default) }
 
   it "should retrieve information for the current user" do
     VCR.use_cassette('lighthouse') do
-      profile = @project.lighthouse.user
+      profile = Lighthouse.new(lh_user).user
       profile.should be_a(Lighthouse::User)
       profile.id.should be_a(Fixnum)
     end
@@ -18,7 +16,7 @@ describe Lighthouse do
 
   it "should retrieve a list of recently updated tickets" do
     VCR.use_cassette('lighthouse') do
-      tickets = @project.lighthouse.recently_updated_tickets(1, 10)
+      tickets = Lighthouse.new(lh_user).recently_updated_tickets(6296, 1, 10)
       
       tickets.should be_an(Array)
       tickets.length.should eq(10)

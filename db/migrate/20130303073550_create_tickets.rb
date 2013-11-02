@@ -9,7 +9,6 @@ class CreateTickets < ActiveRecord::Migration
       t.string  :body, limit: 20480
 
       t.integer :assigned_lighthouse_user_id
-      t.integer :lighthouse_project_id
       t.integer :lighthouse_user_id
 
       t.datetime :ticket_created_at
@@ -19,7 +18,6 @@ class CreateTickets < ActiveRecord::Migration
 
       t.index :number
       t.index :assigned_lighthouse_user_id
-      t.index :lighthouse_project_id
       t.index :lighthouse_user_id
     end
   end

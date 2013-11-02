@@ -12,7 +12,6 @@ class User < ActiveRecord::Base
   has_many :repos
 
   has_many :assigned_tickets,    :through => :lighthouse_users
-  has_many :lighthouse_projects, :through => :lighthouse_users
   has_many :tickets,             :through => :lighthouse_users
 
   validates_presence_of   :gitcycle, :login
@@ -24,6 +23,19 @@ class User < ActiveRecord::Base
     end while User.where(gitcycle: token).first
 
     user.gitcycle ||= token
+  end
+
+  def hash_lighthouse_users_by_lighthouse_id
+    Hash[ lighthouse_users.map { |user| [ user.lighthouse_id, user ] } ]
+  end
+
+  def lighthouse_user_from_url(url)
+    regex = /:\/\/([^\.]+)[\D]+(\d+)/
+    
+    namespace, number = url.match(regex).to_a[1..-1]
+    return  unless namespace && number
+
+    lighthouse_users.find_by(namespace: namespace)
   end
 
   def update_name

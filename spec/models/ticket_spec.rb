@@ -2,11 +2,13 @@ require 'spec_helper'
 
 describe Ticket do
 
-  fixtures :lighthouse_projects, :lighthouse_users, :lighthouse_project_users, :users
+  fixtures :lighthouse_users, :users
+
+  let(:lh_user) { lighthouse_users(:default) }
 
   it "should determine if a ticket needs to be updated" do
     VCR.use_cassette('lighthouse') do
-      api_ticket = lighthouse_projects(:default).lighthouse.recently_updated_tickets(1, 1).first
+      api_ticket = Lighthouse.new(lh_user).recently_updated_tickets(6296, 1, 1).first
       updated_at = Time.parse(api_ticket.updated_at)
       ticket     = Ticket.create!(ticket_updated_at: updated_at)
 

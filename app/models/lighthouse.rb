@@ -1,12 +1,8 @@
 class Lighthouse
 
   def initialize(*args)
-    @project   = args.detect { |a| a.is_a?(LighthouseProject) }
-    @ticket_id = args.detect { |a| a.is_a?(String) }
-    @ticket_id = @ticket_id.match(/\/tickets\/(\d+)/).to_a[1]  if @ticket_id
-    @user      = args.detect { |a| a.is_a?(LighthouseUser) }
-
-    @api_url = "https://#{@project.namespace}.lighthouseapp.com"
+    @user    = args.detect { |a| a.is_a?(LighthouseUser) }
+    @api_url = "https://#{@user.namespace}.lighthouseapp.com"
 
     @http = Faraday.new @api_url, ssl: { verify: false } do |conn|
       conn.adapter :excon
@@ -25,9 +21,9 @@ class Lighthouse
     JSON.parse(response, symbolize_names: true)[:projects]
   end
 
-  def recently_updated_tickets(page=1, limit=100)
+  def recently_updated_tickets(project_id, page=1, limit=100)
     response = @http.get(
-      "/projects/#{@project.number}/tickets.json",
+      "/projects/#{project_id}/tickets.json",
       limit: limit,
       page:  page,
       q:     'sort:updated'
@@ -39,8 +35,9 @@ class Lighthouse
     end
   end
 
-  def ticket
-    response = @http.get("/projects/#{@project.number}/tickets/#{@ticket_id}.json").body
+  def ticket(project_id, ticket_id)
+    ticket_id = ticket_id.match(/\/tickets\/(\d+)/).to_a[1]  if ticket_id =~ /\/tickets\//
+    response = @http.get("/projects/#{project_id}/tickets/#{ticket_id}.json").body
     JSON.parse(response, symbolize_names: true)[:ticket]
   end
 

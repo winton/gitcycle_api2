@@ -51,11 +51,10 @@ class Branch < ActiveRecord::Base
   end
 
   def update_from_lighthouse
-    lh_project, lh_user = LighthouseProject.from_url(lighthouse_url, user)
-    return  unless lh_project && lh_user
+    lh_user = user.lighthouse_user_from_url(lighthouse_url)
+    return  unless lh_user
 
-    lh     = Lighthouse.new(lighthouse_url, lh_project, lh_user)
-    ticket = lh.ticket
+    ticket = Lighthouse.new(lh_user).ticket(lighthouse_url)
 
     self.name  = ticket[:name]
     self.title = ticket[:title]

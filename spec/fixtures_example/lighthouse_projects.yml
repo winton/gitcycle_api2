@@ -1,5 +1,0 @@
-default:
-  namespace: # First part of Lighthouse subdomain (xxx.lighthouseapp.com)
-  number:    # Lighthouse project id
-
-  id: 1
