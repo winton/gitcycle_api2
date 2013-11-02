@@ -4,12 +4,12 @@ class LighthouseUser < ActiveRecord::Base
 
   belongs_to :user
 
-  has_many :assigned_tickets, :class_name => 'Ticket', :foreign_key => 'assigned_lighthouse_user_id'
-  has_many :tickets
+  has_many :assigned_lighthouse_tickets, :class_name => 'LighthouseTicket', :foreign_key => 'assigned_lighthouse_user_id'
+  has_many :lighthouse_tickets
 
   def update_from_api!(project_id, page=1, limit=100)
     @api_tickets  = Lighthouse.new(self).recently_updated_tickets(project_id, page, limit)
-    @tickets_hash = Ticket.hash_tickets_by_numbers(@api_tickets.collect(&:number))
+    @tickets_hash = LighthouseTicket.hash_tickets_by_numbers(@api_tickets.collect(&:number))
     @users_hash   = user.hash_lighthouse_users_by_lighthouse_id
     
     @api_tickets.each do |api_ticket|
@@ -41,7 +41,7 @@ class LighthouseUser < ActiveRecord::Base
     if ticket
       ticket.assign_attributes(api_ticket.to_attributes)
     else
-      ticket = tickets.build(api_ticket.to_attributes)
+      ticket = lighthouse_tickets.build(api_ticket.to_attributes)
     end
 
     ticket.assigned_lighthouse_user = assigned  if assigned

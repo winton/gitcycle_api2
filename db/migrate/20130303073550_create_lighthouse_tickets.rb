@@ -1,6 +1,6 @@
-class CreateTickets < ActiveRecord::Migration
+class CreateLighthouseTickets < ActiveRecord::Migration
   def change
-    create_table :tickets do |t|
+    create_table :lighthouse_tickets do |t|
       t.string  :service
       t.integer :number
       t.string  :status

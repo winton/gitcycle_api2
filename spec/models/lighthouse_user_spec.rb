@@ -28,8 +28,8 @@ describe LighthouseUser do
       lh_user.should_receive(:update_from_api!).with(6296, 3, 10)
       lh_user.update_from_api!(6296, 1, 10)
       
-      Ticket.count.should eq(20)
-      Ticket.all.each do |ticket|
+      LighthouseTicket.count.should eq(20)
+      LighthouseTicket.all.each do |ticket|
         ticket.body.should    be_a(String)
         ticket.number.should  be_a(Fixnum)
         ticket.service.should be_a(String)

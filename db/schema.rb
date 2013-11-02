@@ -48,6 +48,25 @@ ActiveRecord::Schema.define(version: 20131025222429) do
 
   add_index "github_projects", ["user_id"], name: "index_github_projects_on_user_id", using: :btree
 
+  create_table "lighthouse_tickets", force: true do |t|
+    t.string   "service"
+    t.integer  "number"
+    t.string   "status"
+    t.string   "title"
+    t.string   "url",                         limit: 256
+    t.string   "body",                        limit: 20480
+    t.integer  "assigned_lighthouse_user_id"
+    t.integer  "lighthouse_user_id"
+    t.datetime "ticket_created_at"
+    t.datetime "ticket_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "lighthouse_tickets", ["assigned_lighthouse_user_id"], name: "index_lighthouse_tickets_on_assigned_lighthouse_user_id", using: :btree
+  add_index "lighthouse_tickets", ["lighthouse_user_id"], name: "index_lighthouse_tickets_on_lighthouse_user_id", using: :btree
+  add_index "lighthouse_tickets", ["number"], name: "index_lighthouse_tickets_on_number", using: :btree
+
   create_table "lighthouse_users", force: true do |t|
     t.string   "namespace"
     t.string   "token"
@@ -97,25 +116,6 @@ ActiveRecord::Schema.define(version: 20131025222429) do
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
-
-  create_table "tickets", force: true do |t|
-    t.string   "service"
-    t.integer  "number"
-    t.string   "status"
-    t.string   "title"
-    t.string   "url",                         limit: 256
-    t.string   "body",                        limit: 20480
-    t.integer  "assigned_lighthouse_user_id"
-    t.integer  "lighthouse_user_id"
-    t.datetime "ticket_created_at"
-    t.datetime "ticket_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "tickets", ["assigned_lighthouse_user_id"], name: "index_tickets_on_assigned_lighthouse_user_id", using: :btree
-  add_index "tickets", ["lighthouse_user_id"], name: "index_tickets_on_lighthouse_user_id", using: :btree
-  add_index "tickets", ["number"], name: "index_tickets_on_number", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "gitcycle"

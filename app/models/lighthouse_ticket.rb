@@ -1,4 +1,4 @@
-class Ticket < ActiveRecord::Base
+class LighthouseTicket < ActiveRecord::Base
   
   attr_accessor   :assigned_lighthouse_id, :lighthouse_id
   attr_accessible :assigned_lighthouse_id, :lighthouse_id, :assigned_lighthouse_user_id, :body, :lighthouse_user_id, :number, :service, :ticket_created_at, :ticket_updated_at, :title, :url
@@ -29,7 +29,7 @@ class Ticket < ActiveRecord::Base
   class <<self
 
     def hash_tickets_by_numbers(numbers)
-      Hash[ Ticket.where(number: numbers).map { |t| [ t.number, t ] } ]
+      Hash[ LighthouseTicket.where(number: numbers).map { |t| [ t.number, t ] } ]
     end
   end
 end
