@@ -85,4 +85,8 @@ describe BranchController do
       end
     end
   end
+
+  context "with a title" do
+
+  end
 end

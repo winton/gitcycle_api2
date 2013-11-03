@@ -11,6 +11,7 @@ class Repo < ActiveRecord::Base
   has_many :branches
 
   validates_uniqueness_of :name, :scope => :user_id
+  validates_presence_of   :name, :user_id
 
   def owner_repo
     owner.repos.where(name: name)

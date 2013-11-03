@@ -6,5 +6,5 @@ json.properties do
   json.name           { json.type "string" }
   json.source         { json.type "string" }
   json.title          { json.type "string" }
-  json.repo           { json.partial! "schema/repo" }
+  json.repo           { json.partial! "schema/branch/repo" }
 end

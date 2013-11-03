@@ -2,7 +2,7 @@ json.set! "branch.json" do
   json.get do
     json.request do
       json.title "GET branch.json (request)"
-      json.type "object"
+      json.type  "object"
       json.additionalProperties false
       json.properties do
         json.name   { json.type "string"; json.optional true }
@@ -10,7 +10,7 @@ json.set! "branch.json" do
       end
     end
     json.response do
-      json.title "GET branch.json (response)"
+      json.title    "GET branch.json (response)"
       json.partial! "schema/branch"
     end
   end
@@ -24,24 +24,11 @@ json.set! "branch.json" do
         json.lighthouse_url { json.type "string"; json.optional true }
         json.source         { json.type "string" }
         json.title          { json.type "string"; json.optional true }
-        json.repo do
-          json.type "object"
-          json.additionalProperties false
-          json.properties do
-            json.name  { json.type "string" }
-            json.user  do
-              json.type "object"
-              json.additionalProperties false
-              json.properties do
-                json.login { json.type "string" }
-              end
-            end
-          end
-        end
+        json.partial!       "schema/repo"
       end
     end
     json.response do
-      json.title "POST branch.json (response)"
+      json.title    "POST branch.json (response)"
       json.partial! "schema/branch"
     end
   end
@@ -51,13 +38,12 @@ json.set! "branch.json" do
       json.type "object"
       json.additionalProperties false
       json.properties do
-        json.home   { json.type "string" }
-        json.name   { json.type "string" }
-        json.source { json.type "string" }
+        json.name     { json.type "string" }
+        json.source   { json.type "string" }
       end
     end
     json.response do
-      json.title "PUT branch.json (response)"
+      json.title    "PUT branch.json (response)"
       json.partial! "schema/branch"
     end
   end
