@@ -1,7 +1,7 @@
 class Branch < ActiveRecord::Base
 
-  after_commit :update_from_ticket
-  after_save   :update_from_ticket  if Rails.env == 'test'
+  after_commit :update_from_changes
+  after_save   :update_from_changes  if Rails.env == 'test'
 
   attr_accessible :github_url, :lighthouse_url, :source, :title
 
@@ -45,9 +45,10 @@ class Branch < ActiveRecord::Base
     )
   end
 
-  def update_from_ticket
+  def update_from_changes
     return  if name && title
-    update_from_lighthouse  if lighthouse_url
+    update_from_title       if title_changed?
+    update_from_lighthouse  if lighthouse_url_changed?
   end
 
   def update_from_lighthouse
@@ -56,9 +57,14 @@ class Branch < ActiveRecord::Base
 
     ticket = Lighthouse.new(lh_user).ticket(lighthouse_url)
 
-    self.name  = ticket[:name]
-    self.title = ticket[:title]
+    self.name  ||= ticket[:name]
+    self.title ||= ticket[:title]
 
+    save
+  end
+
+  def update_from_title
+    self.name ||= title
     save
   end
 end
