@@ -62,11 +62,11 @@ describe BranchController do
           post(:create, req_params.merge(:format => :json))
         end
 
-        it "should assign branch class instance variable" do
+        it "assigns branch class instance variable" do
           expect(assigns(:branch)).to eq(branch)
         end
 
-        it "should return correct response" do
+        it "returns correct response" do
           body = JSON.parse(response.body, symbolize_names: true)
           expect(body).to eql(res_params)
         end
@@ -78,7 +78,7 @@ describe BranchController do
           post(:create, req_params.deep_merge(:format => :json))
         end
 
-        it "should return correct response" do
+        it "returns correct response" do
           body = JSON.parse(response.body, symbolize_names: true)
           expect(body).to eql(res_params)
         end
@@ -107,7 +107,40 @@ describe BranchController do
       post(:create, req_params.deep_merge(:format => :json))
     end
 
-    it "should return correct response" do
+    it "returns correct response" do
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body).to eql(res_params)
+    end
+  end
+
+  context "with a github issue" do
+
+    let(:github_url) { "https://github.com/login/repo/issues/0000" }
+
+    let(:params) do
+      json_schema_params(:branch, :post,
+        request:  {
+          github_url: github_url
+        },
+        response: {
+          github_url:     github_url,
+          lighthouse_url: nil
+        }
+      )
+    end
+
+    let(:req_params) { params[0] }
+    let(:res_params) { params[1] }
+
+    before(:each) do
+      Github.any_instance.stub(:issue).and_return(
+        :name => "name",
+        :title => "title"
+      )
+      post(:create, req_params.deep_merge(:format => :json))
+    end
+
+    it "returns correct response" do
       body = JSON.parse(response.body, symbolize_names: true)
       expect(body).to eql(res_params)
     end

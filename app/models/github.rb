@@ -13,6 +13,14 @@ class Github
     @http.headers['Authorization'] = "token #{@user.github}"
   end
 
+  def issue(github_url)
+    owner, repo, number =
+      github_url.match(/\.com\/([^\/]+)\/([^\/]+)\/issues\/(\d+)/).to_a[1..-1]
+    
+    response = @http.get("/repos/#{owner}/#{repo}/issues/#{number}").body
+    JSON.parse(response, symbolize_names: true)
+  end
+
   def repo
     response = @http.get("/repos/#{@user.login}/#{@repo.name}").body
     JSON.parse(response, symbolize_names: true)
