@@ -48,7 +48,8 @@ describe BranchController do
           },
           response: {
             github_url:     nil,
-            lighthouse_url: lighthouse_url
+            lighthouse_url: lighthouse_url,
+            name:           "title"
           }
         )
       end
@@ -124,7 +125,8 @@ describe BranchController do
         },
         response: {
           github_url:     github_url,
-          lighthouse_url: nil
+          lighthouse_url: nil,
+          name:           "title"
         }
       )
     end
@@ -134,8 +136,8 @@ describe BranchController do
 
     before(:each) do
       Github.any_instance.stub(:issue).and_return(
-        :name => "name",
-        :title => "title"
+        name:  "name",
+        title: "title"
       )
       post(:create, req_params.deep_merge(:format => :json))
     end
