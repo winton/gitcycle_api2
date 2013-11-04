@@ -50,10 +50,12 @@ class Branch < ActiveRecord::Base
   end
 
   def update_from_changes
-    reset_changes
+    reset_changes # makes test env same as production
+
     update_from_github      if was_changed?(:github_url)
     update_from_lighthouse  if was_changed?(:lighthouse_url)
     update_from_title       if was_changed?(:title)
+    
     update_all_changes
   end
 
@@ -71,6 +73,18 @@ class Branch < ActiveRecord::Base
   end
 
   def update_from_title
-    self.name = title
+    name        = title.downcase
+    valid_chars = /[^\S\w-]/
+    many_dashes = /-{2,}/
+
+    name.gsub!(valid_chars, '-')
+    name.gsub!(many_dashes, '-')
+
+    if name.length > 30
+      last_word = /-[^-]*$/
+      name      = name[0..29].gsub(last_word, '')
+    end
+
+    self.name = name
   end
 end
