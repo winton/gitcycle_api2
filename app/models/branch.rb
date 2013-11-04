@@ -49,21 +49,17 @@ class Branch < ActiveRecord::Base
     )
   end
 
-  def update_all(updates)
-    Branch.where(id: id).update_all(updates)
-    updates.each { |key, value| self[key] = value }
-  end
-
   def update_from_changes
+    reset_changes
     update_from_github      if was_changed?(:github_url)
     update_from_lighthouse  if was_changed?(:lighthouse_url)
     update_from_title       if was_changed?(:title)
-    reload
+    update_all_changes
   end
 
   def update_from_github
     issue = Github.new(user).issue(github_url)
-    update_all(title: issue[:title])
+    self.title = issue[:title]
   end
 
   def update_from_lighthouse
@@ -71,10 +67,10 @@ class Branch < ActiveRecord::Base
     return  unless lh_user
 
     ticket = Lighthouse.new(lh_user).ticket(lighthouse_url)
-    update_all(title: ticket[:title])
+    self.title  = ticket[:title]
   end
 
   def update_from_title
-    update_all(name: title)
+    self.name = title
   end
 end

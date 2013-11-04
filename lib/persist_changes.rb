@@ -9,6 +9,27 @@ module PersistChanges
     @last_changed += attributes
   end
 
+  def current_changed
+    ActiveSupport::HashWithIndifferentAccess[
+      changed.map { |attr| [ attr, __send__(attr) ] }
+    ]
+  end
+
+  def record_changes
+    @last_changed = changed  unless @last_changed
+  end
+
+  def reset_changes
+    @previously_changed = {}
+    @changed_attributes = {}
+  end
+
+  def update_all_changes
+    unless current_changed.empty?
+      Branch.where(id: id).update_all(current_changed)
+    end
+  end
+
   def was_changed?(attribute, log=false)
     record_changes
     attribute = attribute.to_s
@@ -23,9 +44,5 @@ module PersistChanges
     end
     
     match
-  end
-
-  def record_changes
-    @last_changed = changed  unless @last_changed
   end
 end
