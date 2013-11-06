@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe BranchController do
+
+  let(:user) do
+    FactoryGirl.create(:user)
+  end
+
   before(:each) do
     request.env['HTTP_AUTHORIZATION'] =
       ActionController::HttpAuthentication::Token.encode_credentials(user.gitcycle)
@@ -21,10 +26,6 @@ describe BranchController do
       :title => "title"
     )
   end  
-
-  let(:user) do
-    FactoryGirl.create(:user)
-  end
 
   context "with a lighthouse ticket" do
     

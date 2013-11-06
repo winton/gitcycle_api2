@@ -29,10 +29,8 @@ class Lighthouse
       q:     'sort:updated'
     ).body
 
-    response = JSON.parse(response)
-    response['tickets'].collect do |t|
-      Lighthouse::Ticket.new(t['ticket'])
-    end
+    response = JSON.parse(response, symbolize_names: true)
+    response[:tickets].collect { |t| t[:ticket] }
   end
 
   def ticket(project_id, ticket_id)
@@ -43,7 +41,6 @@ class Lighthouse
 
   def user
     response = @http.get("/profile.json").body
-    response = JSON.parse(response)
-    Lighthouse::User.new(response['user'])
+    JSON.parse(response, symbolize_names: true)[:user]
   end
 end

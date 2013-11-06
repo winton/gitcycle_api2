@@ -26,7 +26,7 @@ module PersistChanges
 
   def update_all_changes
     unless current_changed.empty?
-      Branch.where(id: id).update_all(current_changed)
+      self.class.where(id: id).update_all(current_changed)
     end
   end
 

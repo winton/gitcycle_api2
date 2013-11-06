@@ -25,6 +25,23 @@ class User < ActiveRecord::Base
     user.gitcycle ||= token
   end
 
+  def build_lighthouse_users_from_token(token)
+    lighthouse_user = LighthouseUser.new(token: token)
+    lighthouse_user.update_lighthouse_id
+
+    namespaces = lighthouse_user.namespaces
+
+    lighthouse_users.where(token: token).delete_all
+    lighthouse_users.where(namespace: namespaces).delete_all
+    
+    namespaces.each do |namespace|
+      lighthouse_users.create(
+        namespace: namespace,
+        token:     token
+      )
+    end
+  end
+
   def hash_lighthouse_users_by_lighthouse_id
     Hash[ lighthouse_users.map { |user| [ user.lighthouse_id, user ] } ]
   end

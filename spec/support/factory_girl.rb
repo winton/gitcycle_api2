@@ -40,6 +40,8 @@ FactoryGirl.define do
   end
 
   factory :lighthouse_user do
+    sequence(:lighthouse_id)
+    
     namespace { "#{prefix}namespace" }
     token     { "#{prefix}token" }
 
