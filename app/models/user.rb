@@ -25,34 +25,25 @@ class User < ActiveRecord::Base
     user.gitcycle ||= token
   end
 
-  def build_lighthouse_users_from_token(token)
-    lighthouse_user = LighthouseUser.new(token: token)
-    lighthouse_user.update_lighthouse_id
+  def build_lighthouse_users_from_url(url)
+    namespace, number = Lighthouse.namespace_and_number_from_ticket_url(url)
+    return  unless namespace
 
-    namespaces = lighthouse_user.namespaces
-
-    lighthouse_users.where(token: token).delete_all
-    lighthouse_users.where(namespace: namespaces).delete_all
-    
-    namespaces.each do |namespace|
-      lighthouse_users.create(
-        namespace: namespace,
-        token:     token
-      )
+    lighthouse_users.where(namespace: nil).each do |lh_user|
+      lh_user.namespace = namespace
+      lh_user.save
     end
+  end
+
+  def find_lighthouse_user_from_url(url)
+    namespace, number = Lighthouse.namespace_and_number_from_ticket_url(url)
+    return  unless namespace
+
+    lighthouse_users.find_by(namespace: namespace)
   end
 
   def hash_lighthouse_users_by_lighthouse_id
     Hash[ lighthouse_users.map { |user| [ user.lighthouse_id, user ] } ]
-  end
-
-  def lighthouse_user_from_url(url)
-    regex = /:\/\/([^\.]+)[\D]+(\d+)/
-    
-    namespace, number = url.match(regex).to_a[1..-1]
-    return  unless namespace && number
-
-    lighthouse_users.find_by(namespace: namespace)
   end
 
   def update_name

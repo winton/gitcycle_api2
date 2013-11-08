@@ -4,7 +4,11 @@ class SetupController < ApplicationController
   before_action :authenticate_by_token,   only: :lighthouse
 
   def lighthouse
-    @user.build_lighthouse_users_from_token(params[:token])
+    @user.lighthouse_users.where(
+      namespace: nil,
+      token:     params[:token]
+    ).first_or_create
+
     render :nothing => true
   end
   

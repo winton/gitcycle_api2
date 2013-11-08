@@ -1,9 +1,14 @@
+require 'persist_changes'
+
 class LighthouseUser < ActiveRecord::Base
 
   include PersistChanges
 
   after_commit :update_lighthouse_id
   after_save   :update_lighthouse_id if Rails.env == 'test'
+
+  after_commit :remove_dups
+  after_save   :remove_dups if Rails.env == 'test'
 
   attr_accessible :lighthouse_id, :namespace, :token, :user_id
 
@@ -12,13 +17,10 @@ class LighthouseUser < ActiveRecord::Base
   has_many :assigned_lighthouse_tickets, :class_name => 'LighthouseTicket', :foreign_key => 'assigned_lighthouse_user_id'
   has_many :lighthouse_tickets
 
-  def namespaces
-    memberships = Lighthouse.new(self).memberships
-    namespaces  = memberships.map do |membership|
-      if membership[:account]
-        membership[:account].match(/([^\/]+)\.lighthouseapp\.com/)[1]
-      end
-    end.compact
+  def remove_dups
+    LighthouseUser.where(<<-SQL, namespace, token, id).delete_all
+      namespace = ? AND token = ? AND id <> ?
+    SQL
   end
 
   def update_from_api!(project_id, page=1, limit=100)
@@ -36,7 +38,7 @@ class LighthouseUser < ActiveRecord::Base
   end
 
   def update_lighthouse_id
-    return if lighthouse_id
+    return if lighthouse_id || !namespace
     reset_changes # makes test env same as production
 
     self.lighthouse_id = Lighthouse.new(self).user[:id]

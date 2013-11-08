@@ -65,7 +65,9 @@ class Branch < ActiveRecord::Base
   end
 
   def update_from_lighthouse
-    lh_user = user.lighthouse_user_from_url(lighthouse_url)
+    user.build_lighthouse_users_from_url(lighthouse_url)
+    
+    lh_user = user.find_lighthouse_user_from_url(lighthouse_url)
     return  unless lh_user
 
     ticket = Lighthouse.new(lh_user).ticket(lighthouse_url)

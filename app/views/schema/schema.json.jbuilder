@@ -48,3 +48,20 @@ json.set! "branch.json" do
     end
   end
 end
+json.set! "setup/lighthouse.json" do
+  json.get do
+    json.request do
+      json.title "POST setup/lighthouse.json (request)"
+      json.type  "object"
+      json.additionalProperties false
+      json.properties do
+        json.token { json.type "string" }
+      end
+    end
+    json.response do
+      json.title "POST setup/lighthouse.json (response)"
+      json.type  "null"
+      json.additionalProperties false
+    end
+  end
+end

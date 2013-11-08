@@ -7,24 +7,19 @@ describe SetupController do
     end
 
     before(:each) do
-      Lighthouse.any_instance.stub(:memberships).and_return([
-        { account: "http://namespace.lighthouseapp.com" },
-        { account: "http://namespace2.lighthouseapp.com" }
-      ])
-
-      Lighthouse.any_instance.stub(:user).and_return(id: 1010)
-
       request.env['HTTP_AUTHORIZATION'] =
         ActionController::HttpAuthentication::Token.encode_credentials(user.gitcycle)
-
-      post(:lighthouse, :format => :json, :token => '0'*40)
+      user.lighthouse_users.delete_all
+      post(:lighthouse, :format => :json, :token => 'token')
+      user.lighthouse_users.reload
     end
 
-    it "creates LighthouseUser records" do
-      expect(user.lighthouse_users.length).to eq(2)
-      expect(user.lighthouse_users.collect(&:namespace)).to include('namespace', 'namespace2')
-      expect(user.lighthouse_users.collect(&:lighthouse_id)).to eq([ 1010, 1010 ])
-      expect(user.lighthouse_users.collect(&:user_id)).not_to include(nil)
+    it "creates LighthouseUser record" do
+      expect(user.lighthouse_users.length).to eq(1)
+      expect(user.lighthouse_users.first.namespace).to be_nil
+      expect(user.lighthouse_users.first.token).to eq("token")
+      expect(user.lighthouse_users.first.lighthouse_id).to be_nil
+      expect(user.lighthouse_users.first.user_id).to eq(user.id)
     end
   end
 end

@@ -1,5 +1,12 @@
 class Lighthouse
 
+  class <<self
+    def namespace_and_number_from_ticket_url(url)
+      regex = /:\/\/([^\.]+)[\D]+(\d+)/
+      url.match(regex).to_a[1..-1]
+    end
+  end
+
   def initialize(*args)
     @user    = args.detect { |a| a.is_a?(LighthouseUser) }
     @api_url = "https://#{@user.namespace}.lighthouseapp.com"
