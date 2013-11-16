@@ -60,8 +60,8 @@ GitcycleApi2::Application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq/'
 
-  resource :branch,  controller: :branch,  except: [ :edit ]
-  resource :repo,    controller: :repo,    except: [ :create, :edit, :update, :destroy ]
+  resource :branch,  controller: :branch,  except: [ :edit,   :new ]
+  # resource :repo,    controller: :repo,    except: [ :create, :edit, :update, :destroy ]
   
   resource :setup,   controller: :setup,   only: [ :show ] do
     post "lighthouse", on: :member

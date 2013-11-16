@@ -7,7 +7,7 @@ class Branch < ActiveRecord::Base
   after_commit :update_from_changes
   after_save   :update_from_changes  if Rails.env == 'test'
 
-  attr_accessible :github_url, :lighthouse_url, :source, :title
+  attr_accessible :github_url, :lighthouse_url, :name, :source, :title
 
   belongs_to :repo
   belongs_to :user
@@ -31,8 +31,6 @@ class Branch < ActiveRecord::Base
   end
 
   def create_from_params(params)
-    return unless new_record?
-
     self.repo = Repo.where(
       name: params[:repo][:name]
     ).first_or_initialize
@@ -41,12 +39,11 @@ class Branch < ActiveRecord::Base
       login: params[:repo][:user][:login]
     ).first_or_create
 
-    update_attributes(
-      github_url:     params[:github_url],
-      lighthouse_url: params[:lighthouse_url],
-      source:         params[:source],
-      title:          params[:title]
-    )
+    %w(github_url lighthouse_url source title).each do |attribute|
+      self[attribute] = params[attribute]  if params[attribute]
+    end
+    
+    save
   end
 
   def update_from_changes
@@ -75,6 +72,8 @@ class Branch < ActiveRecord::Base
   end
 
   def update_from_title
+    return  if self.name
+
     name        = title.downcase
     valid_chars = /[^\S\w-]/
     many_dashes = /-{2,}/
