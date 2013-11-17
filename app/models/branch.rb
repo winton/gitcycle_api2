@@ -85,12 +85,12 @@ class Branch < ActiveRecord::Base
   end
 
   def update_from_lighthouse
-    user.build_lighthouse_users_from_url(lighthouse_url)
+    user.update_nil_lighthouse_user_namespaces(lighthouse_namespace)
     
-    lh_user = user.find_lighthouse_user_from_url(lighthouse_url)
+    lh_user = user.lighthouse_users.find_by(namespace: lighthouse_namespace)
     return  unless lh_user
 
-    ticket = Lighthouse.new(lh_user).ticket(lighthouse_url)
+    ticket = Lighthouse.new(lh_user).ticket(lighthouse_project_id, lighthouse_ticket_id)
     self.title  = ticket[:title]
   end
 

@@ -25,21 +25,11 @@ class User < ActiveRecord::Base
     user.gitcycle ||= token
   end
 
-  def build_lighthouse_users_from_url(url)
-    namespace, number = Lighthouse.namespace_and_number_from_ticket_url(url)
-    return  unless namespace
-
+  def update_nil_lighthouse_user_namespaces(namespace)
     lighthouse_users.where(namespace: nil).each do |lh_user|
       lh_user.namespace = namespace
       lh_user.save
     end
-  end
-
-  def find_lighthouse_user_from_url(url)
-    namespace, number = Lighthouse.namespace_and_number_from_ticket_url(url)
-    return  unless namespace
-
-    lighthouse_users.find_by(namespace: namespace)
   end
 
   def hash_lighthouse_users_by_lighthouse_id

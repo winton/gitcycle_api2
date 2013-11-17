@@ -41,7 +41,6 @@ class Lighthouse
   end
 
   def ticket(project_id, ticket_id)
-    ticket_id = ticket_id.match(/\/tickets\/(\d+)/).to_a[1]  if ticket_id =~ /\/tickets\//
     response = @http.get("/projects/#{project_id}/tickets/#{ticket_id}.json").body
     JSON.parse(response, symbolize_names: true)[:ticket]
   end
