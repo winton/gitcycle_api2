@@ -18,20 +18,21 @@ ActiveRecord::Schema.define(version: 20131025222429) do
 
   create_table "branches", force: true do |t|
     t.text     "body"
-    t.string   "github_url"
-    t.string   "labels"
-    t.string   "lighthouse_url"
-    t.string   "milestone"
-    t.integer  "milestone_id"
     t.string   "name"
     t.string   "source"
+    t.string   "state"
     t.string   "title"
+    t.integer  "github_issue_id"
+    t.string   "lighthouse_namespace"
+    t.integer  "lighthouse_project_id"
+    t.integer  "lighthouse_ticket_id"
     t.integer  "repo_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "branches", ["github_issue_id"], name: "index_branches_on_github_issue_id", using: :btree
   add_index "branches", ["name", "source", "user_id"], name: "index_branches_on_name_and_source_and_user_id", unique: true, using: :btree
   add_index "branches", ["name"], name: "index_branches_on_name", using: :btree
   add_index "branches", ["repo_id"], name: "index_branches_on_repo_id", using: :btree

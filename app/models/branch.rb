@@ -7,7 +7,7 @@ class Branch < ActiveRecord::Base
   after_commit :update_from_changes
   after_save   :update_from_changes  if Rails.env == 'test'
 
-  attr_accessible :github_url, :lighthouse_url, :name, :source, :title
+  attr_accessible :name, :source, :title
 
   belongs_to :repo
   belongs_to :user
@@ -40,17 +40,40 @@ class Branch < ActiveRecord::Base
     ).first_or_create
 
     %w(github_url lighthouse_url source title).each do |attribute|
-      self[attribute] = params[attribute]  if params[attribute]
+      send("#{attribute}=", params[attribute])  if params[attribute]
     end
     
     save
   end
 
+  def lighthouse_url=(url)
+    self.lighthouse_namespace, self.lighthouse_project_id, self.lighthouse_ticket_id =
+      url.match(/:\/\/([^\.]+).+\/projects\/(\d+)\/tickets\/(\d+)/).to_a[1..3]
+  end
+
+  def lighthouse_url
+    return nil  unless lighthouse_namespace && lighthouse_project_id && lighthouse_ticket_id
+    [
+      "https://#{lighthouse_namespace}.lighthouseapp.com",
+      "projects/#{lighthouse_project_id}",
+      "tickets/#{lighthouse_ticket_id}"
+    ].join("/")
+  end
+
+  def github_url=(url)
+    self.github_issue_id = url.match(/\/(pull|issues)\/(\d+)/).to_a[2]
+  end
+
+  def github_url
+    return nil  unless repo && repo.owner && github_issue_id
+    "https://github.com/#{repo.owner.login}/#{repo.name}/pull/#{github_issue_id}"
+  end
+
   def update_from_changes
     reset_changes # makes test env same as production
 
-    update_from_github      if was_changed?(:github_url)
-    update_from_lighthouse  if was_changed?(:lighthouse_url)
+    update_from_github      if was_changed?(:github_issue_id)
+    update_from_lighthouse  if was_changed?(:lighthouse_ticket_id)
     update_from_title       if was_changed?(:title)
     
     update_all_changes

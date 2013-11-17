@@ -33,7 +33,7 @@ describe BranchController do
     context "with a lighthouse ticket" do
       
       let(:lighthouse_url) do
-        "https://namespace.lighthouseapp.com/projects/0000/tickets/0000-ticket"
+        "https://namespace.lighthouseapp.com/projects/0/tickets/0"
       end
 
       let(:branch) do
@@ -122,7 +122,7 @@ describe BranchController do
 
     context "with a github issue" do
 
-      let(:github_url) { "https://github.com/login/repo/issues/0000" }
+      let(:github_url) { "https://github.com/repo:owner:login/repo:name/pull/0" }
 
       let(:params) do
         json_schema_params(:branch, :post,
