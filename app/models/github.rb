@@ -21,6 +21,18 @@ class Github
     JSON.parse(response, symbolize_names: true)
   end
 
+  def pull_request(branch)
+    response = @http.post(
+      "/repos/#{@branch.repo.owner_or_user.login}/#{@branch.repo.name}/pulls",
+      title: branch.title,
+      body:  branch.body,
+      head:  branch.head,
+      base:  branch.name
+    ).body
+    
+    JSON.parse(response, symbolize_names: true)
+  end
+
   def repo
     response = @http.get("/repos/#{@user.login}/#{@repo.name}").body
     JSON.parse(response, symbolize_names: true)

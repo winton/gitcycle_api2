@@ -65,3 +65,20 @@ json.set! "setup/lighthouse.json" do
     end
   end
 end
+json.set! "pull_request.json" do
+  json.post do
+    json.request do
+      json.title "POST pull_request.json (request)"
+      json.type  "object"
+      json.additionalProperties false
+      json.properties do
+        json.branch   { json.type "string" }
+        json.partial! "schema/repo"
+      end
+    end
+    json.response do
+      json.title    "POST pull_request.json (response)"
+      json.partial! "schema/branch"
+    end
+  end
+end

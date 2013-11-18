@@ -13,8 +13,20 @@ class Repo < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :user_id
   validates_presence_of   :name, :user_id
 
+  def head
+    "#{owner_or_user.login}:#{source}"
+  end
+
   def owner_repo
-    owner.repos.where(name: name)
+    if owner
+      owner.repos.where(name: name)
+    else
+      self
+    end
+  end
+
+  def owner_or_user
+    owner || user
   end
 
   def update_owner

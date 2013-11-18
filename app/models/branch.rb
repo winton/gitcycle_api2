@@ -16,9 +16,9 @@ class Branch < ActiveRecord::Base
 
   class <<self
     def find_from_params(params, user)
-      if params[:name]
+      if params[:name] || params[:branch]
         Branch.where(
-          name:    params[:name],
+          name:    params[:name] || params[:branch],
           user_id: user.id
         ).first_or_initialize
       elsif params[:source]
@@ -44,6 +44,10 @@ class Branch < ActiveRecord::Base
     end
     
     save
+  end
+
+  def create_pull_request
+    Github.new(user).pull_request(self)
   end
 
   def lighthouse_url=(url)
@@ -91,7 +95,8 @@ class Branch < ActiveRecord::Base
     return  unless lh_user
 
     ticket = Lighthouse.new(lh_user).ticket(lighthouse_project_id, lighthouse_ticket_id)
-    self.title  = ticket[:title]
+    self.title = ticket[:title]
+    self.body  = ticket[:body]
   end
 
   def update_from_title
