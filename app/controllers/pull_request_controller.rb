@@ -6,6 +6,6 @@ class PullRequestController < ApplicationController
 
   def create
     @branch.create_pull_request
-    render "branch/show"
+    render "branch/show.json"
   end
 end

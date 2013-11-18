@@ -47,7 +47,8 @@ class Branch < ActiveRecord::Base
   end
 
   def create_pull_request
-    Github.new(user).pull_request(self)
+    self.github_url = Github.new(user).pull_request(self)[:issue_url]
+    save
   end
 
   def lighthouse_url=(url)
@@ -84,7 +85,7 @@ class Branch < ActiveRecord::Base
   end
 
   def update_from_github
-    issue = Github.new(user).issue(github_url)
+    issue      = Github.new(user).issue(github_url)
     self.title = issue[:title]
   end
 

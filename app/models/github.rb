@@ -14,8 +14,8 @@ class Github
   end
 
   def issue(github_url)
-    owner, repo, number =
-      github_url.match(/\.com\/([^\/]+)\/([^\/]+)\/issues\/(\d+)/).to_a[1..-1]
+    owner, repo, x, number =
+      github_url.match(/\.com\/([^\/]+)\/([^\/]+)\/(issues|pull)\/(\d+)/).to_a[1..-1]
     
     response = @http.get("/repos/#{owner}/#{repo}/issues/#{number}").body
     JSON.parse(response, symbolize_names: true)

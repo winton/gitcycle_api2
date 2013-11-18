@@ -19,15 +19,4 @@ class BranchController < ApplicationController
     )
     render :show
   end
-
-  private
-
-  def find_branch
-    @branch = Branch.find_from_params(params, @user)
-    render(nothing: true, status: :forbidden)  unless @branch
-  end
-
-  def existing_branch_only
-    render(nothing: true, status: :forbidden)  if @branch.new_record?
-  end
 end
