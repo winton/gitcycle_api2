@@ -29,16 +29,27 @@ describe PullRequestController do
     let(:req_params) { params[0] }
     let(:res_params) { params[1] }
 
-    it "returns correct response" do
-      Github.any_instance.should_receive(:pull_request).and_return(
-        issue_url: "https://github.com/repo:owner:login/repo:name/pull/0"
-      )
-      Github.any_instance.should_receive(:issue).and_return(
-        title: "title"
-      )
-      post(:create, name: branch.name)
-      body = JSON.parse(response.body, symbolize_names: true)
-      expect(body).to eql(res_params)
+    context "when branch exists" do
+
+      it "returns correct response" do
+        Github.any_instance.should_receive(:pull_request).and_return(
+          issue_url: "https://github.com/repo:owner:login/repo:name/pull/0"
+        )
+        Github.any_instance.should_receive(:issue).and_return(
+          title: "title"
+        )
+        post(:create, name: branch.name)
+        body = JSON.parse(response.body, symbolize_names: true)
+        expect(body).to eql(res_params)
+      end
+    end
+
+    context "when branch does not exist" do
+
+      it "returns correct response" do
+        post(:create, name: "doesnt-exist")
+        response.status.should eql(403)
+      end
     end
   end
 end
