@@ -13,6 +13,17 @@ class Repo < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :user_id
   validates_presence_of   :name, :user_id
 
+  class <<self
+    def find_from_params(params)
+      if params[:name]
+        Repo.where(
+          name:    params[:name],
+          user_id: User.find_from_params(params[:user]).id
+        ).first_or_initialize
+      end
+    end
+  end
+
   def head
     "#{owner_or_user.login}:#{source}"
   end

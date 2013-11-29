@@ -62,6 +62,7 @@ GitcycleApi2::Application.routes.draw do
 
   resource :branch,       controller: :branch,       except: [ :edit,   :new ]
   resource :pull_request, controller: :pull_request, only:   [ :create ]
+  resource :repo,         controller: :repo,         only:   [ :create ]
   resource :setup,        controller: :setup,        only:   [ :show ] do
     post "lighthouse",    on:         :member
   end

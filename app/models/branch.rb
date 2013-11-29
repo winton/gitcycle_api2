@@ -31,13 +31,7 @@ class Branch < ActiveRecord::Base
   end
 
   def create_from_params(params)
-    self.repo = Repo.where(
-      name: params[:repo][:name]
-    ).first_or_initialize
-
-    self.repo.user = User.where(
-      login: params[:repo][:user][:login]
-    ).first_or_create
+    self.repo = Repo.find_from_params(params[:repo])
 
     %w(github_url lighthouse_url source title).each do |attribute|
       send("#{attribute}=", params[attribute])  if params[attribute]

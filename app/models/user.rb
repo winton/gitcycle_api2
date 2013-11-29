@@ -25,10 +25,11 @@ class User < ActiveRecord::Base
     user.gitcycle ||= token
   end
 
-  def update_nil_lighthouse_user_namespaces(namespace)
-    lighthouse_users.where(namespace: nil).each do |lh_user|
-      lh_user.namespace = namespace
-      lh_user.save
+  class <<self
+    def find_from_params(params)
+      if params[:login]
+        User.where(login: params[:login]).first_or_create
+      end
     end
   end
 
@@ -44,5 +45,12 @@ class User < ActiveRecord::Base
 
     self.name = user[:name]
     save
+  end
+
+  def update_nil_lighthouse_user_namespaces(namespace)
+    lighthouse_users.where(namespace: nil).each do |lh_user|
+      lh_user.namespace = namespace
+      lh_user.save
+    end
   end
 end

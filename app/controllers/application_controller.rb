@@ -22,4 +22,9 @@ class ApplicationController < ActionController::Base
     @branch = Branch.find_from_params(params, @user)
     render(nothing: true, status: :forbidden)  unless @branch
   end
+
+  def find_repo
+    @repo = Repo.find_from_params(params)
+    render(nothing: true, status: :forbidden)  unless @repo
+  end
 end
