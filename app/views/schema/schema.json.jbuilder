@@ -81,6 +81,7 @@ json.set! "pull_request.json" do
       json.additionalProperties false
       json.properties do
         json.branch { json.type "string" }
+        json.ready  { json.type "boolean" }
         json.repo   { json.partial! "schema/repo" }
       end
     end

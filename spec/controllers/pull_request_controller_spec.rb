@@ -20,8 +20,9 @@ describe PullRequestController do
     let(:params) do
       json_schema_params(:pull_request, :post,
         response: {
-          github_url:     "https://github.com/repo:owner:login/repo:name/pull/0",
-          lighthouse_url: nil
+          github_issue_id: 0,
+          github_url:      "https://github.com/repo:owner:login/repo:name/pull/0",
+          lighthouse_url:  nil
         }
       )
     end
