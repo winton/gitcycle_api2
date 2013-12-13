@@ -54,21 +54,43 @@ json.set! "branch.json" do
   end
 end
 
-json.set! "setup/lighthouse.json" do
+json.set! "issues.json" do
   json.get do
     json.request do
-      json.title "POST setup/lighthouse.json (request)"
+      json.title "GET issues.json (request)"
       json.type  "object"
       json.additionalProperties false
       json.properties do
-        json.token { json.type "string" }
+        json.issues { json.type "string" }
       end
     end
-
+    
     json.response do
-      json.title "POST setup/lighthouse.json (response)"
-      json.type  "null"
+      json.title "GET issues.json (response)"
+      json.type  "array"
+      json.items do
+        json.partial! "schema/branch"
+      end
+    end
+  end
+
+  json.put do
+    json.request do
+      json.title "PUT issues.json (request)"
+      json.type  "object"
       json.additionalProperties false
+      json.properties do
+        json.issues { json.type "string" }
+        json.source { json.type "string" }
+      end
+    end
+    
+    json.response do
+      json.title    "PUT issues.json (response)"
+      json.type  "array"
+      json.items do
+        json.partial! "schema/branch"
+      end
     end
   end
 end
@@ -103,6 +125,25 @@ json.set! "repo.json" do
     json.response do
       json.title    "POST repo.json (response)"
       json.partial! "schema/branch/repo"
+    end
+  end
+end
+
+json.set! "setup/lighthouse.json" do
+  json.get do
+    json.request do
+      json.title "POST setup/lighthouse.json (request)"
+      json.type  "object"
+      json.additionalProperties false
+      json.properties do
+        json.token { json.type "string" }
+      end
+    end
+
+    json.response do
+      json.title "POST setup/lighthouse.json (response)"
+      json.type  "null"
+      json.additionalProperties false
     end
   end
 end
