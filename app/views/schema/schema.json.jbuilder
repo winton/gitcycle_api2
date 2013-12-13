@@ -81,7 +81,7 @@ json.set! "issues.json" do
       json.additionalProperties false
       json.properties do
         json.issues { json.type "string" }
-        json.source { json.type "string" }
+        json.state  { json.type "string" }
       end
     end
     

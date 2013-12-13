@@ -7,7 +7,7 @@ class Branch < ActiveRecord::Base
   after_commit :update_from_changes
   after_save   :update_from_changes  if Rails.env == 'test'
 
-  attr_accessible :name, :source, :title
+  attr_accessible :name, :source, :state, :title
 
   belongs_to :repo
   belongs_to :user
