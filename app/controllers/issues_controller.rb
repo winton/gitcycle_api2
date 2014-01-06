@@ -10,6 +10,7 @@ class IssuesController < ApplicationController
     @branches.each do |branch|
       branch.update_attributes :state => params[:state]
     end
+    
     render :show
   end
 
