@@ -21,11 +21,11 @@
 .tabbable
   %ul.nav.nav-tabs
     %li.active
-      %a{"data-toggle" => "tab", :href => "#tab1"} Developers
+      %a{ "data-toggle" => "tab", :href => "#tab1" } Developers
     %li
-      %a{"data-toggle" => "tab", :href => "#tab2"} Code Reviewers
+      %a{ "data-toggle" => "tab", :href => "#tab2" } Code Reviewers
     %li
-      %a{"data-toggle" => "tab", :href => "#tab3"} Quality Assurance
+      %a{ "data-toggle" => "tab", :href => "#tab3" } Quality Assurance
   .tab-content
     #tab1.tab-pane.active
       = render partial: 'developers'
