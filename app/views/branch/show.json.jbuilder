@@ -1,1 +1,1 @@
-json.partial! "show"
+json.partial! "branch/show"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131025222429) do
+ActiveRecord::Schema.define(version: 20140107213855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,19 @@ ActiveRecord::Schema.define(version: 20131025222429) do
   add_index "lighthouse_users", ["namespace"], name: "index_lighthouse_users_on_namespace", using: :btree
   add_index "lighthouse_users", ["token"], name: "index_lighthouse_users_on_token", using: :btree
   add_index "lighthouse_users", ["user_id"], name: "index_lighthouse_users_on_user_id", using: :btree
+
+  create_table "logs", force: true do |t|
+    t.string   "event"
+    t.string   "body",       limit: 4096
+    t.string   "session_id"
+    t.integer  "user_id"
+    t.datetime "ran_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "logs", ["ran_at", "session_id"], name: "index_logs_on_ran_at_and_session_id", using: :btree
+  add_index "logs", ["user_id"], name: "index_logs_on_user_id", using: :btree
 
   create_table "pull_requests", force: true do |t|
     t.integer  "number"

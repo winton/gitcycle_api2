@@ -11,7 +11,8 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_by_session
-    redirect_to '/' unless session[:user]
+    @user = session[:user]
+    redirect_to '/' unless @user
   end
 
   def existing_branch_only

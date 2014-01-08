@@ -1,3 +1,5 @@
+json.ignore_nil!
+
 json.(@branch, :github_issue_id, :github_url, :lighthouse_url, :name, :source, :title)
 
 json.repo do

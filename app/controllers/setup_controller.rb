@@ -9,7 +9,7 @@ class SetupController < ApplicationController
       token:     params[:token]
     ).first_or_create
 
-    render :nothing => true
+    render nothing: true
   end
   
   def show

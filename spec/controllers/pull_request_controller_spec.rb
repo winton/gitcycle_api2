@@ -22,7 +22,7 @@ describe PullRequestController do
         response: {
           github_issue_id: 0,
           github_url:      "https://github.com/repo:owner:login/repo:name/pull/0",
-          lighthouse_url:  nil
+          lighthouse_url:  :_DEL
         }
       )
     end

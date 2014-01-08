@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :branches
   has_many :github_projects
   has_many :lighthouse_users
+  has_many :logs
   has_many :owned_repos, :class_name => 'Repo', :foreign_key => 'owner_id'
   has_many :repos
 

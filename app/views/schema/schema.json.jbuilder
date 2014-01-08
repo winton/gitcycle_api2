@@ -86,11 +86,42 @@ json.set! "issues.json" do
     end
     
     json.response do
-      json.title    "PUT issues.json (response)"
+      json.title "PUT issues.json (response)"
       json.type  "array"
       json.items do
         json.partial! "schema/branch"
       end
+    end
+  end
+end
+
+json.set! "logs.json" do
+  json.post do
+    json.request do
+      json.title "POST logs.json (request)"
+      json.type  "object"
+      json.additionalProperties false
+      json.properties do
+        json.events do
+          json.type  "array"
+          json.items do
+            json.type  "object"
+            json.additionalProperties false
+            json.properties do
+              json.event      { json.type "string" }
+              json.body       { json.type "string" }
+              json.session_id { json.type "string" }
+              json.ran_at     { json.type "string" }
+            end
+          end
+        end
+      end
+    end
+
+    json.response do
+      json.title "POST logs.json (response)"
+      json.type  "null"
+      json.additionalProperties false
     end
   end
 end

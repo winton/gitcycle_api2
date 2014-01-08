@@ -60,9 +60,9 @@ GitcycleApi2::Application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq/'
 
-  resource  :branch,       controller: :branch,       except: [ :edit, :new ]
-  resources :errors,       controller: :errors,       only:   [ :index, :show ]
-  resource  :issues,       controller: :issues,       only:   [ :show, :update ]
+  resource  :branch,       controller: :branch,       except: [ :edit,  :new ]
+  resource  :issues,       controller: :issues,       only:   [ :show,  :update ]
+  resources :logs,         controller: :logs,         only:   [ :index, :create, :show ]
   resource  :pull_request, controller: :pull_request, only:   [ :create ]
   resource  :repo,         controller: :repo,         only:   [ :create ]
   resource  :setup,        controller: :setup,        only:   [ :show ] do

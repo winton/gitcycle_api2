@@ -29,7 +29,7 @@ describe IssuesController do
           {
             github_issue_id: 123,
             github_url:      "https://github.com/repo:owner:login/repo:name/pull/123",
-            lighthouse_url:  nil
+            lighthouse_url:  :_DEL
           }
         ]
       )
@@ -55,7 +55,7 @@ describe IssuesController do
           {
             github_issue_id: 123,
             github_url:      "https://github.com/repo:owner:login/repo:name/pull/123",
-            lighthouse_url:  nil
+            lighthouse_url:  :_DEL
           }
         ]
       )

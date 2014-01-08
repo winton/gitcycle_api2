@@ -51,8 +51,8 @@ describe BranchController do
               lighthouse_url: lighthouse_url
             },
             response: {
-              github_issue_id: nil,
-              github_url:      nil,
+              github_issue_id: :_DEL,
+              github_url:      :_DEL,
               lighthouse_url:  lighthouse_url
             }
           )
@@ -101,9 +101,9 @@ describe BranchController do
             title: "title"
           },
           response: {
-            github_issue_id: nil,
-            github_url:      nil,
-            lighthouse_url:  nil,
+            github_issue_id: :_DEL,
+            github_url:      :_DEL,
+            lighthouse_url:  :_DEL,
             name:            "title"
           }
         )
@@ -134,7 +134,7 @@ describe BranchController do
           response: {
             github_issue_id: 0,
             github_url:      github_url,
-            lighthouse_url:  nil,
+            lighthouse_url:  :_DEL,
             name:            "title"
           }
         )
@@ -161,9 +161,9 @@ describe BranchController do
   describe :update do
     let(:params) do
       json_schema_params(:branch, :put, response: {
-        github_issue_id: nil,
-        github_url:      nil,
-        lighthouse_url:  nil
+        github_issue_id: :_DEL,
+        github_url:      :_DEL,
+        lighthouse_url:  :_DEL
       })
     end
 
