@@ -1,6 +1,6 @@
 class Log < ActiveRecord::Base
 
-  attr_accessible :event, :body, :session_id, :ran_at
+  attr_accessible :event, :body, :backtrace, :session_id, :ran_at
 
   belongs_to :user
 
@@ -9,7 +9,8 @@ class Log < ActiveRecord::Base
       log = Log.new(
         event:      p[:event],
         body:       p[:body],
-        session_id: p[:session_id],
+        backtrace:  p[:backtrace],
+        session_id: SecureRandom.hex,
         ran_at:     p[:ran_at]
       )
       log.user_id = user.id

@@ -84,7 +84,8 @@ ActiveRecord::Schema.define(version: 20140107213855) do
 
   create_table "logs", force: true do |t|
     t.string   "event"
-    t.string   "body",       limit: 4096
+    t.string   "body",       limit: 10000
+    t.string   "backtrace",  limit: 10000
     t.string   "session_id"
     t.integer  "user_id"
     t.datetime "ran_at"

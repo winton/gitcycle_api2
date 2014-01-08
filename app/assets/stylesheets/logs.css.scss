@@ -1,3 +1,17 @@
-// Place all the styles related to the Logs controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+/*
+ *= require lib/magnific
+ */
+
+.white-popup {
+  position: relative;
+  background: #FFF;
+  padding: 20px;
+  width: auto;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+tbody > tr:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}

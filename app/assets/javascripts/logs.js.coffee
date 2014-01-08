@@ -1,3 +1,12 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+#= require lib/magnific
+$ ->
+  $('.open-popup-link').magnificPopup(
+    type: 'inline'
+    midClick: true
+  )
+
+window.openBacktrace = (id) ->
+  $.magnificPopup.open(
+    items: src: '#backtrace-' + id
+    type: 'inline'
+  )

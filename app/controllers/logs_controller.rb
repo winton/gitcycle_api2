@@ -4,6 +4,7 @@ class LogsController < ApplicationController
   before_action :authenticate_by_token,   only: :create
 
   def index
+    @logs = Log.all
   end
 
   def create

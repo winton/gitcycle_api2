@@ -1,23 +1,24 @@
-%table.table.table-striped
+= stylesheet_link_tag "logs"
+= javascript_include_tag "logs"
+
+%table.table
   %thead
     %tr
-      %th #
-      %th First Name
-      %th Last Name
-      %th Username
+      %th Event
+      %th Body
+      %th Session
+      %th User
+      %th Time
   %tbody
-    %tr
-      %td 1
-      %td Mark
-      %td Otto
-      %td @mdo
-    %tr
-      %td 2
-      %td Jacob
-      %td Thornton
-      %td @fat
-    %tr
-      %td 3
-      %td Larry
-      %td the Bird
-      %td @twitter
+    - @logs.each do |log|
+      %tr{ :onclick => "window.openBacktrace(#{log.id})" }
+        %td= log.event
+        %td
+          %pre= log.body
+        %td= log.session_id.to_s[0..4]
+        %td= log.user.login
+        %td= log.ran_at.strftime("%T %b %d")
+
+- @logs.each do |log|
+  %div{ :id => "backtrace-#{log.id}", :class => "white-popup mfp-hide" }
+    %pre= log.backtrace
