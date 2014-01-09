@@ -16,13 +16,13 @@
       %th Body
       %th Time
   %tbody
-    - @log.log_entries.each do |log|
+    - @entries.each do |log|
       %tr{ :onclick => "window.openBacktrace(#{log.id})" }
         %td= log.event
         %td
           %pre= log.body
         %td= log.ran_at.strftime("%T")
 
-- @log.log_entries.each do |log|
+- @entries.each do |log|
   %div{ :id => "backtrace-#{log.id}", :class => "white-popup mfp-hide" }
     %pre= log.backtrace

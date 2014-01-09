@@ -13,8 +13,8 @@ class Log < ActiveRecord::Base
 
       log = user.logs.create(
         exit_code:   last[:body],
-        started_at:  first[:ran_at],
-        finished_at: last[:ran_at]
+        started_at:  Time.at(first[:ran_at]),
+        finished_at: Time.at(last[:ran_at])
       )
 
       params[:events].each do |p|
@@ -22,16 +22,19 @@ class Log < ActiveRecord::Base
           event:      p[:event],
           body:       p[:body],
           backtrace:  p[:backtrace],
-          ran_at:     p[:ran_at]
+          ran_at:     Time.at(p[:ran_at])
         )
       end
 
       log
     end
+  end
 
-    def distinct_session(direction)
-      select("DISTINCT ON (session_id) session_id, *").
-        order("logs.session_id, logs.id #{direction}")
-    end
+  def started_at
+    read_attribute(:started_at).in_time_zone("Pacific Time (US & Canada)")
+  end
+
+  def finished_at
+    read_attribute(:finished_at).in_time_zone("Pacific Time (US & Canada)")
   end
 end

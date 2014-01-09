@@ -13,6 +13,7 @@ class LogsController < ApplicationController
   end
 
   def show
-    @log = Log.find(params[:id])
+    @log     = Log.find(params[:id])
+    @entries = @log.log_entries.order("id asc")
   end
 end

@@ -111,7 +111,7 @@ json.set! "logs.json" do
               json.event      { json.type "string" }
               json.body       { json.type "string" }
               json.backtrace  { json.type "string" }
-              json.ran_at     { json.type "string" }
+              json.ran_at     { json.type "integer" }
             end
           end
         end

@@ -15,5 +15,7 @@
         %td= log.id
         %td= log.user.login
         %td= log.started_at.strftime("%b %d %T")
-        %td= distance_of_time_in_words(log.started_at, log.finished_at, include_seconds: true)
-        %td= log.exit_code
+        %td
+          = log.finished_at - log.started_at
+          sec
+        %td{ :class => exit_code_color(log) }= log.exit_code
