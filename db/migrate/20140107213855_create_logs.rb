@@ -1,10 +1,10 @@
 class CreateLogs < ActiveRecord::Migration
   def change
     create_table :logs do |t|
-      t.string   :exit_code
-      t.integer  :user_id
-      t.datetime :started_at
-      t.datetime :finished_at
+      t.string  :exit_code
+      t.integer :user_id
+      t.integer :started_at,  :limit => 8
+      t.integer :finished_at, :limit => 8
       t.timestamps
     end
 

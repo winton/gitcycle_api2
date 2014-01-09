@@ -4,7 +4,7 @@ class LogEntry < ActiveRecord::Base
 
   belongs_to :log
 
-  def ran_at
-    read_attribute(:ran_at).in_time_zone("Pacific Time (US & Canada)")
+  def ran_at_time
+    Time.at(read_attribute(:ran_at) / 1000).in_time_zone("Pacific Time (US & Canada)")
   end
 end

@@ -1,11 +1,11 @@
 class CreateLogEntries < ActiveRecord::Migration
   def change
     create_table :log_entries do |t|
-      t.string   :event
-      t.string   :body,      :limit => 10_000
-      t.string   :backtrace, :limit => 10_000
-      t.integer  :log_id
-      t.datetime :ran_at
+      t.string  :event
+      t.string  :body,      :limit => 10_000
+      t.string  :backtrace, :limit => 10_000
+      t.integer :log_id
+      t.integer :ran_at,    :limit => 8
       t.timestamps
     end
 

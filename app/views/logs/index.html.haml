@@ -14,8 +14,11 @@
       %tr{ :onclick => "window.openLog(#{log.id})" }
         %td= log.id
         %td= log.user.login
-        %td= log.started_at.strftime("%b %d %T")
+        %td= log.started_at_time.strftime("%b %d %T")
         %td
           = log.finished_at - log.started_at
-          sec
+          ms
         %td{ :class => exit_code_color(log) }= log.exit_code
+
+.pagination.pagination-centered
+  = will_paginate @logs, renderer: BootstrapPagination::Rails

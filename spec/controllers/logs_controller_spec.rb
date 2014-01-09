@@ -4,7 +4,7 @@ describe LogsController do
   describe :create do
 
     let(:now) do
-      Time.now.utc
+      (Time.now.to_f * 1000.0).to_i
     end
 
     let(:user) do
@@ -12,7 +12,7 @@ describe LogsController do
     end
 
     let(:params) do
-      json_schema_params(:logs, :post, request: { events: [ ran_at: now.to_i ] })
+      json_schema_params(:logs, :post, request: { events: [ ran_at: now ] })
     end
 
     let(:req_params) { params[0] }
@@ -33,15 +33,15 @@ describe LogsController do
       log       = user.logs.first
       log_entry = log.log_entries.first
 
-      expect(log_entry.event).to           eq("events:event")
-      expect(log_entry.body).to            eq("events:body")
-      expect(log_entry.backtrace).to       eq("events:backtrace")
-      expect(log_entry.ran_at.utc.to_s).to eq(now.to_s)
+      expect(log_entry.event).to     eq("events:event")
+      expect(log_entry.body).to      eq("events:body")
+      expect(log_entry.backtrace).to eq("events:backtrace")
+      expect(log_entry.ran_at).to    eq(now)
 
-      expect(log.exit_code).to            eq("events:body")
-      expect(log.user_id).to              eq(user.id)
-      expect(log.started_at.utc.to_s).to  eq(now.to_s)
-      expect(log.finished_at.utc.to_s).to eq(now.to_s)
+      expect(log.exit_code).to   eq("events:body")
+      expect(log.user_id).to     eq(user.id)
+      expect(log.started_at).to  eq(now)
+      expect(log.finished_at).to eq(now)
     end
   end
 end

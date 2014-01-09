@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20140109005611) do
     t.string   "body",       limit: 10000
     t.string   "backtrace",  limit: 10000
     t.integer  "log_id"
-    t.datetime "ran_at"
+    t.integer  "ran_at",     limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -99,8 +99,8 @@ ActiveRecord::Schema.define(version: 20140109005611) do
   create_table "logs", force: true do |t|
     t.string   "exit_code"
     t.integer  "user_id"
-    t.datetime "started_at"
-    t.datetime "finished_at"
+    t.integer  "started_at",  limit: 8
+    t.integer  "finished_at", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -13,8 +13,8 @@ class Log < ActiveRecord::Base
 
       log = user.logs.create(
         exit_code:   last[:body],
-        started_at:  Time.at(first[:ran_at]),
-        finished_at: Time.at(last[:ran_at])
+        started_at:  first[:ran_at].to_i,
+        finished_at: last[:ran_at].to_i
       )
 
       params[:events].each do |p|
@@ -22,7 +22,7 @@ class Log < ActiveRecord::Base
           event:      p[:event],
           body:       p[:body],
           backtrace:  p[:backtrace],
-          ran_at:     Time.at(p[:ran_at])
+          ran_at:     p[:ran_at].to_i
         )
       end
 
@@ -30,11 +30,11 @@ class Log < ActiveRecord::Base
     end
   end
 
-  def started_at
-    read_attribute(:started_at).in_time_zone("Pacific Time (US & Canada)")
+  def started_at_time
+    Time.at(read_attribute(:started_at) / 1000).in_time_zone("Pacific Time (US & Canada)")
   end
 
-  def finished_at
-    read_attribute(:finished_at).in_time_zone("Pacific Time (US & Canada)")
+  def finished_at_time
+    Time.at(read_attribute(:finished_at) / 1000).in_time_zone("Pacific Time (US & Canada)")
   end
 end

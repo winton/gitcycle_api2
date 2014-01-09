@@ -4,7 +4,7 @@ class LogsController < ApplicationController
   before_action :authenticate_by_token,   only: :create
 
   def index
-    @logs = Log.all.order("id desc")
+    @logs = Log.paginate(:page => params[:page]).order("id desc")
   end
 
   def create

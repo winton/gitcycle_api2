@@ -6,7 +6,7 @@
   \-
   = @log.user.login
   \-
-  = @log.started_at.strftime("%b %d")
+  = @log.started_at_time.strftime("%b %d")
   
 
 %table.table
@@ -21,7 +21,7 @@
         %td= log.event
         %td
           %pre= log.body
-        %td= log.ran_at.strftime("%T")
+        %td= log.ran_at_time.strftime("%T")
 
 - @entries.each do |log|
   %div{ :id => "backtrace-#{log.id}", :class => "white-popup mfp-hide" }
