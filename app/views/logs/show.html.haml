@@ -1,2 +1,28 @@
-%h1 Logs#show
-%p Find me in app/views/logs/show.html.haml
+= stylesheet_link_tag "logs"
+= javascript_include_tag "logs"
+
+%h2
+  = "##{@log.id}"
+  \-
+  = @log.user.login
+  \-
+  = @log.started_at.strftime("%b %d")
+  
+
+%table.table
+  %thead
+    %tr
+      %th Event
+      %th Body
+      %th Time
+  %tbody
+    - @log.log_entries.each do |log|
+      %tr{ :onclick => "window.openBacktrace(#{log.id})" }
+        %td= log.event
+        %td
+          %pre= log.body
+        %td= log.ran_at.strftime("%T")
+
+- @log.log_entries.each do |log|
+  %div{ :id => "backtrace-#{log.id}", :class => "white-popup mfp-hide" }
+    %pre= log.backtrace

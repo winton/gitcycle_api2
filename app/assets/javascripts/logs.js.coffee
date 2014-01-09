@@ -1,4 +1,5 @@
 #= require lib/magnific
+
 $ ->
   $('.open-popup-link').magnificPopup(
     type: 'inline'
@@ -10,3 +11,6 @@ window.openBacktrace = (id) ->
     items: src: '#backtrace-' + id
     type: 'inline'
   )
+
+window.openLog = (id) ->
+  window.location.href = "/logs/#{id}"

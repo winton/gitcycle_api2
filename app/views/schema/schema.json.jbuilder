@@ -110,7 +110,7 @@ json.set! "logs.json" do
             json.properties do
               json.event      { json.type "string" }
               json.body       { json.type "string" }
-              json.session_id { json.type "string" }
+              json.backtrace  { json.type "string" }
               json.ran_at     { json.type "string" }
             end
           end
@@ -120,8 +120,11 @@ json.set! "logs.json" do
 
     json.response do
       json.title "POST logs.json (response)"
-      json.type  "null"
+      json.type  "object"
       json.additionalProperties false
+      json.properties do
+        json.id { json.type "string" }
+      end
     end
   end
 end

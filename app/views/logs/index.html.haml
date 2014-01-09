@@ -1,24 +1,19 @@
 = stylesheet_link_tag "logs"
 = javascript_include_tag "logs"
 
-%table.table
+%table.table.table-striped
   %thead
     %tr
-      %th Event
-      %th Body
       %th Session
       %th User
-      %th Time
+      %th Start
+      %th Duration
+      %th Exit
   %tbody
-    - @logs.each do |log|
-      %tr{ :onclick => "window.openBacktrace(#{log.id})" }
-        %td= log.event
-        %td
-          %pre= log.body
-        %td= log.session_id.to_s[0..4]
+    - @logs.each do |log, i|
+      %tr{ :onclick => "window.openLog(#{log.id})" }
+        %td= log.id
         %td= log.user.login
-        %td= log.ran_at.strftime("%T %b %d")
-
-- @logs.each do |log|
-  %div{ :id => "backtrace-#{log.id}", :class => "white-popup mfp-hide" }
-    %pre= log.backtrace
+        %td= log.started_at.strftime("%b %d %T")
+        %td= distance_of_time_in_words(log.started_at, log.finished_at, include_seconds: true)
+        %td= log.exit_code

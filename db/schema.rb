@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140107213855) do
+ActiveRecord::Schema.define(version: 20140109005611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,18 +82,33 @@ ActiveRecord::Schema.define(version: 20140107213855) do
   add_index "lighthouse_users", ["token"], name: "index_lighthouse_users_on_token", using: :btree
   add_index "lighthouse_users", ["user_id"], name: "index_lighthouse_users_on_user_id", using: :btree
 
-  create_table "logs", force: true do |t|
+  create_table "log_entries", force: true do |t|
     t.string   "event"
     t.string   "body",       limit: 10000
     t.string   "backtrace",  limit: 10000
-    t.string   "session_id"
-    t.integer  "user_id"
+    t.integer  "log_id"
     t.datetime "ran_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "logs", ["ran_at", "session_id"], name: "index_logs_on_ran_at_and_session_id", using: :btree
+  add_index "log_entries", ["event"], name: "index_log_entries_on_event", using: :btree
+  add_index "log_entries", ["log_id"], name: "index_log_entries_on_log_id", using: :btree
+  add_index "log_entries", ["ran_at"], name: "index_log_entries_on_ran_at", using: :btree
+
+  create_table "logs", force: true do |t|
+    t.string   "exit_code"
+    t.integer  "user_id"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "logs", ["exit_code"], name: "index_logs_on_exit_code", using: :btree
+  add_index "logs", ["finished_at"], name: "index_logs_on_finished_at", using: :btree
+  add_index "logs", ["started_at", "finished_at"], name: "index_logs_on_started_at_and_finished_at", using: :btree
+  add_index "logs", ["started_at"], name: "index_logs_on_started_at", using: :btree
   add_index "logs", ["user_id"], name: "index_logs_on_user_id", using: :btree
 
   create_table "pull_requests", force: true do |t|
