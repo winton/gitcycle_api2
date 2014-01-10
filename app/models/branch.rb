@@ -74,6 +74,10 @@ class Branch < ActiveRecord::Base
     save
   end
 
+  def head
+    "#{owner.login}:#{name}"
+  end
+
   def lighthouse_url=(url)
     self.lighthouse_namespace, self.lighthouse_project_id, self.lighthouse_ticket_id =
       self.class.lighthouse_url_to_properties(url)
@@ -95,6 +99,10 @@ class Branch < ActiveRecord::Base
   def github_url
     return nil  unless repo && repo.owner && github_issue_id
     "https://github.com/#{repo.owner.login}/#{repo.name}/pull/#{github_issue_id}"
+  end
+
+  def owner
+    repo.owner ? repo.owner : repo.user
   end
 
   def update_from_changes
