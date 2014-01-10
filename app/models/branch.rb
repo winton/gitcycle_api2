@@ -1,5 +1,3 @@
-require "persist_changes"
-
 class Branch < ActiveRecord::Base
 
   include PersistChanges
@@ -19,11 +17,13 @@ class Branch < ActiveRecord::Base
       if params[:name] || params[:branch]
         Branch.where(
           name:    params[:name] || params[:branch],
+          source:  params[:source],
           user_id: user.id
         ).first_or_initialize
-      elsif params[:source]
+      elsif params[:title]
         Branch.where(
           source:  params[:source],
+          title:   params[:title],
           user_id: user.id
         ).first_or_initialize
       end
