@@ -44,6 +44,7 @@ json.set! "branch.json" do
       json.properties do
         json.name     { json.type "string" }
         json.source   { json.type "string" }
+        json.repo     { json.partial! "schema/repo" }
       end
     end
     

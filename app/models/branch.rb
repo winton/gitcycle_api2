@@ -14,8 +14,12 @@ class Branch < ActiveRecord::Base
 
   class <<self
     def find_from_params(params, user)
+      repo = Repo.find_from_params(params[:repo])
+      repo.save  if repo.new_record?
+
       where = {
         source:  params[:source],
+        repo_id: repo.id,
         user_id: user.id
       }
 

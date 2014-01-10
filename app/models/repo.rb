@@ -17,7 +17,7 @@ class Repo < ActiveRecord::Base
 
   class <<self
     def find_from_params(params)
-      if params[:name]
+      if params[:name] && params[:user]
         Repo.where(
           name:    params[:name],
           user_id: User.find_from_params(params[:user]).id
