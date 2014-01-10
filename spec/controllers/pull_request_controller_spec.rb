@@ -19,6 +19,10 @@ describe PullRequestController do
 
     let(:params) do
       json_schema_params(:pull_request, :post,
+        request: {
+          branch: branch.name,
+          source: branch.source
+        },
         response: {
           github_issue_id: 0,
           github_url:      "https://github.com/repo:owner:login/repo:name/pull/0",
@@ -39,7 +43,7 @@ describe PullRequestController do
         Github.any_instance.should_receive(:issue).and_return(
           title: "title"
         )
-        post(:create, name: branch.name, source: branch.source)
+        post(:create, req_params)
         body = JSON.parse(response.body, symbolize_names: true)
         expect(body).to eql(res_params)
       end
@@ -48,7 +52,7 @@ describe PullRequestController do
     context "when branch does not exist" do
 
       it "returns correct response" do
-        post(:create, name: "doesnt-exist")
+        post(:create, req_params.merge(name: "doesnt-exist"))
         response.status.should eql(403)
       end
     end
