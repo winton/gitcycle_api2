@@ -39,7 +39,7 @@ describe PullRequestController do
         Github.any_instance.should_receive(:issue).and_return(
           title: "title"
         )
-        post(:create, name: branch.name)
+        post(:create, name: branch.name, source: branch.source)
         body = JSON.parse(response.body, symbolize_names: true)
         expect(body).to eql(res_params)
       end

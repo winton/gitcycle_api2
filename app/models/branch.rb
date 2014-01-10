@@ -14,19 +14,48 @@ class Branch < ActiveRecord::Base
 
   class <<self
     def find_from_params(params, user)
-      if params[:name] || params[:branch]
-        Branch.where(
-          name:    params[:name] || params[:branch],
-          source:  params[:source],
-          user_id: user.id
-        ).first_or_initialize
+      where = {
+        source:  params[:source],
+        user_id: user.id
+      }
+
+      if col = params[:name] || params[:branch]
+        where[:name] = col
+
       elsif params[:title]
-        Branch.where(
-          source:  params[:source],
-          title:   params[:title],
-          user_id: user.id
-        ).first_or_initialize
+        where[:title] = params[:title]
+      
+      elsif params[:lighthouse_url]
+        where.merge! lighthouse_conditions(params[:lighthouse_url])
+      
+      elsif params[:github_url]
+        where.merge! github_conditions(params[:github_url])
       end
+
+      Branch.where(where).first_or_initialize
+    end
+
+    def github_conditions(url)
+      { github_issue_id: github_url_to_issue_id(url) }
+    end
+
+    def github_url_to_issue_id(url)
+      url.match(/\/(pull|issues)\/(\d+)/).to_a[2]
+    end
+
+    def lighthouse_conditions(url)
+      namespace, project, ticket =
+        lighthouse_url_to_properties(url)
+          
+      {
+        lighthouse_namespace:  namespace,
+        lighthouse_project_id: project,
+        lighthouse_ticket_id:  ticket
+      }
+    end
+
+    def lighthouse_url_to_properties(url)
+      url.match(/:\/\/([^\.]+).+\/projects\/(\d+)\/tickets\/(\d+)/).to_a[1..3]
     end
   end
 
@@ -47,7 +76,7 @@ class Branch < ActiveRecord::Base
 
   def lighthouse_url=(url)
     self.lighthouse_namespace, self.lighthouse_project_id, self.lighthouse_ticket_id =
-      url.match(/:\/\/([^\.]+).+\/projects\/(\d+)\/tickets\/(\d+)/).to_a[1..3]
+      self.class.lighthouse_url_to_properties(url)
   end
 
   def lighthouse_url
@@ -60,7 +89,7 @@ class Branch < ActiveRecord::Base
   end
 
   def github_url=(url)
-    self.github_issue_id = url.match(/\/(pull|issues)\/(\d+)/).to_a[2]
+    self.github_issue_id = self.class.github_url_to_issue_id(url)
   end
 
   def github_url
