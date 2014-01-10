@@ -10,7 +10,7 @@ class Branch < ActiveRecord::Base
   belongs_to :repo
   belongs_to :user
 
-  validates_uniqueness_of :name, scope: [ :source, :user_id ]
+  validates_uniqueness_of :name, scope: [ :user_id ]
 
   class <<self
     def find_from_params(params, user)
@@ -18,7 +18,6 @@ class Branch < ActiveRecord::Base
       repo.save  if repo.new_record?
 
       where = {
-        source:  params[:source],
         repo_id: repo.id,
         user_id: user.id
       }

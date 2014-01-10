@@ -20,8 +20,7 @@ describe PullRequestController do
     let(:params) do
       json_schema_params(:pull_request, :post,
         request: {
-          branch: branch.name,
-          source: branch.source
+          branch: branch.name
         },
         response: {
           github_issue_id: 0,

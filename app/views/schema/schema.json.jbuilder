@@ -138,7 +138,6 @@ json.set! "pull_request.json" do
       json.additionalProperties false
       json.properties do
         json.branch { json.type "string" }
-        json.source { json.type "string" }
         json.ready  { json.type "string"; json.enum [ "true", "false" ] }
         json.repo   { json.partial! "schema/repo" }
       end
