@@ -1,7 +1,9 @@
 module PersistChanges
 
-  def self.included(base)
-    base.after_save :record_changes
+  extend ActiveSupport::Concern
+
+  included do
+    after_save :record_changes
   end
 
   def add_changes(attributes)

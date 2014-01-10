@@ -1,11 +1,9 @@
-require "persist_changes"
-
 class Repo < ActiveRecord::Base
 
   include PersistChanges
 
-  after_commit :update_from_changes
-  after_save   :update_from_changes  if Rails.env == 'test'
+  after_commit :update_owner
+  after_save   :update_owner  if Rails.env == 'test'
 
   attr_accessible :name
 
@@ -44,12 +42,6 @@ class Repo < ActiveRecord::Base
     owner || user
   end
 
-  def update_from_changes
-    reset_changes # makes test env same as production
-    update_owner
-    update_all_changes
-  end
-
   def update_owner
     return  if owner_id
 
@@ -62,5 +54,7 @@ class Repo < ActiveRecord::Base
         name:  repo[:parent][:owner][:name]
       ).first_or_create
     end
+
+    update_all_changes
   end
 end

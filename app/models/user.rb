@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  include PersistChanges
+
   after_commit :update_name
   after_save   :update_name  if Rails.env == 'test'
 
@@ -16,7 +18,7 @@ class User < ActiveRecord::Base
   has_many :lighthouse_tickets,          :through => :lighthouse_users
 
   validates_presence_of   :gitcycle, :login
-  validates_uniqueness_of :gitcycle, :login
+  validates_uniqueness_of :gitcycle, :login, :allow_nil => true
 
   before_validation do |user|
     begin
@@ -45,7 +47,7 @@ class User < ActiveRecord::Base
     user   = github.user
 
     self.name = user[:name]
-    save
+    update_all_changes
   end
 
   def update_nil_lighthouse_user_namespaces(namespace)

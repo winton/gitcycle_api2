@@ -19,10 +19,10 @@ class Log < ActiveRecord::Base
 
       params[:events].each do |p|
         log.log_entries.create(
-          event:      p[:event],
-          body:       p[:body],
-          backtrace:  p[:backtrace],
-          ran_at:     p[:ran_at].to_i
+          event:     p[:event],
+          body:      p[:body],
+          backtrace: p[:backtrace],
+          ran_at:    p[:ran_at].to_i
         )
       end
 
