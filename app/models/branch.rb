@@ -5,7 +5,7 @@ class Branch < ActiveRecord::Base
   after_commit :update_from_changes
   after_save   :update_from_changes  if Rails.env == 'test'
 
-  before_save  :set_exists
+  before_save  :set_created
 
   attr_accessible :name, :source, :state, :title
 
@@ -67,10 +67,11 @@ class Branch < ActiveRecord::Base
   def create_from_params(params)
     self.repo = Repo.find_from_params(params[:repo])
 
-    %w(github_url lighthouse_url source title).each do |attribute|
+    %w(github_url lighthouse_url title).each do |attribute|
       send("#{attribute}=", params[attribute])  if params[attribute]
     end
-    
+
+    self.source ||= params[:source]
     save
   end
 
@@ -79,8 +80,8 @@ class Branch < ActiveRecord::Base
     save
   end
 
-  def exists
-    @exists || false
+  def created
+    defined?(@created) ? @created : true
   end
 
   def head
@@ -116,8 +117,8 @@ class Branch < ActiveRecord::Base
 
   private
 
-  def set_exists
-    @exists = !self.new_record?
+  def set_created
+    @created = self.new_record?
     true
   end
 

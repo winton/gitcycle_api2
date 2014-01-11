@@ -23,6 +23,7 @@ describe PullRequestController do
           branch: branch.name
         },
         response: {
+          created:         false,
           github_issue_id: 0,
           github_url:      "https://github.com/repo:owner:login/repo:name/pull/0",
           lighthouse_url:  :_DEL

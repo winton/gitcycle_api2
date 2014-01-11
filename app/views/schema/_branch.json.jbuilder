@@ -1,7 +1,7 @@
 json.type "object"
 json.additionalProperties false
 json.properties do
-  json.exists          { json.type "boolean" }
+  json.created         { json.type "boolean" }
   json.github_issue_id { json.type "integer"; json.optional true }
   json.github_url      { json.type "string";  json.optional true }
   json.lighthouse_url  { json.type "string";  json.optional true }

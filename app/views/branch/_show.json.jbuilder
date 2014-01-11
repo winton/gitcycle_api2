@@ -1,6 +1,6 @@
 json.ignore_nil!
 
-json.(@branch, :exists, :github_issue_id, :github_url, :lighthouse_url, :name, :source, :title)
+json.(@branch, :created, :github_issue_id, :github_url, :lighthouse_url, :name, :source, :title)
 
 json.repo do
   json.(@branch.repo, :name)
