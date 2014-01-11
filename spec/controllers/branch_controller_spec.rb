@@ -80,7 +80,7 @@ describe BranchController do
 
         context "when branch does not exist" do
 
-          let(:res_params) { params[1].merge(name: "title") }
+          let(:res_params) { params[1].merge(exists: false, name: "title") }
 
           before(:each) do
             post(:create, req_params.merge(format: :json))
@@ -101,6 +101,7 @@ describe BranchController do
             title: "title"
           },
           response: {
+            exists:          false,
             github_issue_id: :_DEL,
             github_url:      :_DEL,
             lighthouse_url:  :_DEL,
@@ -132,6 +133,7 @@ describe BranchController do
             github_url: github_url
           },
           response: {
+            exists:          false,
             github_issue_id: 0,
             github_url:      github_url,
             lighthouse_url:  :_DEL,

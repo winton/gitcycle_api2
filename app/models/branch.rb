@@ -5,6 +5,8 @@ class Branch < ActiveRecord::Base
   after_commit :update_from_changes
   after_save   :update_from_changes  if Rails.env == 'test'
 
+  before_save  :set_exists
+
   attr_accessible :name, :source, :state, :title
 
   belongs_to :repo
@@ -77,6 +79,10 @@ class Branch < ActiveRecord::Base
     save
   end
 
+  def exists
+    @exists || false
+  end
+
   def head
     "#{owner.login}:#{name}"
   end
@@ -106,6 +112,13 @@ class Branch < ActiveRecord::Base
 
   def owner
     repo.owner ? repo.owner : repo.user
+  end
+
+  private
+
+  def set_exists
+    @exists = !self.new_record?
+    true
   end
 
   def update_from_changes

@@ -96,7 +96,7 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.1)
     json-schema (2.1.9)
-    json_schema_spec (0.1.0)
+    json_schema_spec (0.1.2)
       json
       json-schema
     jwt (0.1.8)
