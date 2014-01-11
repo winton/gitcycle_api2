@@ -86,8 +86,9 @@ ActiveRecord::Schema.define(version: 20140109005611) do
     t.string   "event"
     t.string   "body",       limit: 10000
     t.string   "backtrace",  limit: 10000
-    t.integer  "log_id"
     t.integer  "ran_at",     limit: 8
+    t.integer  "log_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

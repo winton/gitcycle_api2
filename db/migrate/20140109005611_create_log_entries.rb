@@ -4,8 +4,9 @@ class CreateLogEntries < ActiveRecord::Migration
       t.string  :event
       t.string  :body,      :limit => 10_000
       t.string  :backtrace, :limit => 10_000
-      t.integer :log_id
       t.integer :ran_at,    :limit => 8
+      t.integer :log_id
+      t.integer :user_id
       t.timestamps
     end
 

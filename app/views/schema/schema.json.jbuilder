@@ -5,8 +5,12 @@ json.set! "branch.json" do
       json.type  "object"
       json.additionalProperties false
       json.properties do
-        json.name   { json.type "string"; json.optional true }
-        json.source { json.type "string"; json.optional true }
+        json.github_url     { json.type "string"; json.optional true }
+        json.lighthouse_url { json.type "string"; json.optional true }
+        json.name           { json.type "string"; json.optional true }
+        json.source         { json.type "string"; json.optional true }
+        json.title          { json.type "string"; json.optional true }
+        json.repo           { json.partial! "schema/repo" }
       end
     end
     

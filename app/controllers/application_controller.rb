@@ -28,4 +28,18 @@ class ApplicationController < ActionController::Base
     @repo = Repo.find_from_params(params)
     render(nothing: true, status: :forbidden)  unless @repo
   end
+
+  def log_request
+    @user.log_entries.create(
+      event: "#{request.request_method}_req".downcase,
+      body:  "#{request.fullpath}\n\n#{params.inspect}"
+    )
+
+    yield
+
+    @user.log_entries.create(
+      event: "#{request.request_method}_res".downcase,
+      body:  "#{request.fullpath}\n\n#{response.body}"
+    )
+  end
 end

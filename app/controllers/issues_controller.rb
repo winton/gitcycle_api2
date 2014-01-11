@@ -2,6 +2,7 @@ class IssuesController < ApplicationController
 
   before_action :authenticate_by_token
   before_action :parse_issues
+  around_action :log_request
 
   def show    
   end
