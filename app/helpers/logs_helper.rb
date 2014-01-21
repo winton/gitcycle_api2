@@ -4,7 +4,7 @@ module LogsHelper
     if log.exit_code == "success"
       "text-success"
     else
-      "text-danger"
+      "text-warning"
     end
   end
 end

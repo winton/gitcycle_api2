@@ -9,4 +9,5 @@ json.properties do
   json.source          { json.type "string" }
   json.title           { json.type "string" }
   json.repo            { json.partial! "schema/branch/repo" }
+  json.source_repo     { json.partial! "schema/branch/repo" }
 end

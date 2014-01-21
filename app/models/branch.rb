@@ -9,6 +9,7 @@ class Branch < ActiveRecord::Base
 
   attr_accessible :name, :source, :state, :title
 
+  belongs_to :source_repo, class_name: 'Repo'
   belongs_to :repo
   belongs_to :user
 
@@ -17,14 +18,21 @@ class Branch < ActiveRecord::Base
   class <<self
     def find_from_params(params, user)
       repo = Repo.find_from_params(params[:repo])
-      repo.save  if repo.new_record?
+      repo.save
 
       where = {
         repo_id: repo.id,
         user_id: user.id
       }
 
-      if col = params[:name] || params[:branch]
+      if params[:source_repo]
+        source_repo = Repo.find_from_params(params[:source_repo])
+        source_repo.save
+        
+        where[:source_repo_id] = source_repo.id
+      end
+
+      if col = (params[:name] || params[:branch])
         where[:name] = col
 
       elsif params[:title]

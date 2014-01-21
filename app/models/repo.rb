@@ -11,6 +11,7 @@ class Repo < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User'
 
   has_many :branches
+  has_many :source_branches, :class_name => 'Branch', :foreign_key => 'source_repo_id'
 
   validates_uniqueness_of :name, :scope => :user_id
   validates_presence_of   :name, :user_id

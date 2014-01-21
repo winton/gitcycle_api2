@@ -2,14 +2,8 @@ json.ignore_nil!
 
 json.(@branch, :created, :github_issue_id, :github_url, :lighthouse_url, :name, :source, :title)
 
-json.repo do
-  json.(@branch.repo, :name)
+json.repo { json.partial! "branch/repo", repo: @branch.repo }
 
-  json.owner do
-    json.(@branch.repo.owner, :name, :login)
-  end if @branch.repo.owner
-
-  json.user do
-    json.(@branch.repo.user, :name, :login)
-  end
+if @branch.source_repo
+  json.source_repo { json.partial! "branch/repo", repo: @branch.source_repo }
 end

@@ -7,17 +7,25 @@ FactoryGirl.define do
     title  { "#{prefix}title" }
 
     association(:repo, prefix: "repo:")
+    association(:source_repo, prefix: "source_repo:")
 
     ignore { prefix "" }
   end
 
   factory :repo do
     name   { "#{prefix}name" }
+    ignore { prefix "" }
 
     association(:owner, factory: :user, prefix: "repo:owner:")
     association(:user, prefix: "repo:user:")
+  end
 
+  factory :source_repo, class: Repo do
+    name   { "#{prefix}name" }
     ignore { prefix "" }
+    
+    association(:owner, factory: :user, prefix: "source_repo:owner:")
+    association(:user, prefix: "source_repo:user:")
   end
 
   factory :user do

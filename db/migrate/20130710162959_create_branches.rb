@@ -13,6 +13,7 @@ class CreateBranches < ActiveRecord::Migration
       t.integer :lighthouse_project_id
       t.integer :lighthouse_ticket_id
 
+      t.integer :source_repo_id
       t.integer :repo_id
       t.integer :user_id
       
@@ -24,6 +25,7 @@ class CreateBranches < ActiveRecord::Migration
 
       t.index :github_issue_id
 
+      t.index :source_repo_id
       t.index :repo_id
       t.index :user_id
     end

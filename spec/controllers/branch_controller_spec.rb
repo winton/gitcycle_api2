@@ -81,7 +81,16 @@ describe BranchController do
 
         context "when branch does not exist" do
 
-          let(:res_params) { params[1].merge(created: true, name: "title") }
+          let(:res_params) do
+            JsonSchemaSpec::Util.deep_merge(params[1],
+              created:     true,
+              name:        "title",
+              source_repo: {
+                owner: { name: "repo:owner:name", login: "repo:owner:login" },
+                user:  { name: "repo:user:name" } # because of Github.user stub
+              }
+            )
+          end
 
           before(:each) do
             post(:create, req_params.merge(format: :json))
@@ -105,7 +114,11 @@ describe BranchController do
             github_issue_id: :_DEL,
             github_url:      :_DEL,
             lighthouse_url:  :_DEL,
-            name:            "title"
+            name:            "title",
+            source_repo: {
+              owner: { name: "repo:owner:name", login: "repo:owner:login" },
+              user:  { name: "repo:user:name" } # because of Github.user stub
+            }
           }
         )
       end
@@ -136,7 +149,11 @@ describe BranchController do
             github_issue_id: 0,
             github_url:      github_url,
             lighthouse_url:  :_DEL,
-            name:            "title"
+            name:            "title",
+            source_repo: {
+              owner: { name: "repo:owner:name", login: "repo:owner:login" },
+              user:  { name: "repo:user:name" } # because of Github.user stub
+            }
           }
         )
       end
