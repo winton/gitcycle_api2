@@ -19,14 +19,13 @@ ActiveRecord::Schema.define(version: 20140109005611) do
   create_table "branches", force: true do |t|
     t.text     "body"
     t.string   "name"
-    t.string   "source"
     t.string   "state"
     t.string   "title"
     t.integer  "github_issue_id"
     t.string   "lighthouse_namespace"
     t.integer  "lighthouse_project_id"
     t.integer  "lighthouse_ticket_id"
-    t.integer  "source_repo_id"
+    t.integer  "source_branch_id"
     t.integer  "repo_id"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -34,11 +33,9 @@ ActiveRecord::Schema.define(version: 20140109005611) do
   end
 
   add_index "branches", ["github_issue_id"], name: "index_branches_on_github_issue_id", using: :btree
-  add_index "branches", ["name", "source", "user_id"], name: "index_branches_on_name_and_source_and_user_id", unique: true, using: :btree
-  add_index "branches", ["name"], name: "index_branches_on_name", using: :btree
+  add_index "branches", ["name"], name: "index_branches_on_name", unique: true, using: :btree
   add_index "branches", ["repo_id"], name: "index_branches_on_repo_id", using: :btree
-  add_index "branches", ["source"], name: "index_branches_on_source", using: :btree
-  add_index "branches", ["source_repo_id"], name: "index_branches_on_source_repo_id", using: :btree
+  add_index "branches", ["source_branch_id"], name: "index_branches_on_source_branch_id", using: :btree
   add_index "branches", ["user_id"], name: "index_branches_on_user_id", using: :btree
 
   create_table "github_projects", force: true do |t|

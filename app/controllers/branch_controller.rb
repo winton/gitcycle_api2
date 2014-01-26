@@ -13,10 +13,7 @@ class BranchController < ApplicationController
   end
 
   def update
-    @branch.update_attributes(
-      name:   params[:name],
-      source: params[:source]
-    )
+    @branch.update_attributes(name: params[:name])
     render :show
   end
 end

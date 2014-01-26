@@ -15,12 +15,21 @@ class ApplicationController < ActionController::Base
     redirect_to '/' unless @user
   end
 
+  def log_string_with_request(str)
+    @user.log_entries.create(
+      event: "#{request.request_method}_req".downcase,
+      body:  "#{request.fullpath}\n\n#{str}"
+    )
+  end
+
   def existing_branch_only
     render(nothing: true, status: :forbidden)  if @branch.new_record?
   end
 
   def find_branch
-    @branch = Branch.find_from_params(params, @user)
+    params[:user_id] = @user.id
+    @branch = Branch.find_from_params(params)
+    
     render(nothing: true, status: :forbidden)  unless @branch
   end
 
@@ -30,16 +39,8 @@ class ApplicationController < ActionController::Base
   end
 
   def log_request
-    @user.log_entries.create(
-      event: "#{request.request_method}_req".downcase,
-      body:  "#{request.fullpath}\n\n#{params.inspect}"
-    )
-
+    log_string_with_request(params.inspect)
     yield
-
-    @user.log_entries.create(
-      event: "#{request.request_method}_res".downcase,
-      body:  "#{request.fullpath}\n\n#{response.body}"
-    )
+    log_string_with_request(response.body)
   end
 end

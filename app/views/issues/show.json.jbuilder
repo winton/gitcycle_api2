@@ -1,4 +1,3 @@
 json.array! @branches do |branch|
-  @branch = branch
-  json.partial! "branch/show"
+  json.partial! "branch/show", branch: branch
 end

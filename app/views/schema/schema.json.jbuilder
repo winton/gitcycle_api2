@@ -8,7 +8,6 @@ json.set! "branch.json" do
         json.github_url     { json.type "string"; json.optional true }
         json.lighthouse_url { json.type "string"; json.optional true }
         json.name           { json.type "string"; json.optional true }
-        json.source         { json.type "string"; json.optional true }
         json.title          { json.type "string"; json.optional true }
         json.repo           { json.partial! "schema/repo" }
       end
@@ -16,7 +15,7 @@ json.set! "branch.json" do
     
     json.response do
       json.title    "GET branch.json (response)"
-      json.partial! "schema/branch"
+      json.partial! "schema/branch", source_branch: true
     end
   end
   
@@ -31,13 +30,13 @@ json.set! "branch.json" do
         json.source         { json.type "string" }
         json.title          { json.type "string"; json.optional true }
         json.repo           { json.partial! "schema/repo" }
-        json.source_repo    { json.partial! "schema/repo" }
+        json.source_branch  { json.partial! "schema/source_branch" }
       end
     end
     
     json.response do
       json.title    "POST branch.json (response)"
-      json.partial! "schema/branch"
+      json.partial! "schema/branch", source_branch: true
     end
   end
 
@@ -47,15 +46,15 @@ json.set! "branch.json" do
       json.type "object"
       json.additionalProperties false
       json.properties do
-        json.name     { json.type "string" }
-        json.source   { json.type "string" }
-        json.repo     { json.partial! "schema/repo" }
+        json.name          { json.type "string" }
+        json.repo          { json.partial! "schema/repo" }
+        json.source_branch { json.partial! "schema/source_branch" }
       end
     end
     
     json.response do
       json.title    "PUT branch.json (response)"
-      json.partial! "schema/branch"
+      json.partial! "schema/branch", source_branch: true
     end
   end
 end
@@ -75,7 +74,7 @@ json.set! "issues.json" do
       json.title "GET issues.json (response)"
       json.type  "array"
       json.items do
-        json.partial! "schema/branch"
+        json.partial! "schema/branch", source_branch: true
       end
     end
   end
@@ -95,7 +94,7 @@ json.set! "issues.json" do
       json.title "PUT issues.json (response)"
       json.type  "array"
       json.items do
-        json.partial! "schema/branch"
+        json.partial! "schema/branch", source_branch: true
       end
     end
   end
@@ -150,7 +149,7 @@ json.set! "pull_request.json" do
 
     json.response do
       json.title    "POST pull_request.json (response)"
-      json.partial! "schema/branch"
+      json.partial! "schema/branch", source_branch: true
     end
   end
 end

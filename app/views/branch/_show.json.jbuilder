@@ -1,9 +1,9 @@
 json.ignore_nil!
 
-json.(@branch, :created, :github_issue_id, :github_url, :lighthouse_url, :name, :source, :title)
+json.(branch, :github_issue_id, :github_url, :lighthouse_url, :name, :title)
 
-json.repo { json.partial! "branch/repo", repo: @branch.repo }
+json.repo { json.partial! "branch/repo", repo: branch.repo }
 
-if @branch.source_repo
-  json.source_repo { json.partial! "branch/repo", repo: @branch.source_repo }
+if branch.source_branch
+  json.source_branch { json.partial! "branch/show", branch: branch.source_branch }
 end

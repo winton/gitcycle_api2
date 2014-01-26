@@ -5,35 +5,22 @@ class Branch < ActiveRecord::Base
   after_commit :update_from_changes
   after_save   :update_from_changes  if Rails.env == 'test'
 
-  before_save  :set_created
+  attr_accessible :name, :state, :title
 
-  attr_accessible :name, :source, :state, :title
-
-  belongs_to :source_repo, class_name: 'Repo'
+  belongs_to :source_branch, class_name: 'Branch'
   belongs_to :repo
   belongs_to :user
+
+  has_many :child_branches, foreign_key: 'source_branch_id', class_name: 'Branch'
 
   validates_uniqueness_of :name, scope: [ :user_id ]
 
   class <<self
-    def find_from_params(params, user)
-      repo = Repo.find_from_params(params[:repo])
-      repo.save
-
-      where = {
-        repo_id: repo.id,
-        user_id: user.id
-      }
-
-      if params[:source_repo]
-        source_repo = Repo.find_from_params(params[:source_repo])
-        source_repo.save
-        
-        where[:source_repo_id] = source_repo.id
-      end
-
-      if col = (params[:name] || params[:branch])
-        where[:name] = col
+    def find_from_params(params)
+      where = {}
+      
+      if name = (params[:name] || params[:branch])
+        where[:name] = name
 
       elsif params[:title]
         where[:title] = params[:title]
@@ -45,7 +32,10 @@ class Branch < ActiveRecord::Base
         where.merge! github_conditions(params[:github_url])
       end
 
-      Branch.where(where).first_or_initialize
+      branch = Branch.where(where).first_or_initialize
+      branch.build_from_params(params)
+
+      branch
     end
 
     def github_conditions(url)
@@ -72,24 +62,36 @@ class Branch < ActiveRecord::Base
     end
   end
 
-  def create_from_params(params)
-    self.repo = Repo.find_from_params(params[:repo])
+  def base
+    "#{source_branch.login}:#{source_branch.name}"
+  end
+
+  def build_from_params(params)
+    if params[:repo]
+      self.repo ||= Repo.find_from_params(params[:repo])
+    end
+
+    if params[:source_branch]
+      self.source_branch ||= Branch.find_from_params(params[:source_branch])
+    end
+
+    if params[:user_id]
+      self.user_id ||= params[:user_id]
+    end
 
     %w(github_url lighthouse_url title).each do |attribute|
       send("#{attribute}=", params[attribute])  if params[attribute]
     end
+  end
 
-    self.source ||= params[:source]
+  def create_from_params(params)
+    build_from_params(params)
     save
   end
 
   def create_pull_request
     self.github_url = Github.new(user).pull_request(self)[:issue_url]
     save
-  end
-
-  def created
-    defined?(@created) ? @created : true
   end
 
   def head
@@ -124,11 +126,6 @@ class Branch < ActiveRecord::Base
   end
 
   private
-
-  def set_created
-    @created = self.new_record?
-    true
-  end
 
   def update_from_changes
     reset_changes # makes test env same as production

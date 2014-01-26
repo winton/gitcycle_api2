@@ -31,7 +31,8 @@ describe IssuesController do
             github_url:      "https://github.com/repo:owner:login/repo:name/pull/123",
             lighthouse_url:  :_DEL
           }
-        ]
+        ],
+        required: :source_branch
       )
     end
 
@@ -53,12 +54,12 @@ describe IssuesController do
         request:  { issues: "123", state: "state" },
         response: [
           {
-            created:         false,
             github_issue_id: 123,
             github_url:      "https://github.com/repo:owner:login/repo:name/pull/123",
             lighthouse_url:  :_DEL
           }
-        ]
+        ],
+        required: :source_branch
       )
     end
 

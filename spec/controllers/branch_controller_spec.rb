@@ -51,11 +51,11 @@ describe BranchController do
               lighthouse_url: lighthouse_url
             },
             response: {
-              created:         false,
               github_issue_id: :_DEL,
               github_url:      :_DEL,
               lighthouse_url:  lighthouse_url
-            }
+            },
+            required: :source_branch
           )
         end
 
@@ -83,11 +83,13 @@ describe BranchController do
 
           let(:res_params) do
             JsonSchemaSpec::Util.deep_merge(params[1],
-              created:     true,
-              name:        "title",
-              source_repo: {
-                owner: { name: "repo:owner:name", login: "repo:owner:login" },
-                user:  { name: "repo:user:name" } # because of Github.user stub
+              name: "title",
+              source_branch: {
+                title: :_DEL,
+                repo:  {
+                  owner: { name: "repo:owner:name", login: "repo:owner:login" },
+                  user:  { name: "repo:user:name" } # because of Github.user stub
+                }
               }
             )
           end
@@ -115,11 +117,15 @@ describe BranchController do
             github_url:      :_DEL,
             lighthouse_url:  :_DEL,
             name:            "title",
-            source_repo: {
-              owner: { name: "repo:owner:name", login: "repo:owner:login" },
-              user:  { name: "repo:user:name" } # because of Github.user stub
+            source_branch: {
+              title: :_DEL,
+              repo:  {
+                owner: { name: "repo:owner:name", login: "repo:owner:login" },
+                user:  { name: "repo:user:name" } # because of Github.user stub
+              }
             }
-          }
+          },
+          required: :source_branch
         )
       end
 
@@ -150,11 +156,15 @@ describe BranchController do
             github_url:      github_url,
             lighthouse_url:  :_DEL,
             name:            "title",
-            source_repo: {
-              owner: { name: "repo:owner:name", login: "repo:owner:login" },
-              user:  { name: "repo:user:name" } # because of Github.user stub
+            source_branch: {
+              title: :_DEL,
+              repo:  {
+                owner: { name: "repo:owner:name", login: "repo:owner:login" },
+                user:  { name: "repo:user:name" } # because of Github.user stub
+              }
             }
-          }
+          },
+          required: :source_branch
         )
       end
 
@@ -178,12 +188,14 @@ describe BranchController do
 
   describe :update do
     let(:params) do
-      json_schema_params(:branch, :put, response: {
-        created:         false,
-        github_issue_id: :_DEL,
-        github_url:      :_DEL,
-        lighthouse_url:  :_DEL
-      })
+      json_schema_params(:branch, :put,
+        response: {
+          github_issue_id: :_DEL,
+          github_url:      :_DEL,
+          lighthouse_url:  :_DEL
+        },
+        required: :source_branch
+      )
     end
 
     let(:req_params) { params[0] }

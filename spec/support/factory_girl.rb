@@ -1,13 +1,18 @@
 require "factory_girl"
 
 FactoryGirl.define do
-  factory :branch do
-    name   { "#{prefix}name" }
-    source { "#{prefix}source" }
-    title  { "#{prefix}title" }
+  factory :branch_base, class: Branch do
+    name  { "#{prefix}name" }
+    title { "#{prefix}title" }
 
-    association(:repo, prefix: "repo:")
-    association(:source_repo, prefix: "source_repo:")
+    factory :branch do
+      association(:repo, prefix: "repo:")
+      association(:source_branch, prefix: "source_branch:")
+    end
+
+    factory :source_branch do
+      association(:repo, prefix: "source_branch:repo:", factory: :source_branch_repo)
+    end
 
     ignore { prefix "" }
   end
@@ -20,12 +25,12 @@ FactoryGirl.define do
     association(:user, prefix: "repo:user:")
   end
 
-  factory :source_repo, class: Repo do
+  factory :source_branch_repo, class: Repo do
     name   { "#{prefix}name" }
     ignore { prefix "" }
-    
-    association(:owner, factory: :user, prefix: "source_repo:owner:")
-    association(:user, prefix: "source_repo:user:")
+
+    association(:owner, factory: :user, prefix: "source_branch:repo:owner:")
+    association(:user, prefix: "source_branch:repo:user:")
   end
 
   factory :user do

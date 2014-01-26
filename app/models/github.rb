@@ -27,7 +27,7 @@ class Github
       title: branch.title,
       body:  branch.body,
       head:  branch.head,
-      base:  branch.source
+      base:  branch.base
     ).body
     
     JSON.parse(response, symbolize_names: true)
