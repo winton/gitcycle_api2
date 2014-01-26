@@ -5,33 +5,15 @@
 $gridColumns: 10 !default;
 
 @import "bootstrap";
-@import "bootstrap/responsive";
 
-@media (min-width: 980px) {
-  body {
-  	padding-top: 60px;
-  }
+body {
+	padding-top: 60px;
 }
 
-.center {
-	text-align: center;
-}
-
-.navbar {
-	.brand-container {
-		position: relative;
-		z-index: 1000;
-
-		img {
-			height: 44px !important;
-			width: 111px !important;
-			margin: -12px 0 -21px;
-		}
-	}
-
-	ul.nav, .pull-right { display: none; }
-
-	.pull-right a {
-		width: 131px;
+.navbar-brand {
+	img {
+		height: 44px !important;
+		width: 111px !important;
+		margin: -12px 0 -21px;
 	}
 }

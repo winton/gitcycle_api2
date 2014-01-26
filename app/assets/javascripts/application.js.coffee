@@ -12,9 +12,9 @@ $ ->
   $.get "/session.json", (data) ->
     if data
       $('.logout').show()
-      $('.nav-collapse .nav').show()
+      $('.navbar-collapse .nav').show()
       gitcycle.user = data
       gitcycle.events.trigger("user", data)
     else
       $('.login').show()
-    $('.nav-collapse .pull-right').show()
+    $('.navbar-collapse .pull-right').show()

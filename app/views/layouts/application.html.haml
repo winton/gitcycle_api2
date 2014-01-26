@@ -13,26 +13,24 @@
 
     %title gitcycle - development cycle automation
   %body
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container
-          %a.btn.btn-navbar{ "data-target" => ".nav-collapse", "data-toggle" => "collapse" }
+    .navbar.navbar-default.navbar-fixed-top{role: "navigation"}
+      .container
+        .navbar-header
+          %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
+            %span.sr-only Toggle navigation
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          .brand-container
-            %a.brand{ :href => "/" }
-              = image_tag 'gitcycle.png'
-          .nav-collapse.collapse
-            %ul.nav
-              %li{ :class => active?('/logs') }
-                %a{:href => "/logs"} Logs
-            %ul.nav
-              %li{ :class => active?('/setup') }
-                %a{:href => "/setup"} Setup
-            .pull-right
-              %a.login.btn.btn-primary{ :href => "/login" }
-                Login via Github
-              %a.logout.btn{ :href => "/logout" }
-                Logout
+          %a.navbar-brand{ href: "/" }= image_tag 'gitcycle.png'
+        .collapse.navbar-collapse
+          %ul.nav.navbar-nav
+            %li{ :class => active?('/logs') }
+              %a{:href => "/logs"} Logs
+            %li{ :class => active?('/setup') }
+              %a{:href => "/setup"} Setup
+          %ul.nav.navbar-nav.navbar-right
+            %li
+              %a.login{ :href => "/login" } Login via Github
+            %li.active
+              %a.logout{ :href => "/logout" } Logout
     .container= yield
