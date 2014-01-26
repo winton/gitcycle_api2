@@ -223,7 +223,6 @@ GEM
     unicorn-rails (1.1.0)
       rack
       unicorn
-    vcr (2.6.0)
     whenever (0.8.4)
       activesupport (>= 2.3.4)
       chronic (>= 0.6.3)
@@ -265,7 +264,6 @@ DEPENDENCIES
   therubyracer
   uglifier
   unicorn-rails
-  vcr
   whenever
   will_paginate (~> 3.0)
   will_paginate-bootstrap

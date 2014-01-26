@@ -14,10 +14,7 @@ class User < ActiveRecord::Base
   has_many :log_entries
   has_many :owned_repos, :class_name => 'Repo', :foreign_key => 'owner_id'
   has_many :repos
-
-  has_many :assigned_lighthouse_tickets, :through => :lighthouse_users
-  has_many :lighthouse_tickets,          :through => :lighthouse_users
-
+  
   validates_presence_of   :gitcycle, :login
   validates_uniqueness_of :gitcycle, :login, :allow_nil => true
 
