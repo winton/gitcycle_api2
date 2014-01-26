@@ -4,7 +4,7 @@ class LighthouseUser < ActiveRecord::Base
 
   include PersistChanges
 
-  attr_accessible :lighthouse_id, :namespace, :token, :user_id
+  attr_accessible :namespace, :token
 
   after_commit :update_lighthouse_id
   after_save   :update_lighthouse_id if Rails.env == 'test'
