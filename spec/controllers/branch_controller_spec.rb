@@ -132,7 +132,7 @@ describe BranchController do
 
     context "with a github issue" do
 
-      let(:github_url) { "https://github.com/source_branch:repo:user:login/source_branch:repo:name/pull/0" }
+      let(:github_url) { generate_github_url(0) }
 
       let(:params) do
         json_schema_params(:branch, :post,

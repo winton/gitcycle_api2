@@ -24,7 +24,7 @@ describe PullRequestController do
         },
         response: {
           github_issue_id: 0,
-          github_url:      "https://github.com/source_branch:user:login/source_branch:repo:name/pull/0",
+          github_url:      generate_github_url(0),
           lighthouse_url:  :_DEL
         },
         required: :source_branch
@@ -38,7 +38,7 @@ describe PullRequestController do
 
       it "returns correct response" do
         Github.any_instance.should_receive(:pull_request).and_return(
-          issue_url: "https://github.com/source_branch:user:login/source_branch:repo:name/pull/0"
+          issue_url: generate_github_url(0)
         )
         Github.any_instance.should_receive(:issue).and_return(
           title: "title"

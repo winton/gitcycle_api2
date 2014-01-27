@@ -28,7 +28,7 @@ describe IssuesController do
         response: [
           {
             github_issue_id: 123,
-            github_url:      "https://github.com/source_branch:user:login/source_branch:repo:name/pull/123",
+            github_url:      generate_github_url,
             lighthouse_url:  :_DEL
           }
         ],
@@ -55,7 +55,7 @@ describe IssuesController do
         response: [
           {
             github_issue_id: 123,
-            github_url:      "https://github.com/source_branch:user:login/source_branch:repo:name/pull/123",
+            github_url:      generate_github_url,
             lighthouse_url:  :_DEL
           }
         ],
