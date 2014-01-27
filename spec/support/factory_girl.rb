@@ -8,10 +8,12 @@ FactoryGirl.define do
     factory :branch do
       association(:repo, prefix: "repo:")
       association(:source_branch, prefix: "source_branch:")
+      association(:user, prefix: "user:")
     end
 
     factory :source_branch do
       association(:repo, prefix: "source_branch:repo:", factory: :source_branch_repo)
+      association(:user, prefix: "source_branch:user:")
     end
 
     ignore { prefix "" }
@@ -21,7 +23,6 @@ FactoryGirl.define do
     name   { "#{prefix}name" }
     ignore { prefix "" }
 
-    association(:owner, factory: :user, prefix: "repo:owner:")
     association(:user, prefix: "repo:user:")
   end
 
@@ -29,7 +30,6 @@ FactoryGirl.define do
     name   { "#{prefix}name" }
     ignore { prefix "" }
 
-    association(:owner, factory: :user, prefix: "source_branch:repo:owner:")
     association(:user, prefix: "source_branch:repo:user:")
   end
 
@@ -40,7 +40,7 @@ FactoryGirl.define do
 
     ignore do
       login_prefix ""
-      prefix       ""
+      prefix       "user:"
       lighthouse_users_count 1
     end
 

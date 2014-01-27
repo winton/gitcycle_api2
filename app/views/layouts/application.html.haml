@@ -1,22 +1,22 @@
 !!! 5
 %html
   %head
-    = stylesheet_link_tag    "application", :media => "all"
+    = stylesheet_link_tag    "application", media: "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
 
-    %meta{ :charset => "utf-8" }
-    %meta{ :author => "" }
-    %meta{ :description => "" }
-    %meta{ :name => "viewport", :content => "width=device-width, initial-scale=1.0" }
-    %link{ :rel => "shortcut icon", :href => image_path('favicon.png') }
+    %meta{ charset: "utf-8" }
+    %meta{ author: "" }
+    %meta{ description: "" }
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
+    %link{ rel:  "shortcut icon", href: image_path('favicon.png') }
 
     %title gitcycle - development cycle automation
   %body
-    .navbar.navbar-default.navbar-fixed-top{role: "navigation"}
+    .navbar.navbar-default.navbar-fixed-top{ role: "navigation" }
       .container
         .navbar-header
-          %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
+          %button.navbar-toggle{ :"data-target" => ".navbar-collapse", :"data-toggle" => "collapse", type: "button" }
             %span.sr-only Toggle navigation
             %span.icon-bar
             %span.icon-bar
@@ -25,12 +25,12 @@
         .collapse.navbar-collapse
           %ul.nav.navbar-nav
             %li{ :class => active?('/logs') }
-              %a{:href => "/logs"} Logs
+              %a{ href: "/logs" } Logs
             %li{ :class => active?('/setup') }
-              %a{:href => "/setup"} Setup
+              %a{ href: "/setup" } Setup
           %ul.nav.navbar-nav.navbar-right
             %li
-              %a.login{ :href => "/login" } Login via Github
-            %li.active
-              %a.logout{ :href => "/logout" } Logout
+              %a.login{ href: "/login" } Login via Github
+            %li
+              %a.logout{ href: "/logout" } Logout
     .container= yield

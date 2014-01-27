@@ -8,11 +8,9 @@ class User < ActiveRecord::Base
   attr_accessible :github, :gravatar, :login, :name
   
   has_many :branches
-  has_many :github_projects
   has_many :lighthouse_users
   has_many :logs
   has_many :log_entries
-  has_many :owned_repos, :class_name => 'Repo', :foreign_key => 'owner_id'
   has_many :repos
   
   validates_presence_of   :gitcycle, :login

@@ -2,13 +2,9 @@ class Repo < ActiveRecord::Base
 
   include PersistChanges
 
-  after_commit :update_owner
-  after_save   :update_owner  if Rails.env == 'test'
-
   attr_accessible :name
 
   belongs_to :user
-  belongs_to :owner, class_name: 'User'
 
   has_many :branches
 
@@ -30,31 +26,19 @@ class Repo < ActiveRecord::Base
     end
   end
 
-  def owner_repo
-    if owner
-      owner.repos.where(name: name)
-    else
-      self
-    end
+  def login
+    user.login rescue nil
   end
 
-  def owner_or_user
-    owner || user
-  end
-
-  def update_owner
-    return  if owner_id
-
+  def owner
     github = Github.new(self)
     repo   = github.repo
 
     if repo[:parent]
-      self.owner = User.where(
+      User.where(
         login: repo[:parent][:owner][:login],
         name:  repo[:parent][:owner][:name]
-      ).first_or_create
+      ).first_or_initialize
     end
-
-    update_all_changes
   end
 end

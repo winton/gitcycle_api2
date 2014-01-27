@@ -24,8 +24,8 @@ describe RepoController do
       Github.any_instance.stub(:user).and_return(name: "user:name")
       Github.any_instance.stub(:repo).and_return(parent: {
         owner: {
-          login: "owner:login",
-          name:  "owner:name"
+          login: "source_branch:user:login",
+          name:  "source_branch:user:name"
         }
       })
 

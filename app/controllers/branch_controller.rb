@@ -5,7 +5,7 @@ class BranchController < ApplicationController
   around_action :log_request
 
   def create
-    @branch.create_from_params(params)
+    @branch.create_from_params(params, @user)
     render :show
   end
 
@@ -13,7 +13,7 @@ class BranchController < ApplicationController
   end
 
   def update
-    @branch.update_attributes(name: params[:name])
+    @branch.save
     render :show
   end
 end

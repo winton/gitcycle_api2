@@ -163,7 +163,7 @@ json.set! "repo.json" do
 
     json.response do
       json.title    "POST repo.json (response)"
-      json.partial! "schema/branch/repo"
+      json.partial! "schema/repo"
     end
   end
 end

@@ -107,7 +107,6 @@ ActiveRecord::Schema.define(version: 20140109005611) do
 
   create_table "repos", force: true do |t|
     t.string   "name"
-    t.integer  "owner_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -115,7 +114,6 @@ ActiveRecord::Schema.define(version: 20140109005611) do
 
   add_index "repos", ["name", "user_id"], name: "index_repos_on_name_and_user_id", unique: true, using: :btree
   add_index "repos", ["name"], name: "index_repos_on_name", using: :btree
-  add_index "repos", ["owner_id"], name: "index_repos_on_owner_id", using: :btree
   add_index "repos", ["user_id"], name: "index_repos_on_user_id", using: :btree
 
   create_table "sessions", force: true do |t|

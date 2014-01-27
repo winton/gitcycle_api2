@@ -23,7 +23,7 @@ class Github
 
   def pull_request(branch)
     response = @http.post(
-      "/repos/#{@branch.repo.owner_or_user.login}/#{@branch.repo.name}/pulls",
+      "/repos/#{@branch.source_repo_user.login}/#{@branch.source_repo.name}/pulls",
       title: branch.title,
       body:  branch.body,
       head:  branch.head,

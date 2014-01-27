@@ -63,7 +63,7 @@ class Branch < ActiveRecord::Base
   end
 
   def base
-    "#{source_branch.login}:#{source_branch.name}"
+    source_branch.name
   end
 
   def build_from_params(params)
@@ -75,17 +75,18 @@ class Branch < ActiveRecord::Base
       self.source_branch ||= Branch.find_from_params(params[:source_branch])
     end
 
-    if params[:user_id]
-      self.user_id ||= params[:user_id]
+    if params[:user]
+      self.user ||= User.find_from_params(params[:user])
     end
 
-    %w(github_url lighthouse_url title).each do |attribute|
+    %w(github_url lighthouse_url name title).each do |attribute|
       send("#{attribute}=", params[attribute])  if params[attribute]
     end
   end
 
-  def create_from_params(params)
+  def create_from_params(params, user)
     build_from_params(params)
+    self.user = user
     save
   end
 
@@ -95,7 +96,7 @@ class Branch < ActiveRecord::Base
   end
 
   def head
-    "#{owner.login}:#{name}"
+    "#{repo.login}:#{name}"
   end
 
   def lighthouse_url=(url)
@@ -112,17 +113,25 @@ class Branch < ActiveRecord::Base
     ].join("/")
   end
 
+  def login
+    user.login rescue nil
+  end
+
+  def source_repo_user
+    source_branch.repo.user rescue nil
+  end
+
+  def source_repo
+    source_branch.repo rescue nil
+  end
+
   def github_url=(url)
     self.github_issue_id = self.class.github_url_to_issue_id(url)
   end
 
   def github_url
-    return nil  unless repo && repo.owner && github_issue_id
-    "https://github.com/#{repo.owner.login}/#{repo.name}/pull/#{github_issue_id}"
-  end
-
-  def owner
-    repo.owner ? repo.owner : repo.user
+    return nil  unless source_repo_user && github_issue_id
+    "https://github.com/#{source_repo_user.login}/#{source_repo.name}/pull/#{github_issue_id}"
   end
 
   private

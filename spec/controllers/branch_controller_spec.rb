@@ -15,8 +15,8 @@ describe BranchController do
     before :each do
       Github.any_instance.stub(:repo).and_return(parent: {
         owner: {
-          login: "repo:owner:login",
-          name:  "repo:owner:name"
+          login: "source_branch:user:login",
+          name:  "source_branch:user:name"
         }
       })
 
@@ -83,14 +83,8 @@ describe BranchController do
 
           let(:res_params) do
             JsonSchemaSpec::Util.deep_merge(params[1],
-              name: "title",
-              source_branch: {
-                title: :_DEL,
-                repo:  {
-                  owner: { name: "repo:owner:name", login: "repo:owner:login" },
-                  user:  { name: "repo:user:name" } # because of Github.user stub
-                }
-              }
+              name:          "title",
+              source_branch: { title: :_DEL }
             )
           end
 
@@ -117,13 +111,7 @@ describe BranchController do
             github_url:      :_DEL,
             lighthouse_url:  :_DEL,
             name:            "title",
-            source_branch: {
-              title: :_DEL,
-              repo:  {
-                owner: { name: "repo:owner:name", login: "repo:owner:login" },
-                user:  { name: "repo:user:name" } # because of Github.user stub
-              }
-            }
+            source_branch:   { title: :_DEL }
           },
           required: :source_branch
         )
@@ -144,7 +132,7 @@ describe BranchController do
 
     context "with a github issue" do
 
-      let(:github_url) { "https://github.com/repo:owner:login/repo:name/pull/0" }
+      let(:github_url) { "https://github.com/source_branch:repo:user:login/source_branch:repo:name/pull/0" }
 
       let(:params) do
         json_schema_params(:branch, :post,
@@ -156,13 +144,7 @@ describe BranchController do
             github_url:      github_url,
             lighthouse_url:  :_DEL,
             name:            "title",
-            source_branch: {
-              title: :_DEL,
-              repo:  {
-                owner: { name: "repo:owner:name", login: "repo:owner:login" },
-                user:  { name: "repo:user:name" } # because of Github.user stub
-              }
-            }
+            source_branch:   { title: :_DEL }
           },
           required: :source_branch
         )
@@ -209,6 +191,7 @@ describe BranchController do
       branch
       put(:update, req_params.merge(format: :json))
       body = JSON.parse(response.body, symbolize_names: true)
+
       expect(body).to eql(res_params)
     end
   end
