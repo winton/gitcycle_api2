@@ -10,6 +10,6 @@ if branch.source_branch
   json.source_branch { json.partial! "branch/show", branch: branch.source_branch }
 end
 
-json.user do
-  json.(branch.user, :login)
+if branch.user
+  json.user { json.(branch.user, :login) }
 end

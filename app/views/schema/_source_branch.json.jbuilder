@@ -3,5 +3,4 @@ json.additionalProperties false
 json.properties do
   json.name { json.type "string" }
   json.repo { json.partial! "schema/repo" }
-  json.user { json.partial! "schema/user" }
 end

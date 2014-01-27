@@ -83,7 +83,6 @@ describe BranchController do
 
           let(:res_params) do
             JsonSchemaSpec::Util.deep_merge(params[1],
-              name:          "title",
               source_branch: { title: :_DEL }
             )
           end
@@ -110,7 +109,6 @@ describe BranchController do
             github_issue_id: :_DEL,
             github_url:      :_DEL,
             lighthouse_url:  :_DEL,
-            name:            "title",
             source_branch:   { title: :_DEL }
           },
           required: :source_branch
@@ -143,7 +141,6 @@ describe BranchController do
             github_issue_id: 0,
             github_url:      github_url,
             lighthouse_url:  :_DEL,
-            name:            "title",
             source_branch:   { title: :_DEL }
           },
           required: :source_branch

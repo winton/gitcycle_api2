@@ -1,60 +1,37 @@
 json.set! "branch.json" do
   json.get do
     json.request do
-      json.title "GET branch.json (request)"
-      json.type  "object"
-      json.additionalProperties false
-      json.properties do
-        json.github_url     { json.type "string"; json.optional true }
-        json.lighthouse_url { json.type "string"; json.optional true }
-        json.name           { json.type "string"; json.optional true }
-        json.title          { json.type "string"; json.optional true }
-        json.repo           { json.partial! "schema/repo" }
-      end
+      json.title    "GET branch.json (request)"
+      json.partial! "schema/branch", req: "GET"
     end
     
     json.response do
       json.title    "GET branch.json (response)"
-      json.partial! "schema/branch", source_branch: true
+      json.partial! "schema/branch", res: "GET"
     end
   end
   
   json.post do
     json.request do
-      json.title "POST branch.json (request)"
-      json.type "object"
-      json.additionalProperties false
-      json.properties do
-        json.github_url     { json.type "string"; json.optional true }
-        json.lighthouse_url { json.type "string"; json.optional true }
-        json.source         { json.type "string" }
-        json.title          { json.type "string"; json.optional true }
-        json.repo           { json.partial! "schema/repo" }
-        json.source_branch  { json.partial! "schema/source_branch" }
-      end
+      json.title    "POST branch.json (request)"
+      json.partial! "schema/branch", req: "POST"
     end
     
     json.response do
       json.title    "POST branch.json (response)"
-      json.partial! "schema/branch", source_branch: true
+      json.partial! "schema/branch", res: "POST"
     end
   end
 
   json.put do
     json.request do
-      json.title "PUT branch.json (request)"
-      json.type "object"
-      json.additionalProperties false
-      json.properties do
-        json.name          { json.type "string" }
-        json.repo          { json.partial! "schema/repo" }
-        json.source_branch { json.partial! "schema/source_branch" }
-      end
+      json.title    "PUT branch.json (request)"
+      json.partial! "schema/branch", req: "PUT"
     end
     
     json.response do
       json.title    "PUT branch.json (response)"
-      json.partial! "schema/branch", source_branch: true
+      json.partial! "schema/branch", res: "PUT"
     end
   end
 end
@@ -74,7 +51,7 @@ json.set! "issues.json" do
       json.title "GET issues.json (response)"
       json.type  "array"
       json.items do
-        json.partial! "schema/branch", source_branch: true
+        json.partial! "schema/branch", source_branch: true, title_optional: false
       end
     end
   end
