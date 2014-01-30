@@ -1,8 +1,9 @@
+id_optional            ||= false
+is_source_branch       ||= false
 name_optional          ||= false
 optional               ||= false
 req                    ||= false
 res                    ||= false
-is_source_branch       ||= false
 source_branch          ||= false
 source_branch_optional ||= false
 title_optional         ||= false
@@ -19,7 +20,7 @@ if %w(POST PUT).include?(req)
   name_optional = false
 end
 
-if %w(PUT).include?(req) || %w(GET PUT).include?(res)
+if %w(PUT POST).include?(req) || %w(GET PUT).include?(res)
   source_branch_optional = true
 end
 
@@ -27,10 +28,15 @@ if req || %w(GET).include?(res) || is_source_branch
   title_optional = true
 end
 
+if %w(GET POST).include?(req) || res == "GET"
+  id_optional = true
+end
+
 json.type "object"
 json.additionalProperties false
 json.optional(true)  if optional
 json.properties do
+  json.id              { json.type "integer"; json.optional id_optional}
   json.github_issue_id { json.type "integer"; json.optional true }
   json.github_url      { json.type "string";  json.optional true }
   json.lighthouse_url  { json.type "string";  json.optional true }

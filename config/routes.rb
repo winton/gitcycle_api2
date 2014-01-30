@@ -64,7 +64,6 @@ GitcycleApi2::Application.routes.draw do
   resource  :issues,       controller: :issues,       only:   [ :show,  :update ]
   resources :logs,         controller: :logs,         only:   [ :index, :create, :show ]
   resource  :pull_request, controller: :pull_request, only:   [ :create ]
-  resource  :repo,         controller: :repo,         only:   [ :create ]
   resource  :setup,        controller: :setup,        only:   [ :show ] do
     post    :lighthouse,   on:         :member
   end

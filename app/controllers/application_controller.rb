@@ -33,11 +33,6 @@ class ApplicationController < ActionController::Base
     render(nothing: true, status: :forbidden)  unless @branch
   end
 
-  def find_repo
-    @repo = Repo.find_from_params(params)
-    render(nothing: true, status: :forbidden)  unless @repo
-  end
-
   def log_request
     log_string_with_request(params.inspect)
     yield

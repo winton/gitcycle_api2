@@ -74,7 +74,7 @@ describe BranchController do
           end
 
           it "returns correct response" do
-            body = JSON.parse(response.body, symbolize_names: true)
+            body = parse_body(response.body)
             expect(body).to eql(res_params)
           end
         end
@@ -92,7 +92,7 @@ describe BranchController do
           end
 
           it "returns correct response" do
-            body = JSON.parse(response.body, symbolize_names: true)
+            body = parse_body(response.body)
             expect(body).to eql(res_params)
           end
         end
@@ -123,7 +123,7 @@ describe BranchController do
       end
 
       it "returns correct response" do
-        body = JSON.parse(response.body, symbolize_names: true)
+        body = parse_body(response.body)
         expect(body).to eql(res_params)
       end
     end
@@ -159,7 +159,7 @@ describe BranchController do
 
       it "returns correct response" do
         post(:create, req_params.merge(format: :json))
-        body = JSON.parse(response.body, symbolize_names: true)
+        body = parse_body(response.body)
         expect(body).to eql(res_params)
       end
     end
@@ -187,7 +187,7 @@ describe BranchController do
     it "returns correct response" do
       branch
       put(:update, req_params.merge(format: :json))
-      body = JSON.parse(response.body, symbolize_names: true)
+      body = parse_body(response.body)
 
       expect(body).to eql(res_params)
     end

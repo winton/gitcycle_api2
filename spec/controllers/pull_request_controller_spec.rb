@@ -44,7 +44,7 @@ describe PullRequestController do
           title: "title"
         )
         post(:create, req_params)
-        body = JSON.parse(response.body, symbolize_names: true)
+        body = parse_body(response.body)
         expect(body).to eql(res_params)
       end
     end
