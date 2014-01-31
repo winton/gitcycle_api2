@@ -5,11 +5,7 @@ class SetupController < ApplicationController
   around_action :log_request,             only: :lighthouse
 
   def lighthouse
-    @user.lighthouse_users.where(
-      namespace: nil,
-      token:     params[:token]
-    ).first_or_create
-
+    LighthouseUser.find_from_params(params, @user)
     render nothing: true
   end
   

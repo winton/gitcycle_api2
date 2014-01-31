@@ -1,7 +1,5 @@
 class Repo < ActiveRecord::Base
 
-  include PersistChanges
-
   attr_accessible :name
 
   belongs_to :user

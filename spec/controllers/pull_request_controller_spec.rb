@@ -40,9 +40,6 @@ describe PullRequestController do
         Github.any_instance.should_receive(:pull_request).and_return(
           issue_url: generate_github_url(0)
         )
-        Github.any_instance.should_receive(:issue).and_return(
-          title: "title"
-        )
         post(:create, req_params)
         body = parse_body(response.body)
         expect(body).to eql(res_params)

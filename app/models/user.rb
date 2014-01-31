@@ -1,10 +1,5 @@
 class User < ActiveRecord::Base
 
-  include PersistChanges
-
-  after_commit :update_name
-  after_save   :update_name  if Rails.env == 'test'
-
   attr_accessible :github, :gravatar, :login, :name
   
   has_many :branches
@@ -27,23 +22,11 @@ class User < ActiveRecord::Base
   class <<self
     def find_from_params(params)
       if params[:login]
-        User.where(login: params[:login]).first_or_create
+        user = User.where(login: params[:login]).first_or_initialize
+        user.update_name
+        user
       end
     end
-  end
-
-  def hash_lighthouse_users_by_lighthouse_id
-    Hash[ lighthouse_users.map { |user| [ user.lighthouse_id, user ] } ]
-  end
-
-  def update_name
-    return  if name
-
-    github = Github.new(self)
-    user   = github.user
-
-    self.name = user[:name]
-    update_all_changes
   end
 
   def update_nil_lighthouse_user_namespaces(namespace)
@@ -51,5 +34,15 @@ class User < ActiveRecord::Base
       lh_user.namespace = namespace
       lh_user.save
     end
+  end
+
+  def update_name
+    unless name
+      github = Github.new(self)
+      user   = github.user
+
+      self.name = user[:name]
+    end
+    save
   end
 end

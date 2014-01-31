@@ -1,10 +1,5 @@
 class Branch < ActiveRecord::Base
 
-  include PersistChanges
-
-  after_commit :update_from_changes
-  after_save   :update_from_changes  if Rails.env == 'test'
-
   attr_accessible :name, :state, :title
 
   belongs_to :source_branch, class_name: 'Branch'
@@ -82,17 +77,28 @@ class Branch < ActiveRecord::Base
     %w(github_url lighthouse_url name title).each do |attribute|
       send("#{attribute}=", params[attribute])  if params[attribute]
     end
+
+    update_from_changes
   end
 
   def create_from_params(params, user)
-    build_from_params(params)
     self.user = user
+    build_from_params(params)
     save
   end
 
   def create_pull_request
     self.github_url = Github.new(user).pull_request(self)[:issue_url]
     save
+  end
+
+  def github_url=(url)
+    self.github_issue_id = self.class.github_url_to_issue_id(url)
+  end
+
+  def github_url
+    return nil  unless source_repo_user && github_issue_id
+    "https://github.com/#{source_repo_user.login}/#{source_repo.name}/pull/#{github_issue_id}"
   end
 
   def head
@@ -125,33 +131,23 @@ class Branch < ActiveRecord::Base
     source_branch.repo rescue nil
   end
 
-  def github_url=(url)
-    self.github_issue_id = self.class.github_url_to_issue_id(url)
-  end
-
-  def github_url
-    return nil  unless source_repo_user && github_issue_id
-    "https://github.com/#{source_repo_user.login}/#{source_repo.name}/pull/#{github_issue_id}"
-  end
-
   private
 
   def update_from_changes
-    reset_changes # makes test env same as production
-
-    update_from_github      if was_changed?(:github_issue_id)
-    update_from_lighthouse  if was_changed?(:lighthouse_ticket_id)
-    update_from_title       if was_changed?(:title)
-    
-    update_all_changes
+    update_from_github      if github_issue_id_changed?
+    update_from_lighthouse  if lighthouse_ticket_id_changed?
+    update_from_title       if title_changed?
   end
 
   def update_from_github
+    return  unless user
+
     issue      = Github.new(user).issue(github_url)
     self.title = issue[:title]
   end
 
   def update_from_lighthouse
+    return  unless user
     user.update_nil_lighthouse_user_namespaces(lighthouse_namespace)
     
     lh_user = user.lighthouse_users.find_by(namespace: lighthouse_namespace)

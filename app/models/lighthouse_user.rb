@@ -1,18 +1,23 @@
-require 'persist_changes'
-
 class LighthouseUser < ActiveRecord::Base
 
-  include PersistChanges
-
   attr_accessible :namespace, :token
-
-  after_commit :update_lighthouse_id
-  after_save   :update_lighthouse_id if Rails.env == 'test'
 
   after_commit :remove_dups
   after_save   :remove_dups if Rails.env == 'test'
 
   belongs_to :user
+
+  class <<self
+    def find_from_params(params, user)
+      lh_user = user.lighthouse_users.where(
+        namespace: nil,
+        token:     params[:token]
+      ).first_or_initialize
+
+      lh_user.update_lighthouse_id
+      lh_user
+    end
+  end
 
   def remove_dups
     LighthouseUser.where(<<-SQL, namespace, token, id).delete_all
@@ -21,10 +26,9 @@ class LighthouseUser < ActiveRecord::Base
   end
 
   def update_lighthouse_id
-    return if lighthouse_id || !namespace
-    reset_changes # makes test env same as production
-
-    self.lighthouse_id = Lighthouse.new(self).user[:id]
-    update_all_changes
+    if !lighthouse_id && namespace
+      self.lighthouse_id = Lighthouse.new(self).user[:id]
+    end
+    save
   end
 end
