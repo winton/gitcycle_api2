@@ -8,16 +8,11 @@ class Log < ActiveRecord::Base
   class <<self
 
     def create_from_params(params, user)
-      params[:events].each { |e| e[:ran_at] = e[:ran_at].to_i }
+      ran_at_to_i(params)
 
       first = params[:events].first
       last  = params[:events].last
-
-      log = user.logs.create(
-        exit_code:   last[:body],
-        started_at:  first[:ran_at],
-        finished_at: last[:ran_at]
-      )
+      log   = create_log(user, first, last)
 
       absorb_server_side_log_entries(user, log, first, last)
       create_log_entries(user, log, params)
@@ -35,6 +30,14 @@ class Log < ActiveRecord::Base
       end
     end
 
+    def create_log(user, first, last)
+      user.logs.create(
+        exit_code:   last[:body],
+        started_at:  first[:ran_at],
+        finished_at: last[:ran_at]
+      )
+    end
+
     def create_log_entries(user, log, params)
       params[:events].each do |p|
         entry = log.log_entries.build(
@@ -45,6 +48,12 @@ class Log < ActiveRecord::Base
         )
         entry.user = user
         entry.save
+      end
+    end
+
+    def ran_at_to_i(params)
+      params[:events].each do |e|
+        e[:ran_at] = e[:ran_at].to_i
       end
     end
   end

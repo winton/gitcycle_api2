@@ -12,24 +12,9 @@ class Branch < ActiveRecord::Base
 
   class <<self
     def find_from_params(params)
-      where = {}
-      
-      if name = (params[:name] || params[:branch])
-        where[:name] = name
-
-      elsif params[:title]
-        where[:title] = params[:title]
-      
-      elsif params[:lighthouse_url]
-        where.merge! lighthouse_conditions(params[:lighthouse_url])
-      
-      elsif params[:github_url]
-        where.merge! github_conditions(params[:github_url])
-      end
-
+      where  = params_to_conditions(params)
       branch = Branch.where(where).first_or_initialize
       branch.build_from_params(params)
-
       branch
     end
 
@@ -54,6 +39,25 @@ class Branch < ActiveRecord::Base
 
     def lighthouse_url_to_properties(url)
       url.match(/:\/\/([^\.]+).+\/projects\/(\d+)\/tickets\/(\d+)/).to_a[1..3]
+    end
+
+    def params_to_conditions(params)
+      where = {}
+      
+      if name = (params[:name] || params[:branch])
+        where[:name] = name
+
+      elsif params[:title]
+        where[:title] = params[:title]
+      
+      elsif params[:lighthouse_url]
+        where.merge! lighthouse_conditions(params[:lighthouse_url])
+      
+      elsif params[:github_url]
+        where.merge! github_conditions(params[:github_url])
+      end
+
+      where
     end
   end
 
