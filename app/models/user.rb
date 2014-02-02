@@ -21,8 +21,11 @@ class User < ActiveRecord::Base
 
   class <<self
     def find_from_params(params)
-      if params[:login]
+      if params.is_a?(self)
+        params
+      else params[:login]
         user = User.where(login: params[:login]).first_or_initialize
+        user.name = params[:name]  if params[:name]
         user.update_name
         user
       end

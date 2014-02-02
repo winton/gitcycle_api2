@@ -5,7 +5,7 @@ class BranchController < ApplicationController
   around_action :log_request
 
   def create
-    @branch.create_from_params(params, @user)
+    @branch.create_from_params(params)
     render :show
   end
 

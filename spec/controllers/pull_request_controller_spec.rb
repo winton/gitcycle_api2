@@ -49,6 +49,10 @@ describe PullRequestController do
     context "when branch does not exist" do
 
       it "returns correct response" do
+        Github.any_instance.should_receive(:repo).with().and_return({})
+        Github.any_instance.stub(:reference).and_return({})
+        Github.any_instance.stub(:user).and_return({})
+
         post(:create, req_params.merge(name: "doesnt-exist"))
         response.status.should eql(403)
       end

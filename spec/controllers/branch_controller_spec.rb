@@ -32,9 +32,7 @@ describe BranchController do
 
     context "with a lighthouse ticket" do
       
-      let(:lighthouse_url) do
-        "https://namespace.lighthouseapp.com/projects/0/tickets/0"
-      end
+      let(:lighthouse_url) { generate_lighthouse_url }
 
       let(:branch) do
         FactoryGirl.create(:branch,

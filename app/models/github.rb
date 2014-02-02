@@ -33,6 +33,11 @@ class Github
     JSON.parse(response, symbolize_names: true)
   end
 
+  def reference(ref)
+    response = @http.get("/repos/#{@user.login}/#{@repo.name}/git/refs/heads/#{ref}").body
+    JSON.parse(response, symbolize_names: true)
+  end
+
   def repo
     response = @http.get("/repos/#{@user.login}/#{@repo.name}").body
     JSON.parse(response, symbolize_names: true)

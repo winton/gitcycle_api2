@@ -27,9 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def find_branch
-    params[:user_id] = @user.id
-    @branch = Branch.find_from_params(params)
-    
+    @branch = Branch.find_from_params(params, @user)
     render(nothing: true, status: :forbidden)  unless @branch
   end
 

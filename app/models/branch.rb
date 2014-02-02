@@ -11,9 +11,12 @@ class Branch < ActiveRecord::Base
   validates_uniqueness_of :name, scope: [ :user_id ]
 
   class <<self
-    def find_from_params(params)
+    def find_from_params(params, user=nil)
+      params[:user] = user  if user
+
       where  = params_to_conditions(params)
       branch = Branch.where(where).first_or_initialize
+      
       branch.build_from_params(params)
       branch
     end
@@ -70,8 +73,10 @@ class Branch < ActiveRecord::Base
       self.repo ||= Repo.find_from_params(params[:repo])
     end
 
-    if params[:source_branch]
-      self.source_branch ||= Branch.find_from_params(params[:source_branch])
+    if params[:source_branch] != false
+      self.source_branch ||= find_source_branch_from_params(
+        params[:source_branch]
+      )
     end
 
     if params[:user]
@@ -85,8 +90,7 @@ class Branch < ActiveRecord::Base
     update_from_changes
   end
 
-  def create_from_params(params, user)
-    self.user = user
+  def create_from_params(params)
     build_from_params(params)
     save
   end
@@ -103,6 +107,31 @@ class Branch < ActiveRecord::Base
   def github_url
     return nil  unless source_repo_user && github_issue_id
     "https://github.com/#{source_repo_user.login}/#{source_repo.name}/pull/#{github_issue_id}"
+  end
+
+  def find_source_branch_from_params(params)
+    params ||= {}
+    
+    params[:name] ||= self.name
+    params[:source_branch] = false
+
+    if repo
+      params[:repo] ||= {}
+      params[:repo][:name] ||= repo.name
+      params[:repo][:user] ||= {}
+
+      unless params[:repo][:user][:login]
+        user = [ repo.owner, repo.user ].detect do |u|
+          repo.ref_exists?(u, self.name)
+        end
+        if user
+          params[:repo][:user][:login] = user.login
+          params[:repo][:user][:name]  = user.name
+        end
+      end
+    end
+    
+    Branch.find_from_params(params)
   end
 
   def head
@@ -166,11 +195,13 @@ class Branch < ActiveRecord::Base
     return  if self.name
 
     name        = title.downcase
-    valid_chars = /[^\S\w-]/
+    valid_chars = /[^a-zA-Z]/
     many_dashes = /-{2,}/
+    wrong_dash  = /^-|-$/
 
     name.gsub!(valid_chars, '-')
     name.gsub!(many_dashes, '-')
+    name.gsub!(wrong_dash,  '')
 
     if name.length > 30
       last_word = /-[^-]*$/

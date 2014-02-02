@@ -39,4 +39,9 @@ class Repo < ActiveRecord::Base
       ).first_or_initialize
     end
   end
+
+  def ref_exists?(user, branch)
+    ref = Github.new(self, user).reference(branch)
+    ref[:ref].present?
+  end
 end
