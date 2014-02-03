@@ -1,4 +1,8 @@
+require "updater"
+
 class Branch < ActiveRecord::Base
+
+  include Updater
 
   attr_accessible :name, :state, :title
 
@@ -163,52 +167,5 @@ class Branch < ActiveRecord::Base
 
   def source_repo
     source_branch.repo rescue nil
-  end
-
-  private
-
-  def update_from_changes
-    update_from_github      if github_issue_id_changed?
-    update_from_lighthouse  if lighthouse_ticket_id_changed?
-    update_from_title       if title_changed?
-  end
-
-  def update_from_github
-    return  unless user
-
-    issue      = Github.new(user).issue(github_url)
-    self.title = issue[:title]
-  end
-
-  def update_from_lighthouse
-    return  unless user
-    user.update_nil_lighthouse_user_namespaces(lighthouse_namespace)
-    
-    lh_user = user.lighthouse_users.find_by(namespace: lighthouse_namespace)
-    return  unless lh_user
-
-    ticket = Lighthouse.new(lh_user).ticket(lighthouse_project_id, lighthouse_ticket_id)
-    self.title = ticket[:title]
-    self.body  = ticket[:body]
-  end
-
-  def update_from_title
-    return  if self.name
-
-    name        = title.downcase
-    valid_chars = /[^a-zA-Z]/
-    many_dashes = /-{2,}/
-    wrong_dash  = /^-|-$/
-
-    name.gsub!(valid_chars, '-')
-    name.gsub!(many_dashes, '-')
-    name.gsub!(wrong_dash,  '')
-
-    if name.length > 30
-      last_word = /-[^-]*$/
-      name      = name[0..29].gsub(last_word, '')
-    end
-
-    self.name = name
   end
 end
