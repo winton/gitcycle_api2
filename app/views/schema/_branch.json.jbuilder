@@ -12,7 +12,7 @@ if req
   name_optional = true
 end
 
-if %w(POST PUT).include?(req) || res
+if %w(GET POST PUT).include?(req) || res
   source_branch = true
 end
 
@@ -20,7 +20,7 @@ if %w(POST PUT).include?(req)
   name_optional = false
 end
 
-if %w(PUT POST).include?(req) || %w(GET PUT).include?(res)
+if %w(GET PUT POST).include?(req) || %w(GET PUT).include?(res)
   source_branch_optional = true
 end
 
