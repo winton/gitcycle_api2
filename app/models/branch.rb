@@ -77,12 +77,6 @@ class Branch < ActiveRecord::Base
       self.repo ||= Repo.find_from_params(params[:repo])
     end
 
-    if params[:source_branch] != false
-      self.source_branch ||= find_source_branch_from_params(
-        params[:source_branch]
-      )
-    end
-
     if params[:user]
       self.user ||= User.find_from_params(params[:user])
     end
@@ -92,6 +86,12 @@ class Branch < ActiveRecord::Base
     end
 
     update_from_changes
+
+    if params[:source_branch]
+      self.source_branch ||= find_source_branch_from_params(
+        params[:source_branch]
+      )
+    end
   end
 
   def create_from_params(params)
@@ -114,9 +114,9 @@ class Branch < ActiveRecord::Base
   end
 
   def find_source_branch_from_params(params)
+    return nil  unless params[:name]
+
     params ||= {}
-    
-    params[:name] ||= self.name
     params[:source_branch] = false
 
     pick_source_branch_repo(params, repo)
@@ -146,18 +146,15 @@ class Branch < ActiveRecord::Base
   end
 
   def pick_source_branch_repo(params, repo)
-    params[:repo] ||= {}
-    params[:repo][:name] ||= repo.name
-    params[:repo][:user] ||= {}
+    return  unless user
+    return  if defined?(params[:repo][:user][:login])
 
-    unless params[:repo][:user][:login]
-      user = [ repo.owner, repo.user ].detect do |u|
-        repo.ref_exists?(u, self.name)
-      end
-      if user
-        params[:repo][:user][:login] = user.login
-        params[:repo][:user][:name]  = user.name
-      end
+    if repo.ref_exists?(user, repo.owner, params[:name])
+      params[:repo] ||= {}
+      params[:repo][:name] ||= repo.name
+      params[:repo][:user] ||= {}
+      params[:repo][:user][:login] = repo.owner.login
+      params[:repo][:user][:name]  = repo.owner.name
     end
   end
 
