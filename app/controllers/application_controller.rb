@@ -15,9 +15,9 @@ class ApplicationController < ActionController::Base
     redirect_to '/' unless @user
   end
 
-  def log_string_with_request(str)
+  def log_string_with_request(type, str)
     @user.log_entries.create(
-      event: "#{request.request_method}_req".downcase,
+      event: "#{request.request_method}_#{type}".downcase,
       body:  "#{request.fullpath}\n\n#{str}"
     )
   end
@@ -32,8 +32,11 @@ class ApplicationController < ActionController::Base
   end
 
   def log_request
-    log_string_with_request(params.inspect)
+    log_string_with_request(:req, params.inspect)
     yield
-    log_string_with_request(response.body)
+    log_string_with_request(:res, response.body)
+  rescue Exception => e
+    log_string_with_request(:error, "#{e.to_s}\n#{e.backtrace.join("\n")}")
+    raise e
   end
 end
