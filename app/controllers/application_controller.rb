@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def find_branch
-    @branch = Branch.find_from_params(params, @user)
+    @branch = Track.new(params).find_branch
     render(nothing: true, status: :forbidden)  unless @branch
   end
 

@@ -9,21 +9,6 @@ class Repo < ActiveRecord::Base
   validates_uniqueness_of :name, scope: :user_id
   validates_presence_of   :name, :user_id
 
-  class <<self
-    def find_from_params(params)
-      if params[:user]
-        user = User.find_from_params(params[:user])
-      end
-
-      if params[:name] && user
-        Repo.where(
-          name:    params[:name],
-          user_id: user.id
-        ).first_or_initialize
-      end
-    end
-  end
-
   def login
     user.login rescue nil
   end

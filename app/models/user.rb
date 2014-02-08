@@ -19,19 +19,6 @@ class User < ActiveRecord::Base
     user.gitcycle ||= token
   end
 
-  class <<self
-    def find_from_params(params)
-      if params.is_a?(self)
-        params
-      else params[:login]
-        user = User.where(login: params[:login]).first_or_initialize
-        user.name = params[:name]  if params[:name]
-        user.update_name
-        user
-      end
-    end
-  end
-
   def update_nil_lighthouse_user_namespaces(namespace)
     lighthouse_users.where(namespace: nil).each do |lh_user|
       lh_user.namespace = namespace

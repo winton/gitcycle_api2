@@ -6,7 +6,7 @@ class PullRequestController < ApplicationController
   around_action :log_request
 
   def create
-    @branch.create_pull_request
+    PullRequest.new.update_branch(@branch)
     render "branch/show.json", locals: { branch: @branch }
   end
 end

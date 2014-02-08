@@ -60,14 +60,14 @@ GitcycleApi2::Application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq/'
 
-  resource  :branch,       controller: :branch,       except: [ :edit,  :new ]
-  resource  :issues,       controller: :issues,       only:   [ :show,  :update ]
-  resources :logs,         controller: :logs,         only:   [ :index, :create, :show ]
+  resource  :issues,       controller: :issues,       only:   [ :show,   :update ]
+  resources :logs,         controller: :logs,         only:   [ :index,  :create, :show ]
   resource  :pull_request, controller: :pull_request, only:   [ :create ]
+  resource  :session,      controller: :session,      only:   [ :create, :destroy, :show ]
   resource  :setup,        controller: :setup,        only:   [ :show ] do
     post    :lighthouse,   on:         :member
   end
-  resource  :session,      controller: :session,      only:   [ :create, :destroy, :show ]
+  resource  :track,        controller: :track,        only:   [ :put ]
   resource  :user,         controller: :user,         only:   [ :show ]
 
   get '/auth/:provider/callback', to: 'session#create'

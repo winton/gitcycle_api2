@@ -1,14 +1,14 @@
-module Updaters
-  module Title
+class UpdateBranch
+  class FromName < Struct.new(:branch)
 
-    def update_from_title?
-      title_changed?
+    def update?
+      !branch.name && branch.title_changed?
     end
 
-    def update_from_title
-      return  if self.name
+    def update
+      return  unless update?
 
-      name        = title.downcase
+      name        = branch.title.downcase
       valid_chars = /[^a-zA-Z]/
       many_dashes = /-{2,}/
       wrong_dash  = /^-|-$/
@@ -22,7 +22,7 @@ module Updaters
         name      = name[0..29].gsub(last_word, '')
       end
 
-      self.name = name
+      branch.name = name
     end
   end
 end
