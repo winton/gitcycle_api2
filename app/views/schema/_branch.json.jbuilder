@@ -2,7 +2,6 @@ is_source_branch ||= false
 
 json.type "object"
 json.additionalProperties false
-json.optional true
 json.required []
 json.properties do
   json.id              { json.type "integer" }

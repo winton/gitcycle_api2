@@ -4,10 +4,11 @@ json.set! "track.json" do
       json.title "PUT track.json (request)"
       json.type  "object"
       json.additionalProperties false
+      json.required []
       json.properties do
         json.branch         { json.type "string" }
         json.github_url     { json.type "string" }
-        json.id             { json.type "integer" }
+        json.id             { json.type "string" }
         json.lighthouse_url { json.type "string" }
         json.query          { json.type "string" }
         json.reset          { json.type "string" }

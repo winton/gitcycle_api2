@@ -2,6 +2,19 @@ require 'spec_helper'
 
 describe Track do
 
+  describe "#find_branch" do
+    it "uses to_conditions to find Branch" do
+      branch = double(:branch)
+      track = Track.new({})
+
+      Branch.should_receive(:where).
+        with(track.to_conditions).ordered.and_return(branch)
+      branch.should_receive(:first_or_initialize).with().ordered
+
+      track.find_branch
+    end
+  end
+
   context "with branch parameter" do
 
     let :params do
@@ -140,6 +153,22 @@ describe Track do
       it "adds title option" do
         expect(subject.to_options).to eq(response)
       end
+    end
+  end
+
+  describe "#update_branch" do
+    it "initializes UpdateBranch" do
+      update_branch = double(:update_branch)
+      user          = double(:user)
+      track         = Track.new({})
+
+      UpdateBranch.should_receive(:new).
+        with(user).ordered.and_return(update_branch)
+      
+      update_branch.should_receive(:from_track_params).
+        with(track).ordered
+
+      track.update_branch(user)
     end
   end
 end

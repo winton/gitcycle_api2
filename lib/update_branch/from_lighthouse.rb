@@ -2,11 +2,11 @@ class UpdateBranch
   class FromLighthouse < Struct.new(:branch)
 
     def update?
-      branch.user && branch.lighthouse_ticket_id_changed?
+      branch.lighthouse_ticket_id_changed?
     end
     
     def update
-      return  unless update?
+      return  unless branch.user
 
       branch.user.
         update_nil_lighthouse_user_namespaces(lighthouse_namespace)
@@ -23,4 +23,6 @@ class UpdateBranch
       branch.body  = ticket[:body]
     end
   end
+
+  updaters << FromLighthouse
 end

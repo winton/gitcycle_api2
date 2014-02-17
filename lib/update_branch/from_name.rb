@@ -6,8 +6,6 @@ class UpdateBranch
     end
 
     def update
-      return  unless update?
-
       name        = branch.title.downcase
       valid_chars = /[^a-zA-Z]/
       many_dashes = /-{2,}/
@@ -25,4 +23,6 @@ class UpdateBranch
       branch.name = name
     end
   end
+
+  updaters << FromName
 end
