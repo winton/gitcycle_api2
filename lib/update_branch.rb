@@ -1,4 +1,4 @@
-class UpdateBranch < Struct.new(:user)
+class UpdateBranch < Struct.new(:branch)
 
   UPDATERS = Dir["#{File.dirname(__FILE__)}/update_branch/*.rb"]
 
@@ -8,15 +8,12 @@ class UpdateBranch < Struct.new(:user)
     end
   end
 
-  def from_track_params(track_params)
-    branch = track_params.find_branch
-
+  def update
     self.class.updaters.each do |klass|
       updater = klass.new(branch)
       updater.update  if updater.update?
     end
     
-    branch.user = user  if user
     branch
   end
 

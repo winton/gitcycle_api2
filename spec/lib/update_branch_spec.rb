@@ -2,18 +2,9 @@ require 'spec_helper'
 
 describe UpdateBranch do
 
-  let(:user) do
-    FactoryGirl.create(:user)
-  end
-
-  describe "#from_track_params" do
+  describe "#update" do
 
     let(:track) { Track.new({}) }
-
-    it "calls Track#find_branch" do
-      track.should_receive(:find_branch).and_call_original
-      UpdateBranch.new(user).from_track_params(track)
-    end
 
     it "creates updaters" do
       UpdateBranch::UPDATERS.each do |path|
@@ -25,12 +16,7 @@ describe UpdateBranch do
         updater.should_receive(:update?).ordered.and_return(false)
       end
       
-      UpdateBranch.new(user).from_track_params(track)
-    end
-
-    it "assigns user" do
-      branch = UpdateBranch.new(user).from_track_params(track)
-      expect(branch.user).to eq(user)
+      UpdateBranch.new(track.find_branch).update
     end
   end
 end

@@ -1,5 +1,24 @@
 class Track < Struct.new(:params)
 
+  def build_branch(user=nil)
+    branch  = find_branch
+    options = to_options
+
+    branch.user = user  if user
+
+    if options[:reset] && branch.id
+      branch.destroy
+      branch = find_branch
+    end
+
+    if options[:source]
+      branch.source_branch =
+        self.class.new(branch: options[:source]).find_branch
+    end
+
+    branch
+  end
+
   def find_branch
     Branch.where(to_conditions).first_or_initialize
   end
@@ -8,7 +27,10 @@ class Track < Struct.new(:params)
     where   = {}
     options = to_options
     
-    if name = options[:branch]
+    if id = options[:id]
+      where[:id] = id
+
+    elsif name = options[:branch]
       where[:name] = name
 
     elsif options[:title]
@@ -41,7 +63,8 @@ class Track < Struct.new(:params)
   end
 
   def update_branch(user=nil)
-    UpdateBranch.new(user).from_track_params(self)
+    branch = build_branch(user)
+    UpdateBranch.new(branch).update
   end
 
   private

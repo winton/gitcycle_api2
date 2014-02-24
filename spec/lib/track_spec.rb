@@ -2,10 +2,40 @@ require 'spec_helper'
 
 describe Track do
 
+  let(:user) { FactoryGirl.create(:user) }
+
+  describe "#build_branch" do
+
+    it "finds the branch" do
+      track = Track.new(branch: "branch")
+      expect(track.build_branch).to be_a(Branch)
+    end
+
+    it "sets the user" do
+      track  = Track.new(branch: "branch")
+      branch = track.build_branch(user)
+      expect(branch.user).to be(user)
+    end
+
+    it "resets the branch" do
+      Track.new(branch: "branch").find_branch.save
+      track  = Track.new(branch: "branch", reset: true)
+      branch = track.build_branch
+      expect(branch.id).to be_nil
+    end
+
+    it "sets the source branch" do
+      track  = Track.new(branch: "branch", source: "source")
+      branch = track.build_branch
+      expect(branch.source_branch).to be_a(Branch)
+      expect(branch.source_branch.name).to eq("source")
+    end
+  end
+
   describe "#find_branch" do
-    it "uses to_conditions to find Branch" do
+    it "uses #to_conditions to find Branch" do
       branch = double(:branch)
-      track = Track.new({})
+      track  = Track.new({})
 
       Branch.should_receive(:where).
         with(track.to_conditions).ordered.and_return(branch)
@@ -158,15 +188,18 @@ describe Track do
 
   describe "#update_branch" do
     it "initializes UpdateBranch" do
+      branch        = double(:branch)
       update_branch = double(:update_branch)
       user          = double(:user)
       track         = Track.new({})
 
+      track.should_receive(:build_branch).
+        with(user).ordered.and_return(branch)
+
       UpdateBranch.should_receive(:new).
-        with(user).ordered.and_return(update_branch)
+        with(branch).ordered.and_return(update_branch)
       
-      update_branch.should_receive(:from_track_params).
-        with(track).ordered
+      update_branch.should_receive(:update).ordered
 
       track.update_branch(user)
     end
