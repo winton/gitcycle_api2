@@ -105,16 +105,23 @@ class Track < Struct.new(:params, :user)
     branch, title, url = parse_query(params[:query])
 
     if branch
-      options = { branch: branch }.merge(params)
+      options = { branch: branch }
     elsif url
-      options = ticket_provider_option(url).merge(params)
+      options = ticket_provider_option(url)
     elsif title
-      options = { title: title }.merge(params)
+      options = { title: title }
     else
-      options = params.dup
+      options = {}
     end
 
-    options
+    params.symbolize_keys.merge(options)
+  end
+
+  def to_rpc
+    {
+      branch:   update_branch,
+      commands: [ :checkout_from_remote ]
+    }
   end
 
   def update_branch

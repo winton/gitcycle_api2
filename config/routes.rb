@@ -67,7 +67,7 @@ GitcycleApi2::Application.routes.draw do
   resource  :setup,        controller: :setup,        only:   [ :show ] do
     post    :lighthouse,   on:         :member
   end
-  resource  :track,        controller: :track,        only:   [ :put ]
+  resource  :track,        controller: :track,        only:   [ :update ]
   resource  :user,         controller: :user,         only:   [ :show ]
 
   get '/auth/:provider/callback', to: 'session#create'
