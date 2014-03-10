@@ -4,7 +4,7 @@ describe UpdateBranch do
 
   describe "#update" do
 
-    let(:track) { Track.new({}) }
+    let(:branch) { double(:branch) }
 
     it "creates updaters" do
       UpdateBranch::UPDATERS.each do |path|
@@ -16,7 +16,7 @@ describe UpdateBranch do
         updater.should_receive(:update?).ordered.and_return(false)
       end
       
-      UpdateBranch.new(track.find_branch).update
+      UpdateBranch.new(branch).update
     end
   end
 end

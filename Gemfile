@@ -53,6 +53,11 @@ group :development do
   gem "rails-erd"
 end
 
+group :test do
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+end
+
 group :test, :development do
   gem "factory_girl"
   gem "factory_girl_rails"

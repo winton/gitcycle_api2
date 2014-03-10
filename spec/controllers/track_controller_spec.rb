@@ -12,12 +12,13 @@ describe TrackController do
   end
 
   describe "PUT #track" do
-    it "renders rpc json" do
+
+    subject do
       put(:update, { repo: "repo", query: "query" }.merge(format: :json))
-      body = JSON.parse(response.body, symbolize_names: true)
-      puts body
-      expect(body[:branch]).to   be_a(Hash)
-      expect(body[:commands]).to be_a(Array)
+      JSON.parse(response.body, symbolize_names: true)
     end
+
+    specify { expect(subject[:branch]).to   be_a(Hash) }
+    specify { expect(subject[:commands]).to be_a(Array) }
   end
 end
