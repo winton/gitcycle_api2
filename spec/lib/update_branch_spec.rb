@@ -2,21 +2,18 @@ require 'spec_helper'
 
 describe UpdateBranch do
 
+  subject { UpdateBranch.new(branch) }
+
   describe "#update" do
 
-    let(:branch) { double(:branch) }
+    let(:branch)        { double(:branch) }
+    let(:updater)       { double(:updater, update?: true, update: true) }
+    let(:updater_class) { double(:updater, new: updater) }
 
-    it "creates updaters" do
-      UpdateBranch::UPDATERS.each do |path|
-        klass_str = File.basename(path, ".rb").classify
-        klass     = Object.const_get("UpdateBranch::#{klass_str}")
-        updater   = double(klass_str)
+    before { allow(subject.class).to receive(:updaters).and_return([ updater_class ]) }
+    before { subject.update }
 
-        klass.should_receive(:new).ordered.and_return(updater)
-        updater.should_receive(:update?).ordered.and_return(false)
-      end
-      
-      UpdateBranch.new(branch).update
-    end
+    specify { expect(updater_class).to have_received(:new).with(branch) }
+    specify { expect(updater).to have_received(:update) }
   end
 end
