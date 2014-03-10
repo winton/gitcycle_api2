@@ -11,8 +11,13 @@ describe TrackController do
       ActionController::HttpAuthentication::Token.encode_credentials(user.gitcycle)
   end
 
-  it "" do
-    put(:update, { repo: "repo", query: "query" }.merge(format: :json))
-    puts response.body
+  describe "PUT #track" do
+    it "renders rpc json" do
+      put(:update, { repo: "repo", query: "query" }.merge(format: :json))
+      body = JSON.parse(response.body, symbolize_names: true)
+      puts body
+      expect(body[:branch]).to   be_a(Hash)
+      expect(body[:commands]).to be_a(Array)
+    end
   end
 end

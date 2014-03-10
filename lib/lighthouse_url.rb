@@ -11,6 +11,7 @@ class LighthouseUrl < Struct.new(:url)
   end
 
   def to_properties
-    url.match(/:\/\/([^\.]+).+\/projects\/(\d+)\/tickets\/(\d+)/).to_a[1..3]
+    regex = /:\/\/([^\.]+).+\/projects\/(\d+)\/tickets\/(\d+)/
+    url.match(regex).to_a[1..3]
   end
 end

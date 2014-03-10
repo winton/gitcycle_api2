@@ -166,12 +166,11 @@ describe Track do
     end
 
     it "resets the branch" do
-      track = new_track(branch: "branch", reset: true)
-      branch.should_receive(:id).ordered.and_return(1)
-      branch.should_receive(:destroy).ordered
-      track.should_receive(:find_branch).ordered.and_return(branch)
-      branch.should_receive(:user=).with(user).ordered
-      track.build_branch
+      track      = new_track(branch: "branch", reset: true)
+      new_branch = double(:new_branch)
+      track.should_receive(:reset_branch).ordered.with(branch).and_return(new_branch)
+      new_branch.should_receive(:user=).with(user)
+      expect(track.build_branch).to eq(new_branch)
     end
 
     it "sets the user" do
@@ -228,19 +227,13 @@ describe Track do
   describe "#owner_branch_exists?" do
 
     it "checks if owner branch is present" do
-      github = double(:github)
-      owner  = double(:owner)
-      ref    = double(:ref)
+      owner = double(:owner)
 
       branch.should_receive(:repo).ordered.and_return(repo)
       repo.should_receive(:owner).ordered.and_return(owner)
-      branch.should_receive(:repo).ordered.and_return(repo)
-      Github.should_receive(:new).with(repo, user).ordered.and_return(github)
-      github.should_receive(:reference).with(owner, branch).ordered.and_return(ref)
-      ref.should_receive(:[]).with(:ref).ordered.and_return(ref)
-      ref.should_receive(:present?).ordered.and_return(true)
       
       track = Track.new({}, user)
+      track.should_receive(:github_ref_exists?).ordered.with(user, branch, owner).and_return(true)
       expect(track.owner_branch_exists?(branch)).to eq(owner)
     end
   end
@@ -364,6 +357,17 @@ describe Track do
       branch.should_receive(:save).ordered
 
       track.update_branch
+    end
+  end
+
+  describe "#to_rpc" do
+
+    it "returns RPC hash" do
+      track = Track.new({}, user)
+      track.should_receive(:update_branch).and_return(branch)
+      expect(track.to_rpc).to eq(
+        branch: branch, commands: [ :checkout_from_remote ]
+      )
     end
   end
 
