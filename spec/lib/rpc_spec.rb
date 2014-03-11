@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Rpc do
 
-  let(:params) { double(:params) }
-  let(:user)   { double(:user) }
+  let(:params) { double }
+  let(:user)   { double }
   let(:rpc)    { Rpc.new(params, user) }
   subject      { rpc }
 
