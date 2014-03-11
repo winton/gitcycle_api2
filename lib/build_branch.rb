@@ -1,18 +1,20 @@
 class BuildBranch < Struct.new(:params, :user)
 
+  attr_accessor :branch, :options, :repo, :source
+
   def build
-    options = Options.new(params).options
-    branch  = FindBranch.new(options).find
+    options = get_options
+    branch  = find_branch
 
     repo   = options[:repo]
     reset  = options[:reset]
     source = options[:source]
 
-    reset_branch(branch, options)  if reset
+    reset_branch  if reset
 
-    branch.user          = user                                 if user
-    branch.repo          = FindRepo.new(repo, user).find        if repo
-    branch.source_branch = PickSource.new(branch, source).pick  if source
+    branch.user          = user         if user
+    branch.repo          = find_repo    if repo
+    branch.source_branch = pick_source  if source
 
     branch
   end
@@ -23,7 +25,23 @@ class BuildBranch < Struct.new(:params, :user)
     branch
   end
 
-  def reset_branch(branch, options)
+  def find_branch
+    FindBranch.new(options).find
+  end
+
+  def find_repo
+    FindRepo.new(repo, user).find
+  end
+
+  def get_options
+    Options.new(params).options
+  end
+
+  def pick_source
+    PickSource.new(branch, source).pick
+  end
+
+  def reset_branch
     return unless branch.id
     branch.destroy
     FindBranch.new(options).find
