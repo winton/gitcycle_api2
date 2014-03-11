@@ -2,7 +2,7 @@ class BuildBranch
   class Options < Struct.new(:params)
 
     def options
-      branch, title, url = parse_query(params[:query])
+      branch, title, url = parse_query
 
       if branch
         options = { branch: branch }
@@ -17,7 +17,9 @@ class BuildBranch
       params.symbolize_keys.merge(options)
     end
 
-    def parse_query(query)
+    def parse_query
+      query = params[:query]
+      
       if query =~ /^https?:\/\//
         [ nil, nil, query ]
       elsif query =~ /\s/

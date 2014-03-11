@@ -5,16 +5,20 @@ class BuildBranch
       Repo.where(repo_conditions).first_or_initialize
     end
 
-    def repo_conditions
-      rpo = repo
-      usr = user
+    def find_user(login)
+      User.where(login: login).first_or_create
+    end
 
-      if rpo.include?("/")
-        usr, rpo = rpo.split("/")
-        usr    = User.where(login: usr).first_or_create
+    def repo_conditions
+      name = repo
+      usr  = user
+
+      if name.include?("/")
+        login, name = name.split("/")
+        usr         = find_user(login)
       end
 
-      { name: rpo, user_id: usr.id }
+      { name: name, user_id: usr.id }
     end
   end
 end
