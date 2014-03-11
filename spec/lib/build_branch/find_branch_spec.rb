@@ -63,7 +63,10 @@ describe BuildBranch::FindBranch do
     let(:first_or_initialize) { double }
     let(:where) { double(first_or_initialize: first_or_initialize) }
 
-    before { allow(Branch).to receive(:where).and_return(where) }
+    before do
+      allow(find_branch).to receive(:branch_conditions)
+      allow(Branch).to receive(:where).and_return(where)
+    end
 
     it { should == first_or_initialize }
   end
