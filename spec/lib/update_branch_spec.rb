@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe UpdateBranch do
 
-  let(:branch)        { double(:branch) }
+  let(:branch)        { double }
   let(:update_branch) { UpdateBranch.new(branch) }
   subject             { update_branch }
 
   describe "#update" do
 
-    let(:updater)       { double(:updater, update?: true, update: true) }
-    let(:updater_class) { double(:updater, new: updater) }
+    let(:updater)       { double(update?: true, update: nil) }
+    let(:updater_class) { double(new: updater) }
 
     before   { allow(UpdateBranch).to receive(:updaters).and_return([ updater_class ]) }
     subject! { update_branch.update }
