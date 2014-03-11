@@ -1,10 +1,10 @@
 class BuildBranch
   class PickSource < Struct.new(:branch, :source)
 
-    attr_accessor :repo, :src
+    attr_accessor :repo
 
     def build_branch
-      BuildBranch.new(branch: src, repo: repo).build_branch
+      BuildBranch.new(branch: source, repo: repo).build
     end
 
     def github
@@ -12,7 +12,7 @@ class BuildBranch
     end
 
     def github_ref_exists?(user)
-      github.reference(user, branch)[:ref]
+      github.reference(user, source)[:ref]
     end
 
     def owner_branch_exists?
@@ -21,30 +21,28 @@ class BuildBranch
     end
 
     def pick
-      @src, @repo = source_from_string_with_slashes
-      @src, @repo = source_from_owner   unless src && repo
-      @src, @repo = source_from_string  unless src && repo
+      source_from_string_with_slashes
+      source_from_owner   unless repo
+      source_from_string  unless repo
 
       build_branch
     end
 
     def source_from_owner
       return unless owner = owner_branch_exists?
-      [ source, "#{owner.login}/#{branch.repo.name}" ]
+      self.repo = "#{owner.login}/#{branch.repo.name}"
     end
 
     def source_from_string
-      [ source, branch.repo.name ]
+      self.repo = branch.repo.name
     end
 
     def source_from_string_with_slashes
       return unless source.include?("/")
 
-      pieces = src.split("/")
-      src    = pieces.pop
-      repo   = pieces.join("/")
-
-      [ src, repo ]
+      pieces      = src.split("/")
+      self.source = pieces.pop
+      self.repo   = pieces.join("/")
     end
   end
 end

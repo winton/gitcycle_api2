@@ -13,8 +13,13 @@ describe TrackController do
 
   describe "PUT #track" do
 
+    before do
+      Repo.any_instance.stub(:owner).and_return(user)
+      Github.any_instance.stub(:reference).and_return(ref: true)
+    end
+
     subject do
-      put(:update, { repo: "repo", query: "query" }.merge(format: :json))
+      put(:update, { repo: "repo", query: "query", source: "source" }.merge(format: :json))
       JSON.parse(response.body, symbolize_names: true)
     end
 
