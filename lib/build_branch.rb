@@ -3,12 +3,12 @@ class BuildBranch < Struct.new(:params, :user)
   attr_accessor :branch, :options, :repo, :source
 
   def build
-    options = get_options
-    branch  = find_branch
-
-    repo   = options[:repo]
-    reset  = options[:reset]
-    source = options[:source]
+    self.options = get_options
+    self.branch  = find_branch
+    
+    self.repo    = options[:repo]
+    self.source  = options[:source]
+    reset        = options[:reset]
 
     reset_branch  if reset
 
