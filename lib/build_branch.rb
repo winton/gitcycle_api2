@@ -20,7 +20,7 @@ class BuildBranch < Struct.new(:params, :user)
   end
 
   def build_with_external
-    branch = UpdateBranch.new(build).update
+    branch = update_branch
     branch.save
     branch
   end
@@ -44,6 +44,10 @@ class BuildBranch < Struct.new(:params, :user)
   def reset_branch
     return unless branch.id
     branch.destroy
-    FindBranch.new(options).find
+    find_branch
+  end
+
+  def update_branch
+    UpdateBranch.new(build).update
   end
 end
