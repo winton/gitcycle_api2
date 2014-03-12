@@ -1,40 +1,36 @@
 class BuildBranch
   class Options < Struct.new(:params)
 
-    def options
-      branch, title, url = parse_query
+    attr_accessor :query
 
-      if branch
-        options = { branch: branch }
-      elsif url
-        options = ticket_provider_option(url)
-      elsif title
-        options = { title: title }
+    def options
+      @query = params[:query]
+
+      if query_is_url?
+        options = ticket_provider_option
+      elsif query_has_space?
+        options = { title: query }
       else
-        options = {}
+        options = { branch: query }
       end
 
       params.symbolize_keys.merge(options)
     end
 
-    def parse_query
-      query = params[:query]
-      
-      if query =~ /^https?:\/\//
-        [ nil, nil, query ]
-      elsif query =~ /\s/
-        [ nil, query, nil ]
-      else
-        [ query, nil, nil ]
+    def ticket_provider_option
+      if query.include?('lighthouseapp.com/')
+        { lighthouse_url: query }
+      elsif query.include?('github.com/')
+        { github_url: query }
       end
     end
 
-    def ticket_provider_option(url)
-      if url.include?('lighthouseapp.com/')
-        { :lighthouse_url => url }
-      elsif url.include?('github.com/')
-        { :github_url => url }
-      end
+    def query_has_space?
+      !!(query =~ /\s/)
+    end
+
+    def query_is_url?
+      !!(query =~ /^https?:\/\//)
     end
   end
 end
