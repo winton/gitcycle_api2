@@ -12,10 +12,10 @@ class BuildBranch
     end
 
     def github_ref_exists?(user)
-      github.reference(user, source)[:ref]
+      !!github.reference(user, source)[:ref]
     end
 
-    def owner_branch_exists?
+    def owner_branch
       owner  = branch.repo.owner
       owner  if github_ref_exists?(owner)
     end
@@ -29,7 +29,7 @@ class BuildBranch
     end
 
     def source_from_owner
-      return unless owner = owner_branch_exists?
+      return unless owner = owner_branch
       self.repo = "#{owner.login}/#{branch.repo.name}"
     end
 
@@ -40,7 +40,7 @@ class BuildBranch
     def source_from_string_with_slashes
       return unless source.include?("/")
 
-      pieces      = src.split("/")
+      pieces      = source.split("/")
       self.source = pieces.pop
       self.repo   = pieces.join("/")
     end
