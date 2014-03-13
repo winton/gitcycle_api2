@@ -10,8 +10,10 @@ class BuildBranch
         options = ticket_provider_option
       elsif query_has_space?
         options = { title: query }
-      else
+      elsif query
         options = { branch: query }
+      else
+        options = {}
       end
 
       params.symbolize_keys.merge(options)
