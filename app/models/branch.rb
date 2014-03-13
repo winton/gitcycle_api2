@@ -10,6 +10,8 @@ class Branch < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: [ :user_id ]
 
+  before_save :use_created_repo
+
   def base
     source_branch.name
   end
@@ -45,11 +47,25 @@ class Branch < ActiveRecord::Base
     user.login rescue nil
   end
 
+  def serializable_hash(options={})
+    options = { include: [ :repo, :source_branch ] }.update(options)
+
+    super(options)
+  end
+
   def source_repo_user
     source_branch.repo.user rescue nil
   end
 
   def source_repo
     source_branch.repo rescue nil
+  end
+
+  private
+
+  def use_created_repo
+    if repo && !repo.id && source_repo && source_repo.name == repo.name
+      self.repo = self.source_repo
+    end
   end
 end
