@@ -48,9 +48,14 @@ class Branch < ActiveRecord::Base
   end
 
   def serializable_hash(options={})
-    options = { include: [ :repo, :source_branch ] }.update(options)
+    options = {
+      include: {
+        repo: { include: [ :user ] },
+        source_branch: {}
+      }
+    }
 
-    super(options)
+    super(options.update(options))
   end
 
   def source_repo_user
