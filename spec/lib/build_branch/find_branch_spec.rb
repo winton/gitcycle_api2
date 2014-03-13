@@ -73,22 +73,20 @@ describe BuildBranch::FindBranch do
 
   describe "#github_conditions" do
 
-    subject { find_branch.github_conditions }
-
     let(:to_conditions) { double }
 
-    before { GithubUrl.any_instance.stub(:to_conditions).and_return(to_conditions) }
+    subject { find_branch.github_conditions }
+    before  { GithubUrl.any_instance.stub(:to_conditions).and_return(to_conditions) }
 
     it { should == to_conditions }
   end
 
   describe "#lighthouse_conditions" do
 
-    subject { find_branch.lighthouse_conditions }
-
     let(:to_conditions) { double }
 
-    before { LighthouseUrl.any_instance.stub(:to_conditions).and_return(to_conditions) }
+    subject { find_branch.lighthouse_conditions }
+    before  { LighthouseUrl.any_instance.stub(:to_conditions).and_return(to_conditions) }
 
     it { should == to_conditions }
   end

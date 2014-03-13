@@ -13,17 +13,29 @@ describe TrackController do
 
   describe "PUT #track" do
 
+    let(:query)  { "query" }
+    let(:repo)   { "repo" }
+    let(:source) { "source" }
+
     before do
       Repo.any_instance.stub(:owner).and_return(user)
       Github.any_instance.stub(:reference).and_return(ref: true)
     end
 
     subject do
-      put(:update, { repo: "repo", query: "query", source: "source" }.merge(format: :json))
+      put(:update, { repo: repo, query: query, source: source }.merge(format: :json))
       JSON.parse(response.body, symbolize_names: true)
     end
 
-    specify { expect(subject[:branch]).to   be_a(Hash) }
+    specify { expect(subject[:branch]).to be_a(Hash) }
+    specify { expect(subject[:branch][:id]).to be_a(Fixnum) }
+    specify { expect(subject[:branch][:name]).to eq(query) }
+    specify { expect(subject[:branch][:repo]).to be_a(Hash) }
+    specify { expect(subject[:branch][:repo][:id]).to be_a(Fixnum) }
+    specify { expect(subject[:branch][:repo][:name]).to eq(repo) }
+    specify { expect(subject[:branch][:source_branch]).to be_a(Hash) }
+    specify { expect(subject[:branch][:source_branch][:id]).to be_a(Fixnum) }
+    specify { expect(subject[:branch][:source_branch][:name]).to eq(source) }
     specify { expect(subject[:commands]).to be_a(Array) }
   end
 end
