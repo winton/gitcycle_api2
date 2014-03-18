@@ -61,6 +61,8 @@ GEM
       timers (~> 1.1.0)
     choice (0.1.6)
     chronic (0.10.2)
+    codeclimate-test-reporter (0.3.0)
+      simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
     coffee-rails (4.0.0)
       coffee-script (>= 2.2.0)
@@ -265,6 +267,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-sass
+  codeclimate-test-reporter
   coffee-rails
   cucumber-rails
   database_cleaner

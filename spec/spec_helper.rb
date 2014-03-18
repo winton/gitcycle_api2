@@ -1,3 +1,6 @@
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
+
 unless ENV['CI']
   require 'simplecov'
   SimpleCov.start
