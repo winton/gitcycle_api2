@@ -7,6 +7,6 @@ class PullRequestController < ApplicationController
 
   def create
     PullRequest.new.update_branch(@branch)
-    render "branch/show.json", locals: { branch: @branch }
+    render nothing: true
   end
 end

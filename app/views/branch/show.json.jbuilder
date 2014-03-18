@@ -1,1 +1,0 @@
-json.partial! "branch/show", branch: @branch
