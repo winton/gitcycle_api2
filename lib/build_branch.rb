@@ -12,9 +12,11 @@ class BuildBranch < Struct.new(:params, :user)
 
     reset_branch  if reset
 
-    branch.user          = user         if user
-    branch.repo          = find_repo    if repo
-    branch.source_branch = pick_source  if source
+    if branch.new_record?
+      branch.user          = user         if user
+      branch.repo          = find_repo    if repo
+      branch.source_branch = pick_source  if source
+    end
 
     branch
   end

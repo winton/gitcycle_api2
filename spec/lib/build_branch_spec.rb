@@ -23,6 +23,7 @@ describe BuildBranch do
       allow(build_branch).to receive(:find_repo).and_return(find_repo)
       allow(build_branch).to receive(:pick_source).and_return(pick_source)
 
+      allow(find_branch).to receive(:new_record?).and_return(true)
       allow(find_branch).to receive(:user=)
       allow(find_branch).to receive(:repo=)
       allow(find_branch).to receive(:source_branch=)
