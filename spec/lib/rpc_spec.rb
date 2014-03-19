@@ -23,18 +23,31 @@ describe Rpc do
 
   describe "#track" do
 
-    let(:build_branch) { double }
+    let(:source_branch_repo_login) { double }
+    let(:source_branch_repo_name)  { double }
+    let(:source_branch_name)       { double }
+    let(:branch_name)              { double }
 
     before do
-      allow(rpc).to receive(:build_branch).and_return(build_branch)
+      allow(rpc).to receive(:source_branch_repo_login).and_return(source_branch_repo_login)
+      allow(rpc).to receive(:source_branch_repo_name).and_return(source_branch_repo_name)
+      allow(rpc).to receive(:source_branch_name).and_return(source_branch_name)
+      allow(rpc).to receive(:branch_name).and_return(branch_name)
     end
 
     subject! { rpc.track }
 
     it do
       should == {
-        branch:   build_branch,
-        commands: [ :checkout_from_remote ]
+        commands: [
+          [
+            "Git", :checkout_remote,
+            source_branch_repo_login,
+            source_branch_repo_name,
+            source_branch_name,
+            branch_name
+          ]
+        ]
       }
     end
   end

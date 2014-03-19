@@ -40,8 +40,6 @@ gem 'faraday'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'protected_attributes'
-gem 'sidekiq', github: "mperham/sidekiq"
-gem 'sinatra'
 gem 'slim'
 gem 'whenever', require: false
 gem 'will_paginate', '~> 3.0'
