@@ -4,55 +4,9 @@
 .row
   .col-md-4
     Checkout a branch to work from
-    %i.glyphicon-arrow-right
+    %i.glyphicon.glyphicon-arrow-right
   .col-md-4
     %pre
       git checkout master
 
-.row
-  .col-md-4
-    New branch from a Lighthouse ticket URL
-    %i.glyphicon-arrow-right
-  .col-md-4
-    %pre
-      git branch [LIGHTHOUSE TICKET URL]
-
-%h3 Pull, commit, push
-
-.row
-  .col-md-4
-    Git commands are simple now
-    %i.glyphicon-arrow-right
-  .col-md-4
-    %pre
-      = preserve do
-        git pull
-        git commit
-        git push
-
-%h3 Create pull request
-
-.row
-  .col-md-4
-    Once you are ready to discuss the code
-    %i.glyphicon-arrow-right
-  .col-md-4
-    %pre
-      git discuss
-
-%h3 Mark branch "ready"
-
-.row
-  .col-md-4
-    Once you are ready for code review
-    %i.glyphicon-arrow-right
-  .col-md-4
-    %pre
-      git ready
-
-%h3 Watch for alerts
-
-%p
-  Gitcycle
-  %a{ :href => "/alerts" } alerts
-  will let you know if your branch failed review or QA.
+More instructions...
